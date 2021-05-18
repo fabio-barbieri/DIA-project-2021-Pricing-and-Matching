@@ -1,0 +1,7 @@
+---------- TS -----------------
+- Beta-Binomial with number of customers that buy / do not buy
+- config.py with all global variables
+- Env.round() --> returns the number of customers that buy / do not buy ???? (reward in euros computed next)
+            --> n bernoulli in order to handle matching ??????
+- Consider probabilities of buying / not buying and AT THE END compute the reward in euros (comparison with UCB)
+
