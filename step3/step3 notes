@@ -1,5 +1,12 @@
+CUSTOMERS CLASSES
+C1 = Junior Professionals 
+C2 = Junior Amateur
+C3 = Senior Professionals
+C4 = Senior Amateur
+
 ---------- TS -----------------
 --> consider conversion rates as gaussians or function created ad hoc
+
 
 
 DOUBTS

@@ -14,7 +14,7 @@ T = config.T
 
 ts_reward_per_experiment = []  # Collected reward
 for e in range(N_EXPS):
-    env = Environment(n_arms=N_ARMS, first_conv_rates=CR1)
+    env = Environment(n_arms=N_ARMS, conv_rates_1=CR1)
     ts_learner = TS_Learner(n_arms=N_ARMS)
 
     for t in range(T):

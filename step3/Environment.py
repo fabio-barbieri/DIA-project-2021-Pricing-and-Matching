@@ -3,9 +3,9 @@ import config
 
 
 class Environment():
-    def __init__(self, n_arms, first_conv_rates):
+    def __init__(self, n_arms, conv_rates_1):
         self.n_arms = n_arms
-        self.conv_rates_1 = first_conv_rates
+        self.conv_rates_1 = conv_rates_1
 
     def round(self, pulled_arm):
         # For each class of customers, sample rewards from a binomial with mean the value of the i-th conv rate in the given pulled arm

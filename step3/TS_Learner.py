@@ -1,3 +1,4 @@
+from numpy import poly1d, promote_types
 from Learner import *
 import config
 
@@ -15,10 +16,15 @@ class TS_Learner(Learner):
         # Pull the arm that maximizes the weightes average of the conv rates over all 
         # the classes of customers w.r.t. the beta distribution
         weighted_averages = []
-        for arm in self.beta_parameters:
+        for i, arm in enumerate(self.beta_parameters):  # For every price_1
             cr = 0
-            for i, params in enumerate(arm):
-                cr += config.NUM_CUSTOMERS[i] * np.random.beta(params[0], params[1])
+            for j, params in enumerate(arm):  # For every customer class
+                exp_buyers_item1 = config.NUM_CUSTOMERS[j] * np.random.beta(params[0], params[1])
+                margin1 = config.MARGINS_1[i]
+                promo_assigment_prob = config.MATCHING[j, :] / config.NUM_CUSTOMERS[j]
+                margin2 = np.multiply(config.MARGINS_2, config.CONV_RATES_2[j, :])
+
+                cr += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
             cr /= sum(config.NUM_CUSTOMERS)
             weighted_averages.append(cr)
 
