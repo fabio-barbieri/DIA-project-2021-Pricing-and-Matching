@@ -29,10 +29,10 @@ for e in range(N_EXPS):
 plt.figure(0)
 plt.xlabel("t")
 plt.ylabel("Regret")
-plt.plot(np.cumsum(np.mean(TOTAL_OPT - np.sum(ts_reward_per_experiment, axis=2), axis=0)), 'g')
-plt.plot(TOTAL_OPT - np.sum(ts_learner.collected_rewards, axis=1), 'o', color='blue')
-plt.plot(np.cumsum(TOTAL_OPT - np.sum(ts_learner.collected_rewards, axis=1)), 'r')
-plt.legend(["TS"])
+plt.plot(np.cumsum(np.mean(TOTAL_OPT - np.sum(ts_reward_per_experiment, axis=2), axis=0)), 'g')  # Cumulative mean of regrets 
+plt.plot(TOTAL_OPT - np.sum(ts_learner.collected_rewards, axis=1), 'o', color='blue')  # Daily regret
+plt.plot(np.cumsum(TOTAL_OPT - np.sum(ts_learner.collected_rewards, axis=1)), 'r')  # Cumulative daily regret
+plt.legend(["Mean_Cumulative_Regret", "Daily_Regret", "Cumulative_Daily_Regret"])
 plt.show()
 
 plt.plot(np.cumsum(np.mean(TOTAL_OPT - np.sum(ts_reward_per_experiment, axis=2), axis=0)), 'r')
