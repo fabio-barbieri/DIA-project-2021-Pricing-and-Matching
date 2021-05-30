@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 import sys
 
-def cr1(price,cl):
+def cr1(price,cl):        # conversion rates for prices of item 1
   # MAXIMUM and minimun prices for item 1
   M = 250
   m = 150
@@ -11,8 +11,7 @@ def cr1(price,cl):
   if price<m or price>M: 
     sys.exit('price not in range')
 
-  if cl == 0:
-    # Junior Professional
+  if cl == 0:       # Junior Professional
     def f(y):
       # parameters for the first truncated normal
       loc1 = 200
@@ -36,16 +35,37 @@ def cr1(price,cl):
 
     return (f(price) - fmin) / (fmax - fmin)
 
-  if cl == 1:
-    # Junior Amateur
+  if cl == 1:       # Junior Amateur
    
     ret = np.exp(0.04*(M-price))
     return ret / np.exp(0.04*(M-m))
     
 
-  #if cl == 2:
-    # Senior Professional
+  if cl == 2:       # Senior Professional
     
+    def g(y):
+      # parameters for the first truncated normal
+      loc1 = 200
+      scale1 = 60
+      a1 = (m - loc1) / scale1
+      b1 = (M - loc1) / scale1
+      # parameters for the second truncated normal
+      loc2 = 230
+      scale2 = 40
+      a2 = (m - loc2) / scale2
+      b2 = (M - loc2) / scale2 
 
-  #if cl == 3:
-    # Senior Amateur
+      return stats.truncnorm.pdf(y,a1,b1,loc1,scale1)*stats.truncnorm.pdf(y,a2,b2,loc2,scale2)
+
+    xx = np.linspace(150,250,2000)
+    gg = g(xx)
+    mm = np.argmin(gg)
+    MM = np.argmax(gg)
+    gmin = g(xx[mm])
+    gmax = g(xx[MM])
+
+    return (g(price) - gmin) / (gmax - gmin)
+
+
+  if cl == 3:       # Senior Amateur
+    return 1 - 1/np.exp(0.04*(M-price))  
