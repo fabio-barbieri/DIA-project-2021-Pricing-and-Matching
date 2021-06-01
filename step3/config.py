@@ -5,11 +5,11 @@ import utils
 np.random.seed(1234)
 
 T = 365  # Time horizon
-N_EXPS = 50  # Number of experiments
-N_ARMS = 5  # Number of different candidate prices
+N_EXPS = 100  # Number of experiments
+N_ARMS = 50  # Number of different candidate prices
 NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily customers per class
 
-MARGINS_1 = np.linspace(150, 250, 20)
+MARGINS_1 = np.linspace(150, 250, N_ARMS)
 
 CR1 = []
 for margin in MARGINS_1:

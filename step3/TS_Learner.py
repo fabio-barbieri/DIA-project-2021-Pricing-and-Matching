@@ -13,7 +13,7 @@ class TS_Learner(Learner):
                                                         # 2 = amount of parameters for the beta distribution (alpa, beta)
 
     def pull_arm(self):
-        # Pull the arm that maximizes the weightes average of the conv rates over all 
+        # Pull the arm that maximizes the weighted average of the conv rates over all
         # the classes of customers w.r.t. the beta distribution
         weighted_averages = []
         for i, arm in enumerate(self.beta_parameters):  # For every price_1

@@ -26,15 +26,25 @@ print(np.shape(ts_learner.collected_rewards))
 # Plot the results
 plt.figure(0)
 plt.xlabel("t")
-plt.ylabel("Regret")
-#plt.hlines(TOTAL_OPT * config.T, 0, 365, linestyles="dashed")
+plt.ylabel("Expected reward")
+plt.hlines(TOTAL_OPT, 0, 365, linestyles="dashed")
+plt.plot(np.mean(np.sum(ts_reward_per_experiment, axis=2), axis=0), 'g')
+plt.show()
+
+plt.figure(1)
+plt.xlabel("t")
+plt.ylabel("Cumulative expected reward")
+plt.plot(np.cumsum(np.mean(np.sum(ts_reward_per_experiment, axis=2), axis=0)), 'r')
+plt.show()
+
+plt.figure(2)
+plt.xlabel("t")
+plt.ylabel("Daily regret")
+plt.plot(np.mean(TOTAL_OPT - np.sum(ts_reward_per_experiment, axis=2), axis=0), color='b')
+plt.show()
 
 #plt.plot(np.cumsum(np.mean(TOTAL_OPT - np.sum(ts_reward_per_experiment, axis=2), axis=0)), 'g')  # Cumulative mean of regrets
 #plt.plot(TOTAL_OPT - np.sum(ts_learner.collected_rewards, axis=1), color='blue')  # Daily regret
 #plt.plot(np.cumsum(TOTAL_OPT - np.sum(ts_learner.collected_rewards, axis=1)), 'r')  # Cumulative daily regret
-
-plt.plot(np.cumsum(np.mean(np.sum(ts_reward_per_experiment, axis=2), axis=0)), 'g')  # Cumulative mean of regrets
-#plt.legend(["Mean_Cumulative_Regret", "Daily_Regret", "Cumulative_Daily_Regret"])
-plt.show()
 
 #plt.plot(np.cumsum(np.mean(TOTAL_OPT - np.sum(ts_reward_per_experiment, axis=2), axis=0)), 'r')
