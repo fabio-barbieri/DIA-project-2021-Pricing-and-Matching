@@ -5,21 +5,23 @@ import utils
 np.random.seed(1234)
 
 T = 365  # Time horizon
-N_EXPS = 1  # Number of experiments
+N_EXPS = 50  # Number of experiments
 N_ARMS = 5  # Number of different candidate prices
 NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily customers per class
 
-MARGINS_1 = np.array([200, 220, 240, 160, 180])
+MARGINS_1 = np.linspace(150, 250, 20)
+
+CR1 = []
+for margin in MARGINS_1:
+    cr = np.array([utils.cr1(margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
+    CR1.append(cr)
 
 weighted_averages = []
-for margin in MARGINS_1:
-    cr = 0
-    for i in range(len(NUM_CUSTOMERS)):
-        cr += utils.cr1(margin, i) * NUM_CUSTOMERS[i]
-    weighted_averages.append(cr / sum(NUM_CUSTOMERS))
-print(weighted_averages)
-OPT = np.argmax(weighted_averages)  # Index of the highest weighted average of first Conv Rates
 
+for cr_row in CR1:
+    weighted_averages.append(np.dot(cr_row, NUM_CUSTOMERS) / sum(NUM_CUSTOMERS))
+
+OPT = CR1[np.argmax(weighted_averages)]
 
 MATCHING = np.array([[8,  5, 4,  3],  # Class 1 -> tot = NUM_CUSTOMERS[0]
                      [16, 6, 10, 8],  # Class 2 -> tot = NUM_CUSTOMERS[1]
