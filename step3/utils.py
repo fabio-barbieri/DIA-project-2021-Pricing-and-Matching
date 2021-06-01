@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 from scipy import stats
 import sys
 
-def cr1(price,cl):        # conversion rates for prices of item 1
+def cr1(price,cl):  # conversion rates for prices of item 1
+ 
   # MAXIMUM and minimun prices for item 1
   M = 250
   m = 150
@@ -11,6 +12,7 @@ def cr1(price,cl):        # conversion rates for prices of item 1
   if price<m or price>M: 
     sys.exit('price not in range')
 
+  
   if cl == 0:       # Junior Professional
     def f(y):
       # parameters for the first truncated normal
@@ -33,12 +35,12 @@ def cr1(price,cl):        # conversion rates for prices of item 1
     fmin = f(xx[mm])
     fmax = f(xx[MM])
 
-    return (f(price) - fmin) / (fmax - fmin)
+    return 0.95 * (f(price) - fmin) / (fmax - fmin)
 
+  
   if cl == 1:       # Junior Amateur
    
-    ret = np.exp(0.04*(M-price))
-    return ret / np.exp(0.04*(M-m))
+      return np.exp(0.04*(M-price))/np.exp(0.04*(M-m+2))
     
 
   if cl == 2:       # Senior Professional
@@ -64,8 +66,9 @@ def cr1(price,cl):        # conversion rates for prices of item 1
     gmin = g(xx[mm])
     gmax = g(xx[MM])
 
-    return (g(price) - gmin) / (gmax - gmin)
+    return 0.95 * (g(price) - gmin) / (gmax - gmin)
 
 
   if cl == 3:       # Senior Amateur
-    return 1 - 1/np.exp(0.04*(M-price))  
+    
+    return np.exp(0.02*(M-price))/np.exp(0.02*(M-m+2))
