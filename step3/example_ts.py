@@ -3,10 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from Environment import *
 from TS_Learner import *
+from tqdm import tqdm
 
 
 N_ARMS = config.N_ARMS
-CR1 = config.CONV_RATES_1
 TOTAL_OPT = np.dot(config.OPT, config.NUM_CUSTOMERS)
 
 N_EXPS = config.N_EXPS
@@ -14,10 +14,11 @@ T = config.T
 
 ts_reward_per_experiment = []  # Collected reward
 for e in range(N_EXPS):
-    env = Environment(n_arms=N_ARMS, conv_rates_1=CR1)
+    print("CIAO--------------------------------")
+    env = Environment(n_arms=N_ARMS)
     ts_learner = TS_Learner(n_arms=N_ARMS)
 
-    for t in range(T):
+    for t in tqdm(range(T)):
         # Thompson Sampling
         pulled_arm = ts_learner.pull_arm()
         rewards = env.round(pulled_arm)
