@@ -22,7 +22,7 @@ class TS_Learner(Learner):
                 exp_buyers_item1 = config.NUM_CUSTOMERS[j] * np.random.beta(params[0], params[1])
                 margin1 = config.MARGINS_1[i]
                 promo_assigment_prob = config.MATCHING[j, :] / config.NUM_CUSTOMERS[j]
-                margin2 = np.multiply(config.MARGINS_2, config.CONV_RATES_2[j, :])
+                margin2 = np.multiply(config.MARGINS_2, config.CR2[j, :])
 
                 cr += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
             cr /= sum(config.NUM_CUSTOMERS)
@@ -31,10 +31,10 @@ class TS_Learner(Learner):
         idx = np.argmax(weighted_averages)
         return idx
 
-    def update(self, pulled_arm, rewards):
-        self.t += 1
-        self.update_observations(pulled_arm, rewards)
+    def update(self, pulled_arm, reward, c_class):
+        # self.t += 1
+        self.update_observations(pulled_arm, reward)
         # Update the parameters of the betas according to the rewards and considering that the average num
-        # of customers per class must be condidered
-        self.beta_parameters[pulled_arm, :, 0] = self.beta_parameters[pulled_arm, :, 0] + rewards
-        self.beta_parameters[pulled_arm, :, 1] = self.beta_parameters[pulled_arm, :, 1] + (config.NUM_CUSTOMERS - rewards)
+        # of customers per class must be considered
+        self.beta_parameters[pulled_arm, c_class, 0] = self.beta_parameters[pulled_arm, c_class, 0] + reward
+        self.beta_parameters[pulled_arm, c_class, 1] = self.beta_parameters[pulled_arm, c_class, 1] + (1.0 - reward)

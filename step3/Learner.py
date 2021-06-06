@@ -8,6 +8,6 @@ class Learner:
         self.rewards_per_arm = [[] for _ in range(n_arms)]
         self.collected_rewards = []
 
-    def update_observations(self, pulled_arm, rewards):
-        self.rewards_per_arm[pulled_arm].append(rewards)  # ... (for UCB ???)
-        self.collected_rewards.append(rewards)  # List of N_EXPS arrays of shape (T, 4)
+    def update_observations(self, pulled_arm, reward):
+        # self.rewards_per_arm[pulled_arm].append(reward)  # ... (for UCB ???)
+        self.collected_rewards.append(reward)  # List of N_EXPS arrays of shape (T, 4)

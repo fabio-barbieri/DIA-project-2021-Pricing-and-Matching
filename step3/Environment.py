@@ -8,8 +8,7 @@ class Environment():
         self.n_arms = n_arms
         self.cr1 = cr1
 
-    def round(self, pulled_arm):
-        # For each class of customers, sample rewards from a binomial with mean the value of the i-th conv rate in the given pulled arm
-        # i is an index related to the classes of customers
-        rewards = [np.random.binomial(num, self.cr1[pulled_arm][i]) for i, num in enumerate(config.NUM_CUSTOMERS)]
-        return np.array(rewards)
+    def round(self, pulled_arm, c_class):
+        # reward by a single customer
+        reward = np.random.binomial(1, self.cr1[pulled_arm][c_class])
+        return reward
