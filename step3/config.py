@@ -2,8 +2,8 @@ import numpy as np
 import utils
 
 T = 365  # Time horizon
-N_EXPS = 1  # Number of experiments
-N_ARMS = 10  # Number of different candidate prices
+N_EXPS = 50  # Number of experiments
+N_ARMS = 50  # Number of different candidate prices
 NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily customers per class
 
 MARGINS_1 = np.linspace(150, 250, N_ARMS)
@@ -31,16 +31,16 @@ CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
 weighted_averages = []
 
 for i, arm in enumerate(MARGINS_1):  # For every price_1
-    cr = 0
+    arm_expected_profit = 0
     for j, n_customers in enumerate(NUM_CUSTOMERS):  # For every customer class
         exp_buyers_item1 = n_customers * CR1[i][j]
         margin1 = arm
         promo_assigment_prob = MATCHING[j, :] / n_customers
         margin2 = np.multiply(MARGINS_2, CR2[j, :])
 
-        cr += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))
+        arm_expected_profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))
     #cr /= sum(NUM_CUSTOMERS)
-    weighted_averages.append(cr)
+    weighted_averages.append(arm_expected_profit)
 
 OPT = np.max(weighted_averages)
 
