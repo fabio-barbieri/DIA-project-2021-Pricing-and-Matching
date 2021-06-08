@@ -21,7 +21,7 @@ class UCB1_Learner(Learner):
             for arm in range(self.n_arms):  # For every price_1
                 profit = 0
                 for c_class in range(len(config.NUM_CUSTOMERS)):  # For every customer class
-                    exp_buyers_item1 = config.NUM_CUSTOMERS[c_class] * upper_bound[arm]#[c_class]
+                    exp_buyers_item1 = config.NUM_CUSTOMERS[c_class] * upper_bound[arm]
                     margin1 = config.MARGINS_1[arm]
                     promo_assigment_prob = config.MATCHING[c_class, :] / config.NUM_CUSTOMERS[c_class]
                     margin2 = np.multiply(config.MARGINS_2, config.CR2[c_class, :])
@@ -33,7 +33,7 @@ class UCB1_Learner(Learner):
             idx = np.argmax(weighted_averages)
         return idx
 
-    def update(self, pulled_arm, reward, ):
+    def update(self, pulled_arm, reward):
         self.t += 1 # Increment the counter of entered customers
         #self.collected_rewards = np.append(self.collected_rewards, reward)  # useless ???
         self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t - 1) + reward) / self.t
