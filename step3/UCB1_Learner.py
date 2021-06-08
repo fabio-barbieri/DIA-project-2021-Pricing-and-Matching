@@ -37,7 +37,9 @@ class UCB1_Learner(Learner):
         self.t += 1 # Increment the counter of entered customers
         #self.collected_rewards = np.append(self.collected_rewards, reward)  # useless ???
         self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t - 1) + reward) / self.t
+
         for arm in range(self.n_arms):
             number_pulled = max(1, len(self.rewards_per_arm[arm]))
             self.confidence[arm] = (2 * np.log(self.t) / number_pulled) ** 0.5
+        
         self.rewards_per_arm[pulled_arm].append(reward)
