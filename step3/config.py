@@ -17,19 +17,18 @@ MATCHING = np.array([[8,  5, 4,  3],  # Class 1 -> tot = NUM_CUSTOMERS[0]
                      [16, 6, 10, 8],  # Class 2 -> tot = NUM_CUSTOMERS[1]
                      [2,  3, 3,  2],  # Class 3 -> tot = NUM_CUSTOMERS[2]
                      [14, 6, 5,  5]]) # Class 4 -> tot = NUM_CUSTOMERS[3]
-                    # p0   p1   p2   p3
+                    # p0  p1 p2  p3
 
 MARGINS_2 = np.array([29.99, 24.99, 20.99, 10.99])
                     # p0     p1     p2     p3
 
 CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
-                         [0.0, 0.2, 0.3, 0.5],  # Junior Amateur
-                         [0.1, 0.5, 0.3, 0.1],  # Senior Professionals
-                         [0.1, 0.1, 0.1, 0.7]]) # Senior Amateur
-                        # p0   p1   p2   p3
+                [0.0, 0.2, 0.3, 0.5],  # Junior Amateur
+                [0.1, 0.5, 0.3, 0.1],  # Senior Professionals
+                [0.1, 0.1, 0.1, 0.7]]) # Senior Amateur
+                # p0   p1   p2   p3
 
 weighted_averages = []
-
 for i, arm in enumerate(MARGINS_1):  # For every price_1
     arm_expected_profit = 0
     for j, n_customers in enumerate(NUM_CUSTOMERS):  # For every customer class
@@ -39,7 +38,6 @@ for i, arm in enumerate(MARGINS_1):  # For every price_1
         margin2 = np.multiply(MARGINS_2, CR2[j, :])
 
         arm_expected_profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))
-    #cr /= sum(NUM_CUSTOMERS)
     weighted_averages.append(arm_expected_profit)
 
 OPT = np.max(weighted_averages)
