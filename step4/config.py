@@ -46,3 +46,14 @@ for i, arm in enumerate(MARGINS_1):  # For every price_1
     weighted_averages.append(arm_expected_profit)
 
 OPT = np.max(weighted_averages)
+
+
+
+
+#-------------------------------------------------------------------------------------------
+# to do:
+# - prior Beta on CR2, which are unknown now
+# - insert properly the simulation of the normals for the num_customers - in this case NUM_CUSTOMERS is a vector of means for real
+# - put sample form Beta in Learners for CR2
+# - use the empirical means of num_customers up to day t-1 to assign promos in the Learners
+# - us the real matching in the CLAIRVOYANT - as is now
