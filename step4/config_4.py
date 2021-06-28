@@ -1,5 +1,5 @@
 import numpy as np
-import utils
+import utils_4
 
 T = 365  # Time horizon
 N_EXPS = 20  # Number of experiments
@@ -10,7 +10,7 @@ MARGINS_1 = np.linspace(150, 250, N_ARMS)
 
 CR1 = []
 for margin in MARGINS_1:
-    cr = np.array([utils.cr1(margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
+    cr = np.array([utils_4.cr1(margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
     CR1.append(cr)
 
 MATCHING = np.array([[8,  5, 4,  3],  # Class 1 -> tot = NUM_CUSTOMERS[0]
@@ -41,4 +41,3 @@ for i, arm in enumerate(MARGINS_1):  # For every price_1
     weighted_averages.append(arm_expected_profit)
 
 OPT = np.max(weighted_averages)
-
