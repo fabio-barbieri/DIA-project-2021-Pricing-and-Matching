@@ -5,6 +5,7 @@ T = 365  # Time horizon
 N_EXPS = 50  # Number of experiments
 N_ARMS = 50  # Number of different candidate prices
 NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily customers per class
+SD_CUSTOMERS = np.array([2, 4, 1, 3])  # standard deviation on the number of customers per each class
 TOT_CUSTOMERS = np.sum(NUM_CUSTOMERS)
 
 MARGINS_1 = np.linspace(150, 250, N_ARMS)
@@ -14,10 +15,11 @@ for margin in MARGINS_1:
     cr = np.array([utils.cr1(margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
     CR1.append(cr)
 
+PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18])
+
 # fixed assigments of promos by the business unit: [0.40, 0.20, 0.22, 0.18]
 # MATCHING_PROB[i,j] of the TOT_CUSTOMERS is of class i and receives Pj
-
-MATCHING_PROB = np.array([[0.08, 0.05, 0.04, 0.03],  # Class 1 
+MATCHING_PROB = np.array([[0.08, 0.05, 0.04, 0.03],  # Class 1
                     	  [0.16, 0.06, 0.10, 0.08],  # Class 2 
                      	  [0.02, 0.03, 0.03, 0.02],  # Class 3 
                      	  [0.14, 0.06, 0.05, 0.05]]) # Class 4 
@@ -52,8 +54,6 @@ OPT = np.max(weighted_averages)
 
 #-------------------------------------------------------------------------------------------
 # to do:
-# - prior Beta on CR2, which are unknown now
-# - insert properly the simulation of the normals for the num_customers - in this case NUM_CUSTOMERS is a vector of means for real
 # - put sample form Beta in Learners for CR2
-# - use the empirical means of num_customers up to day t-1 to assign promos in the Learners
 # - us the real matching in the CLAIRVOYANT - as is now
+# - check Learner.update_observations
