@@ -6,10 +6,9 @@ class UCB1_Learner(Learner):
 
     def __init__(self, n_arms):
         super().__init__(n_arms)
-        #self.empirical_means = np.zeros((n_arms, len(config.NUM_CUSTOMERS)))
-        #self.confidence = np.zeros((n_arms, len(config.NUM_CUSTOMERS)))
         self.empirical_means = np.zeros(n_arms)
         self.confidence = np.zeros(n_arms)
+        self.t = 0
 
     def pull_arm(self):
         if self.t < self.n_arms:
