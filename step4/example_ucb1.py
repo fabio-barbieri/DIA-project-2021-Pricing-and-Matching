@@ -9,10 +9,6 @@ np.random.seed(1234)
 
 ucb1_reward_per_experiment = []  # Collected reward
 
-tot_customers = sum(config.NUM_CUSTOMERS)
-class_probabilities = [i / tot_customers for i in config.NUM_CUSTOMERS]
-
-
 for e in tqdm(range(config.N_EXPS)):
     env = Environment(n_arms=config.N_ARMS, cr1=config.CR1, cr2=config.CR2)
     ucb1_learner = UCB1_Learner(n_arms=config.N_ARMS)

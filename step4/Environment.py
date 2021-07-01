@@ -1,6 +1,5 @@
 import numpy as np
 import config
-import utils
 
 
 class Environment():
@@ -16,6 +15,7 @@ class Environment():
         # extracting promo assigned to the customer
         promo = np.random.choice([0, 1, 2, 3], p=config.PROMO_PROB)
 
-        reward2 = np.random.binomial(1, self.cr2[c_class][promo])  # cr2 unknown, but a single arm
+        # reward in order to update cr2
+        reward2 = np.random.binomial(1, self.cr2[c_class][promo])
 
         return reward1, reward2, promo

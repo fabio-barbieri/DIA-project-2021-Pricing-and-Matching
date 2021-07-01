@@ -33,8 +33,6 @@ for e in tqdm(range(config.N_EXPS)):
 
     for t in range(config.T):
         np.random.shuffle(customer_arrivals)
-        #for _ in range(tot_customers):
-            #c_class = random.sample(customer_arrivals.toList(), 1)[0]
         daily_profits = 0
         for c_class in customer_arrivals:
             # Thompson Sampling
