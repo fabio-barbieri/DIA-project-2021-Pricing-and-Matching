@@ -1,4 +1,4 @@
-from numpy import poly1d, promote_types
+import numpy as np
 from Learner import *
 import config
 
