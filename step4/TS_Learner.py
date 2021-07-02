@@ -28,6 +28,7 @@ class TS_Learner(Learner):
 
                 cr += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
             cr /= np.sum(self.expected_customers)
+
             weighted_averages.append(cr)
 
         idx = np.argmax(weighted_averages)

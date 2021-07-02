@@ -2,15 +2,16 @@
 import numpy as np
 import config
 
+
 class Learner:
     def __init__(self, n_arms):
         self.n_arms = n_arms
         self.t = 0
         self.rewards_per_arm = [[] for _ in range(n_arms)]
         self.collected_rewards = []
-        self.m = np.array([config.TOT_CUSTOMERS // 4 for _ in range(4)]) # Non-informative prior
+        self.m = np.array([config.TOT_CUSTOMERS // 4 for _ in range(4)])  # Non-informative prior
         self.s_2 = np.array([1.0, 1.0, 1.0, 1.0])
-        self.expected_customers = np.random.normal(self.m, self.s_2) #initial number of expected customers per class, according to our prior
+        self.expected_customers = np.random.normal(self.m, np.sqrt(self.s_2))  # initial number of expected customers per class, according to our prior
 
     def update_observations(self, pulled_arm, reward):
         self.rewards_per_arm[pulled_arm].append(reward)  # ... (for UCB ???)
@@ -23,4 +24,5 @@ class Learner:
 
         self.m = (s_2 * x_bar + m * sigma_2) / (s_2 + sigma_2)
         self.s_2 = (s_2 * sigma_2) / (s_2 + sigma_2)
-        self.expected_customers = np.random.normal(self.m, self.s_2)
+        self.expected_customers = np.random.normal(self.m, np.sqrt(self.s_2))
+

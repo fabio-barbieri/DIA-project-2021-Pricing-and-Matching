@@ -2,6 +2,7 @@ from Learner import Learner
 import numpy as np
 import config
 
+
 class UCB1_Learner(Learner):
 
     def __init__(self, n_arms):
@@ -21,12 +22,14 @@ class UCB1_Learner(Learner):
             for arm in range(self.n_arms):  # For every price_1
                 profit = 0
                 for c_class in range(len(self.expected_customers)):  # For every customer class
+                    print(self.expected_customers)
                     exp_buyers_item1 = self.expected_customers[c_class] * upper_bound[arm]
                     margin1 = config.MARGINS_1[arm]
                     promo_assigment_prob = config.MATCHING_PROB[c_class, :] / self.expected_customers[c_class] * np.sum(self.expected_customers)
                     margin2 = np.multiply(config.MARGINS_2, [np.random.beta(self.beta_cr2[c_class, k, 0], self.beta_cr2[c_class, k, 1]) for k in range(4)])
 
-                    profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
+                    profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))
+
                 profit /= np.sum(self.expected_customers)
                 weighted_averages.append(profit)
 
@@ -34,7 +37,7 @@ class UCB1_Learner(Learner):
         return idx
 
     def update(self, pulled_arm, reward1, reward2, c_class, promo):
-        self.t += 1 # Increment the counter of entered customers
+        self.t += 1  # Increment the counter of entered customers
         self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t - 1) + reward1) / self.t
 
         for arm in range(self.n_arms):
