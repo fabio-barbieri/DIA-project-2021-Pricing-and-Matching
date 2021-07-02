@@ -42,9 +42,10 @@ class UCB1_Learner(Learner):
             number_pulled = max(1, len(self.rewards_per_arm[arm]))
             self.confidence[arm] = (2 * np.log(self.t) / number_pulled) ** 0.5
 
-        # update beta parameters associated with conversion rates on product 2
-        self.beta_cr2[c_class, promo, 0] = self.beta_cr2[c_class, promo, 0] + reward2
-        self.beta_cr2[c_class, promo, 1] = self.beta_cr2[c_class, promo, 1] + (1.0 - reward2)
+        # update beta parameters associated with conversion rates on product 2, if the first item has been bought
+        if reward1 == 1:
+            self.beta_cr2[c_class, promo, 0] = self.beta_cr2[c_class, promo, 0] + reward2
+            self.beta_cr2[c_class, promo, 1] = self.beta_cr2[c_class, promo, 1] + (1.0 - reward2)
 
     def update_expected_customers(self, current_daily_customers, t):
         self.expected_customers = (self.expected_customers * (t - 1) + current_daily_customers) / t
