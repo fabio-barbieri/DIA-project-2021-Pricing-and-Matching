@@ -47,5 +47,7 @@ class UCB1_Learner(Learner):
             self.beta_cr2[c_class, promo, 0] = self.beta_cr2[c_class, promo, 0] + reward2
             self.beta_cr2[c_class, promo, 1] = self.beta_cr2[c_class, promo, 1] + (1.0 - reward2)
 
+        self.rewards_per_arm[pulled_arm].append(reward1)
+
     def update_expected_customers(self, current_daily_customers, t):
         self.expected_customers = (self.expected_customers * (t - 1) + current_daily_customers) / t
