@@ -46,7 +46,7 @@ for e in tqdm(range(config.N_EXPS)):
         daily_rewards.append(daily_profits)
 
         #ucb1_learner.update_expected_customers(current_daily_customers, t + 1)
-        ucb1_learner.compute_posteriors(x_bar=current_daily_customers)
+        ucb1_learner.compute_posterior(x_bar=current_daily_customers)
 
     ucb1_reward_per_experiment.append(daily_rewards)
 
