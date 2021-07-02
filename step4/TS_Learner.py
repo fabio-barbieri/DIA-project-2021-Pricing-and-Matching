@@ -17,17 +17,17 @@ class TS_Learner(Learner):
         # Pull the arm that maximizes the weighted average of the conv rates over all
         # the classes of customers w.r.t. the beta distribution
         weighted_averages = []
+
         for i, arm in enumerate(self.beta_parameters):  # For every price_1
             cr = 0
             for j, params in enumerate(arm):  # For every customer class
-                expected_customers = np.random.normal(self.m[j], self.s_2[j])
-                exp_buyers_item1 = expected_customers[j] * np.random.beta(params[0], params[1])
+                exp_buyers_item1 = self.expected_customers[j] * np.random.beta(params[0], params[1])
                 margin1 = config.MARGINS_1[i]
-                promo_assigment_prob = config.MATCHING_PROB[j, :] / expected_customers[j] * np.sum(expected_customers)
+                promo_assigment_prob = config.MATCHING_PROB[j, :] / self.expected_customers[j] * np.sum(self.expected_customers)
                 margin2 = np.multiply(config.MARGINS_2, [np.random.beta(self.beta_cr2[j, k, 0], self.beta_cr2[j, k, 1]) for k in range(4)])
 
                 cr += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
-            cr /= np.sum(expected_customers)
+            cr /= np.sum(self.expected_customers)
             weighted_averages.append(cr)
 
         idx = np.argmax(weighted_averages)
