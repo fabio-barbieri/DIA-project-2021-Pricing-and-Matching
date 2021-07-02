@@ -35,7 +35,7 @@ for e in tqdm(range(config.N_EXPS)):
 
         daily_profits = 0
         for c_class in customer_arrivals:
-            # Thompson Sampling
+            # UCB1
             pulled_arm = ucb1_learner.pull_arm()
             reward = env.round(pulled_arm, c_class)  # questo deve diventare 0 o 1
             ucb1_learner.update(pulled_arm, reward)  # update solo della beta della classe del cliente corrente
