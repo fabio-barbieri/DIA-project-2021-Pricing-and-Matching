@@ -51,7 +51,7 @@ for e in tqdm(range(config.N_EXPS)):
         daily_rewards.append(daily_profits)
 
         #ts_learner.update_expected_customers(current_daily_customers, t + 1)
-        ts_learner.compute_posteriors(x_bar=current_daily_customers)
+        ts_learner.compute_posterior(x_bar=current_daily_customers)
 
     ts_reward_per_experiment.append(daily_rewards)
 
