@@ -23,4 +23,4 @@ class Learner:
 
         self.m = (s_2 * x_bar + m * sigma_2) / (s_2 + sigma_2)
         self.s_2 = (s_2 * sigma_2) / (s_2 + sigma_2)
-        self.expected_customers = np.random.normal(self.m, self.s_2, size = (4,1))
+        self.expected_customers = np.random.normal(self.m, self.s_2)
