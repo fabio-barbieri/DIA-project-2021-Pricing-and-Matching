@@ -48,12 +48,3 @@ for i, arm in enumerate(MARGINS_1):  # For every price_1
     weighted_averages.append(arm_expected_profit)
 
 OPT = np.max(weighted_averages)
-
-
-
-
-#-------------------------------------------------------------------------------------------
-# to do:
-# - put sample form Beta in Learners for CR2
-# - us the real matching in the CLAIRVOYANT - as is now
-# - check Learner.update_observations

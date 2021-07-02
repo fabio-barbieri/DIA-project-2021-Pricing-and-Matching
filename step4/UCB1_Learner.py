@@ -8,7 +8,6 @@ class UCB1_Learner(Learner):
         super().__init__(n_arms)
         self.empirical_means = np.zeros(n_arms)
         self.confidence = np.zeros(n_arms)
-        self.expected_customers = np.array([25, 25, 25, 25])
         self.beta_cr2 = np.ones((4, 4, 2))
         self.t = 0
 
@@ -49,5 +48,5 @@ class UCB1_Learner(Learner):
 
         self.rewards_per_arm[pulled_arm].append(reward1)
 
-    def update_expected_customers(self, current_daily_customers, t):
-        self.expected_customers = (self.expected_customers * (t - 1) + current_daily_customers) / t
+#  def update_expected_customers(self, current_daily_customers, t):
+#      self.expected_customers = (self.expected_customers * (t - 1) + current_daily_customers) / t
