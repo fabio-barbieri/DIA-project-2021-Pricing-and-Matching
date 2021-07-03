@@ -22,7 +22,7 @@ class UCB1_Learner(Learner):
             for arm in range(self.n_arms):  # For every price_1
                 profit = 0
                 for c_class in range(len(self.expected_customers)):  # For every customer class
-                    print(self.expected_customers)
+
                     exp_buyers_item1 = self.expected_customers[c_class] * upper_bound[arm]
                     margin1 = config.MARGINS_1[arm]
                     promo_assigment_prob = config.MATCHING_PROB[c_class, :] / self.expected_customers[c_class] * np.sum(self.expected_customers)
