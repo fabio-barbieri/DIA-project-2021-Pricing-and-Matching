@@ -10,8 +10,8 @@ np.random.seed(1234)
 
 ts_reward_per_experiment = []  # Collected reward
 
-tot_customers = sum(config.NUM_CUSTOMERS)
-class_probabilities = [i / tot_customers for i in config.NUM_CUSTOMERS]
+#tot_customers = sum(config.NUM_CUSTOMERS)
+#class_probabilities = [i / tot_customers for i in config.NUM_CUSTOMERS]
 
 
 for e in tqdm(range(config.N_EXPS)):
