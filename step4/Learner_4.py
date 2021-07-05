@@ -2,6 +2,7 @@
 import numpy as np
 import config_4
 
+np.random.seed(1234)
 
 class Learner:
     def __init__(self, n_arms):
