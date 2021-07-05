@@ -1,6 +1,6 @@
-from Learner import Learner
+from Learner_4 import Learner
 import numpy as np
-import config
+import config_4
 
 
 class UCB1_Learner(Learner):
@@ -24,9 +24,9 @@ class UCB1_Learner(Learner):
                 for c_class in range(len(self.expected_customers)):  # For every customer class
 
                     exp_buyers_item1 = self.expected_customers[c_class] * upper_bound[arm]
-                    margin1 = config.MARGINS_1[arm]
-                    promo_assigment_prob = config.MATCHING_PROB[c_class, :] / self.expected_customers[c_class] * np.sum(self.expected_customers)
-                    margin2 = np.multiply(config.MARGINS_2, [np.random.beta(self.beta_cr2[c_class, k, 0], self.beta_cr2[c_class, k, 1]) for k in range(4)])
+                    margin1 = config_4.MARGINS_1[arm]
+                    promo_assigment_prob = config_4.MATCHING_PROB[c_class, :] / self.expected_customers[c_class] * np.sum(self.expected_customers)
+                    margin2 = np.multiply(config_4.MARGINS_2, [np.random.beta(self.beta_cr2[c_class, k, 0], self.beta_cr2[c_class, k, 1]) for k in range(4)])
 
                     profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))
 

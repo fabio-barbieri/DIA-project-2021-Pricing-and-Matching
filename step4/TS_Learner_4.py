@@ -1,6 +1,6 @@
 import numpy as np
-from Learner import *
-import config
+from Learner_4 import *
+import config_4
 
 
 class TS_Learner(Learner):
@@ -22,9 +22,9 @@ class TS_Learner(Learner):
             cr = 0
             for j, params in enumerate(arm):  # For every customer class
                 exp_buyers_item1 = self.expected_customers[j] * np.random.beta(params[0], params[1])
-                margin1 = config.MARGINS_1[i]
-                promo_assigment_prob = config.MATCHING_PROB[j, :] / self.expected_customers[j] * np.sum(self.expected_customers)
-                margin2 = np.multiply(config.MARGINS_2, [np.random.beta(self.beta_cr2[j, k, 0], self.beta_cr2[j, k, 1]) for k in range(4)])
+                margin1 = config_4.MARGINS_1[i]
+                promo_assigment_prob = config_4.MATCHING_PROB[j, :] / self.expected_customers[j] * np.sum(self.expected_customers)
+                margin2 = np.multiply(config_4.MARGINS_2, [np.random.beta(self.beta_cr2[j, k, 0], self.beta_cr2[j, k, 1]) for k in range(4)])
 
                 cr += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
             cr /= np.sum(self.expected_customers)

@@ -1,5 +1,5 @@
 import numpy as np
-import config
+import config_4
 
 
 class Environment():
@@ -10,10 +10,10 @@ class Environment():
 
     def customers(self):
         # extracting number of customer per class given a normal distribution
-        tmp0 = np.zeros(shape=int(np.random.normal(config.NUM_CUSTOMERS[0], config.SD_CUSTOMERS[0])), dtype=int)
-        tmp1 = np.ones(shape=int(np.random.normal(config.NUM_CUSTOMERS[1], config.SD_CUSTOMERS[1])), dtype=int)
-        tmp2 = np.zeros(shape=int(np.random.normal(config.NUM_CUSTOMERS[2], config.SD_CUSTOMERS[2])), dtype=int) + 2
-        tmp3 = np.zeros(shape=int(np.random.normal(config.NUM_CUSTOMERS[3], config.SD_CUSTOMERS[3])), dtype=int) + 3
+        tmp0 = np.zeros(shape=int(np.random.normal(config_4.NUM_CUSTOMERS[0], config_4.SD_CUSTOMERS[0])), dtype=int)
+        tmp1 = np.ones(shape=int(np.random.normal(config_4.NUM_CUSTOMERS[1], config_4.SD_CUSTOMERS[1])), dtype=int)
+        tmp2 = np.zeros(shape=int(np.random.normal(config_4.NUM_CUSTOMERS[2], config_4.SD_CUSTOMERS[2])), dtype=int) + 2
+        tmp3 = np.zeros(shape=int(np.random.normal(config_4.NUM_CUSTOMERS[3], config_4.SD_CUSTOMERS[3])), dtype=int) + 3
         customer_arrivals = np.array([], dtype=int)
         customer_arrivals = np.concatenate((customer_arrivals, tmp0), axis=None)
         customer_arrivals = np.concatenate((customer_arrivals, tmp1), axis=None)
@@ -32,7 +32,7 @@ class Environment():
         reward1 = np.random.binomial(1, self.cr1[pulled_arm][c_class])
 
         # extracting promo assigned to the customer
-        promo = np.random.choice([0, 1, 2, 3], p=config.PROMO_PROB)
+        promo = np.random.choice([0, 1, 2, 3], p=config_4.PROMO_PROB)
 
         # reward in order to update cr2
         reward2 = np.random.binomial(1, self.cr2[c_class][promo])

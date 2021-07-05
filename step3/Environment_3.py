@@ -1,6 +1,6 @@
 import numpy as np
-import config
-import utils
+import config_3
+import utils_3
 
 
 class Environment():

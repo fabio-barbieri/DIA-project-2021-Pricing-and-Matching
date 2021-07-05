@@ -1,6 +1,6 @@
 from numpy import poly1d, promote_types
-from Learner import *
-import config
+from Learner_3 import *
+import config_3
 
 
 class TS_Learner(Learner):
@@ -19,13 +19,13 @@ class TS_Learner(Learner):
         for i, arm in enumerate(self.beta_parameters):  # For every price_1
             cr = 0
             for j, params in enumerate(arm):  # For every customer class
-                exp_buyers_item1 = config.NUM_CUSTOMERS[j] * np.random.beta(params[0], params[1])
-                margin1 = config.MARGINS_1[i]
-                promo_assigment_prob = config.MATCHING[j, :] / config.NUM_CUSTOMERS[j]
-                margin2 = np.multiply(config.MARGINS_2, config.CR2[j, :])
+                exp_buyers_item1 = config_3.NUM_CUSTOMERS[j] * np.random.beta(params[0], params[1])
+                margin1 = config_3.MARGINS_1[i]
+                promo_assigment_prob = config_3.MATCHING[j, :] / config_3.NUM_CUSTOMERS[j]
+                margin2 = np.multiply(config_3.MARGINS_2, config_3.CR2[j, :])
 
                 cr += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
-            cr /= sum(config.NUM_CUSTOMERS)
+            cr /= sum(config_3.NUM_CUSTOMERS)
             weighted_averages.append(cr)
 
         idx = np.argmax(weighted_averages)

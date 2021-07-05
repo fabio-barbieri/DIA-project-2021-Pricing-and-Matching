@@ -1,6 +1,6 @@
-from Learner import Learner
+from Learner_3 import Learner
 import numpy as np
-import config
+import config_3
 
 class UCB1_Learner(Learner):
 
@@ -19,14 +19,14 @@ class UCB1_Learner(Learner):
             weighted_averages = []
             for arm in range(self.n_arms):  # For every price_1
                 profit = 0
-                for c_class in range(len(config.NUM_CUSTOMERS)):  # For every customer class
-                    exp_buyers_item1 = config.NUM_CUSTOMERS[c_class] * upper_bound[arm]
-                    margin1 = config.MARGINS_1[arm]
-                    promo_assigment_prob = config.MATCHING[c_class, :] / config.NUM_CUSTOMERS[c_class]
-                    margin2 = np.multiply(config.MARGINS_2, config.CR2[c_class, :])
+                for c_class in range(len(config_3.NUM_CUSTOMERS)):  # For every customer class
+                    exp_buyers_item1 = config_3.NUM_CUSTOMERS[c_class] * upper_bound[arm]
+                    margin1 = config_3.MARGINS_1[arm]
+                    promo_assigment_prob = config_3.MATCHING[c_class, :] / config_3.NUM_CUSTOMERS[c_class]
+                    margin2 = np.multiply(config_3.MARGINS_2, config_3.CR2[c_class, :])
 
                     profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
-                profit /= sum(config.NUM_CUSTOMERS)
+                profit /= sum(config_3.NUM_CUSTOMERS)
                 weighted_averages.append(profit)
 
             idx = np.argmax(weighted_averages)
