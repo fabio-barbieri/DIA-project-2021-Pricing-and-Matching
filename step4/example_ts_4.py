@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from Environment_4 import *
 from TS_Learner_4 import *
 from tqdm import tqdm
-import random
 
 np.random.seed(1234)
 
@@ -15,8 +14,8 @@ ts_reward_per_experiment = []  # Collected reward
 
 
 for e in tqdm(range(config_4.N_EXPS)):
-    env = Environment(n_arms=config_4.N_ARMS, cr1=config_4.CR1, cr2=config_4.CR2)
-    ts_learner = TS_Learner(n_arms=config_4.N_ARMS)
+    env = Environment_4(n_arms=config_4.N_ARMS, cr1=config_4.CR1, cr2=config_4.CR2)
+    ts_learner = TS_Learner_4(n_arms=config_4.N_ARMS)
 
     daily_rewards = []
 

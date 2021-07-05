@@ -2,7 +2,7 @@ import numpy as np
 import config_4
 
 
-class Environment():
+class Environment_4():
     def __init__(self, n_arms, cr1, cr2):
         self.n_arms = n_arms
         self.cr1 = cr1

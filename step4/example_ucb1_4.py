@@ -10,8 +10,8 @@ np.random.seed(1234)
 ucb1_reward_per_experiment = []  # Collected reward
 
 for e in tqdm(range(config_4.N_EXPS)):
-    env = Environment(n_arms=config_4.N_ARMS, cr1=config_4.CR1, cr2=config_4.CR2)
-    ucb1_learner = UCB1_Learner(n_arms=config_4.N_ARMS)
+    env = Environment_4(n_arms=config_4.N_ARMS, cr1=config_4.CR1, cr2=config_4.CR2)
+    ucb1_learner = UCB1_Learner_4(n_arms=config_4.N_ARMS)
 
     daily_rewards = []
 

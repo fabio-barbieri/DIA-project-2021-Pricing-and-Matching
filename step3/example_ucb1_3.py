@@ -25,8 +25,8 @@ customer_arrivals = np.concatenate((customer_arrivals, tmp3), axis=None)
 
 
 for e in tqdm(range(config_3.N_EXPS)):
-    env = Environment(n_arms=config_3.N_ARMS, cr1=config_3.CR1)
-    ucb1_learner = UCB1_Learner(n_arms=config_3.N_ARMS)
+    env = Environment_3(n_arms=config_3.N_ARMS, cr1=config_3.CR1)
+    ucb1_learner = UCB1_Learner_3(n_arms=config_3.N_ARMS)
 
     daily_rewards = []
 

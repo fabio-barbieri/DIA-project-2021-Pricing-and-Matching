@@ -3,7 +3,7 @@ from Learner_4 import *
 import config_4
 
 
-class TS_Learner(Learner):
+class TS_Learner_4(Learner_4):
     def __init__(self, n_arms):
         super().__init__(n_arms)
         # Array used to store the values of parameters alpha and beta for the

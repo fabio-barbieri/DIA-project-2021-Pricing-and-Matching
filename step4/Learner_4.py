@@ -4,7 +4,7 @@ import config_4
 
 np.random.seed(1234)
 
-class Learner:
+class Learner_4:
     def __init__(self, n_arms):
         self.n_arms = n_arms
         self.t = 0

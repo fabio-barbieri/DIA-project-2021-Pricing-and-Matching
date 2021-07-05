@@ -1,8 +1,8 @@
-from Learner_3 import Learner
+from Learner_3 import *
 import numpy as np
 import config_3
 
-class UCB1_Learner(Learner):
+class UCB1_Learner_3(Learner_3):
 
     def __init__(self, n_arms):
         super().__init__(n_arms)

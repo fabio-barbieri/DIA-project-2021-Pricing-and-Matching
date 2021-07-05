@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from Environment_3 import *
 from TS_Learner_3 import *
 from tqdm import tqdm
-import random
 
 np.random.seed(1234)
 
@@ -26,8 +25,8 @@ customer_arrivals = np.concatenate((customer_arrivals, tmp3), axis=None)
 
 
 for e in tqdm(range(config_3.N_EXPS)):
-    env = Environment(n_arms=config_3.N_ARMS, cr1=config_3.CR1)
-    ts_learner = TS_Learner(n_arms=config_3.N_ARMS)
+    env = Environment_3(n_arms=config_3.N_ARMS, cr1=config_3.CR1)
+    ts_learner = TS_Learner_3(n_arms=config_3.N_ARMS)
 
     daily_rewards = []
 

@@ -3,7 +3,7 @@ import config_3
 import utils_3
 
 
-class Environment():
+class Environment_3():
     def __init__(self, n_arms, cr1):
         self.n_arms = n_arms
         self.cr1 = cr1

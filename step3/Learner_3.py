@@ -1,7 +1,7 @@
 # THIS IS GOING TO BE THE SUPERCLASS OF THE THOMPSON SAMPLING AND GREEDY ALGORITHMS LEARNERS
 import numpy as np
 
-class Learner:
+class Learner_3:
     def __init__(self, n_arms):
         self.n_arms = n_arms
         self.t = 0
