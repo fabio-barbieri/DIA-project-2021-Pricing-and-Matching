@@ -17,20 +17,7 @@ for e in tqdm(range(config.N_EXPS)):
 
     for t in range(config.T):
 
-        # extracting number of customer per class given a normal distribution
-        tmp0 = np.zeros(shape=int(np.random.normal(config.NUM_CUSTOMERS[0], config.SD_CUSTOMERS[0])), dtype=int)
-        tmp1 = np.ones(shape=int(np.random.normal(config.NUM_CUSTOMERS[1], config.SD_CUSTOMERS[1])), dtype=int)
-        tmp2 = np.zeros(shape=int(np.random.normal(config.NUM_CUSTOMERS[2], config.SD_CUSTOMERS[2])), dtype=int) + 2
-        tmp3 = np.zeros(shape=int(np.random.normal(config.NUM_CUSTOMERS[3], config.SD_CUSTOMERS[3])), dtype=int) + 3
-        customer_arrivals = np.array([], dtype=int)
-        customer_arrivals = np.concatenate((customer_arrivals, tmp0), axis=None)
-        customer_arrivals = np.concatenate((customer_arrivals, tmp1), axis=None)
-        customer_arrivals = np.concatenate((customer_arrivals, tmp2), axis=None)
-        customer_arrivals = np.concatenate((customer_arrivals, tmp3), axis=None)
-
-        np.random.shuffle(customer_arrivals)
-
-        current_daily_customers = np.array([len(tmp0), len(tmp1), len(tmp2), len(tmp3)])
+        customer_arrivals, current_daily_customers = env.customers()
 
         daily_profits = 0
         for c_class in customer_arrivals:
