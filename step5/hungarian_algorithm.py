@@ -2,13 +2,15 @@ import numpy as np
 
 
 def step1(m):
-    for i in range(m.shape[0]):
-        m[i, :] = m[i, :] - np.min(m[i, :])
+    #for i in range(m.shape[0]):
+    #    m[i, :] = m[i, :] - np.min(m[i, :])
+    return m - np.min(m, axis=1).reshape((m.shape[0], 1))
 
 
 def step2(m):
-    for i in range(m.shape[1]):
-        m[:, i] = m[:, i] - np.min(m[:, i])
+    #for i in range(m.shape[1]):
+    #    m[:, i] = m[:, i] - np.min(m[:, i])
+    return m - np.min(m, axis=0)
 
 
 def step3(m):
@@ -58,7 +60,7 @@ def step5(m, covered_rows, covered_columns):
     for i in uncovered_rows.astype(int):
         m[i, :] -= min_val
 
-    for j in uncovered_cols.astype(int):
+    for j in covered_columns.astype(int):
         m[:, j] += min_val
 
     return m
@@ -76,7 +78,7 @@ def find_cols_single_zero(matrix):
     for i in range(0, matrix.shape[1]):
         if np.sum(matrix[:, i] == 0) == 1:
             j = np.argwhere(matrix[:, i] == 0).reshape(-1)[0]
-            return i, j
+            return j, i
     return False
 
 def assignment_single_zero_lines(m, assignment):
@@ -117,12 +119,13 @@ def final_assignment(initial_matrix, m):
 
 # FINALLY WE HAVE TO PUT TOGETHER ALL THE FUNCTIONS THAT WE HAVE FOUND
 def hungarian_algorithm(matrix):
-    m = matrix.copy()
-    step1(m)
-    step2(m)
+    m = np.max(matrix) - matrix # to face the maximization problem with hungarian algorithm
+    m = step1(m)
+    m = step2(m)
     n_lines = 0
     max_length = np.maximum(m.shape[0], m.shape[1])
     while n_lines != max_length:
+        #print(m) ##############################################################
         lines = step3(m)
         n_lines = len(lines[0]) + len(lines[1])
         if n_lines != max_length:
