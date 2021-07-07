@@ -114,7 +114,7 @@ def final_assignment(initial_matrix, m):
         m[:, j] += 1
         assignment = assignment_single_zero_lines(m, assignment)
 
-    return assignment * initial_matrix, assignment
+    return assignment * initial_matrix
 
 
 # FINALLY WE HAVE TO PUT TOGETHER ALL THE FUNCTIONS THAT WE HAVE FOUND
@@ -125,7 +125,6 @@ def hungarian_algorithm(matrix):
     n_lines = 0
     max_length = np.maximum(m.shape[0], m.shape[1])
     while n_lines != max_length:
-        #print(m) ##############################################################
         lines = step3(m)
         n_lines = len(lines[0]) + len(lines[1])
         if n_lines != max_length:
