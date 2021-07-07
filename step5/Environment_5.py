@@ -3,8 +3,7 @@ import config_5
 
 
 class Environment_5():
-    def __init__(self, n_arms, cr1, cr2):
-        self.n_arms = n_arms
+    def __init__(self, cr1, cr2):
         self.cr1 = cr1
         self.cr2 = cr2
 

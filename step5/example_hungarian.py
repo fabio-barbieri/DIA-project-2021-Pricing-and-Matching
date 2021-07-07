@@ -11,7 +11,7 @@ np.random.seed(1234)
 values_per_exp = []
 opt_per_exp = []
 for e in tqdm(range(config_5.N_EXPS)):
-    env = Environment_5(n_arms=config_5.N_ARMS, cr1=config_5.CR1, cr2=config_5.CR2)
+    env = Environment_5(cr1=config_5.CR1, cr2=config_5.CR2)
     h_learner = Learner_5()
 
     daily_values = []
