@@ -36,9 +36,17 @@ for e in range(config_5.N_EXPS):
 # Plot the result
 plt.figure(0, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
-plt.ylabel("Expected reward")
+plt.ylabel("Expected profit")
+plt.hlines(config_5.OPT, 0, 365, linestyles="dashed")
+plt.plot(np.mean(values_per_exp, axis=0), 'g')
+plt.savefig("expected_profit.png", dpi=200)
+plt.show()
+
+plt.figure(0, figsize=(12, 7), dpi=200.0)
+plt.xlabel("t")
+plt.ylabel("cumulative expected profit")
 plt.hlines(config_5.OPT * config_5.T, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(values_per_exp, axis=0), axis=0), 'g')
-plt.savefig("expected_values.png", dpi=200)
+plt.savefig("cumulative_expected_profit.png", dpi=200)
 plt.show()
 
