@@ -2,7 +2,7 @@ import numpy as np
 import utils_5
 
 T = 365  # Time horizon
-N_EXPS = 10  # Number of experiments
+N_EXPS = 1  # Number of experiments
 NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily customers per class
 SD_CUSTOMERS = np.array([2, 4, 1, 3])  # standard deviation on the number of customers per each class
 TOT_CUSTOMERS = np.sum(NUM_CUSTOMERS)
@@ -22,6 +22,8 @@ CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
                 [0.1, 0.5, 0.3, 0.1],  # Senior Professionals
                 [0.1, 0.1, 0.1, 0.7]]) # Senior Amateur
                 # p0   p1   p2   p3
+
+OPT = utils_5.build_optimal_matching(NUM_CUSTOMERS, PROMO_PROB, CR1, CR2, MARGIN_1, MARGINS_2)
 
 
 #weighted_averages = []

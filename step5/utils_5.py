@@ -1,6 +1,7 @@
 import numpy as np
 from scipy import stats
 import sys
+from hungarian_algorithm import hungarian_algorithm
 
 def cr1(price,cl):  # conversion rates for prices of item 1
  
@@ -71,3 +72,41 @@ def cr1(price,cl):  # conversion rates for prices of item 1
   if cl == 3:       # Senior Amateur
     
     return np.exp(0.02*(M-price))/np.exp(0.02*(M-m+2))
+
+
+def build_optimal_matching(num_customers, promo_prob, cr1, cr2, margin_1, margins_2):
+    matrix_dim = np.sum(num_customers)
+    matrix = np.array([])
+
+    # array containing the number of promos, assigned by the marketing unit
+    n_promos = np.array([int(promo_prob[i] * matrix_dim) for i in range(1, 4)])
+    n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
+
+    customer0_row = np.array([])
+    customer1_row = np.array([])
+    customer2_row = np.array([])
+    customer3_row = np.array([])
+
+    for i, n_promo in enumerate(n_promos):
+        customer0_row = np.append(customer0_row, [margin_1 * cr1[0] + margins_2[i] * cr2[i, 0] for _ in range(n_promo)])
+        customer1_row = np.append(customer1_row, [margin_1 * cr1[1] + margins_2[i] * cr2[i, 1] for _ in range(n_promo)])
+        customer2_row = np.append(customer2_row, [margin_1 * cr1[2] + margins_2[i] * cr2[i, 2] for _ in range(n_promo)])
+        customer3_row = np.append(customer3_row, [margin_1 * cr1[3] + margins_2[i] * cr2[i, 3] for _ in range(n_promo)])
+
+    for i, num in enumerate(num_customers):
+        for _ in range(num):
+            if i == 0:
+                matrix = np.concatenate((matrix, customer0_row), axis=0)
+            elif i == 1:
+                matrix = np.concatenate((matrix, customer1_row), axis=0)
+            elif i == 2:
+                matrix = np.concatenate((matrix, customer2_row), axis=0)
+            else:
+                matrix = np.concatenate((matrix, customer3_row), axis=0)
+
+    matrix = np.reshape(matrix, (matrix_dim, matrix_dim))
+
+    # computing optimal value for plotting purposes
+    optimal_value = np.sum(hungarian_algorithm(matrix))
+
+    return optimal_value
