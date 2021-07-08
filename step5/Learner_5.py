@@ -7,8 +7,6 @@ np.random.seed(1234)
 
 class Learner_5:
     def __init__(self):
-        #self.rewards_per_arm = [[] for _ in range(n_arms)]
-        #self.collected_rewards = []
         self.m = np.array([config_5.TOT_CUSTOMERS // 4 for _ in range(4)])  # Non-informative prior
         self.s_2 = np.array([1.0, 1.0, 1.0, 1.0])
         self.expected_customers = np.random.normal(self.m, np.sqrt(self.s_2)).astype(int)  # initial number of expected customers
@@ -58,10 +56,10 @@ class Learner_5:
         customer3_row = np.array([])
 
         for i, n_promo in enumerate(n_promos):
-            customer0_row = np.append(customer0_row, [config_5.MARGIN_1 * np.random.beta(self.beta_cr1[0, 0], self.beta_cr1[0, 1]) + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 0, 0], self.beta_cr2[i, 0, 1]) for _ in range(n_promo)])
-            customer1_row = np.append(customer1_row, [config_5.MARGIN_1 * np.random.beta(self.beta_cr1[1, 0], self.beta_cr1[1, 1]) + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 1, 0], self.beta_cr2[i, 1, 1]) for _ in range(n_promo)])
-            customer2_row = np.append(customer2_row, [config_5.MARGIN_1 * np.random.beta(self.beta_cr1[2, 0], self.beta_cr1[2, 1]) + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 2, 0], self.beta_cr2[i, 2, 1]) for _ in range(n_promo)])
-            customer3_row = np.append(customer3_row, [config_5.MARGIN_1 * np.random.beta(self.beta_cr1[3, 0], self.beta_cr1[3, 1]) + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 3, 0], self.beta_cr2[i, 3, 1]) for _ in range(n_promo)])
+            customer0_row = np.append(customer0_row, [np.random.beta(self.beta_cr1[0, 0], self.beta_cr1[0, 1]) * (config_5.MARGIN_1 + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 0, 0], self.beta_cr2[i, 0, 1])) for _ in range(n_promo)])
+            customer1_row = np.append(customer1_row, [np.random.beta(self.beta_cr1[1, 0], self.beta_cr1[1, 1]) * (config_5.MARGIN_1 + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 1, 0], self.beta_cr2[i, 1, 1])) for _ in range(n_promo)])
+            customer2_row = np.append(customer2_row, [np.random.beta(self.beta_cr1[2, 0], self.beta_cr1[2, 1]) * (config_5.MARGIN_1 + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 2, 0], self.beta_cr2[i, 2, 1])) for _ in range(n_promo)])
+            customer3_row = np.append(customer3_row, [np.random.beta(self.beta_cr1[3, 0], self.beta_cr1[3, 1]) * (config_5.MARGIN_1 + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 3, 0], self.beta_cr2[i, 3, 1])) for _ in range(n_promo)])
 
         for i, num in enumerate(self.expected_customers):
             for _ in range(num):

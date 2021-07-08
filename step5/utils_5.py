@@ -88,10 +88,10 @@ def build_optimal_matching(num_customers, promo_prob, conv1, conv2, margin_1, ma
     customer3_row = np.array([])
 
     for i, n_promo in enumerate(n_promos):
-        customer0_row = np.append(customer0_row, [margin_1 * conv1[0] + margins_2[i] * conv2[i, 0] for _ in range(n_promo)])
-        customer1_row = np.append(customer1_row, [margin_1 * conv1[1] + margins_2[i] * conv2[i, 1] for _ in range(n_promo)])
-        customer2_row = np.append(customer2_row, [margin_1 * conv1[2] + margins_2[i] * conv2[i, 2] for _ in range(n_promo)])
-        customer3_row = np.append(customer3_row, [margin_1 * conv1[3] + margins_2[i] * conv2[i, 3] for _ in range(n_promo)])
+        customer0_row = np.append(customer0_row, [conv1[0] * (margin_1 + margins_2[i] * conv2[0, i]) for _ in range(n_promo)])
+        customer1_row = np.append(customer1_row, [conv1[1] * (margin_1 + margins_2[i] * conv2[1, i]) for _ in range(n_promo)])
+        customer2_row = np.append(customer2_row, [conv1[2] * (margin_1 + margins_2[i] * conv2[2, i]) for _ in range(n_promo)])
+        customer3_row = np.append(customer3_row, [conv1[3] * (margin_1 + margins_2[i] * conv2[3, i]) for _ in range(n_promo)])
 
     for i, num in enumerate(num_customers):
         for _ in range(num):
