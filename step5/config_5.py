@@ -23,8 +23,7 @@ CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
                 [0.1, 0.1, 0.1, 0.7]]) # Senior Amateur
                 # p0   p1   p2   p3
 
-def opt():
-    return utils_5.build_optimal_matching(NUM_CUSTOMERS, PROMO_PROB, CR1, CR2, MARGIN_1, MARGINS_2)
+OPT = utils_5.build_optimal_matching(NUM_CUSTOMERS, PROMO_PROB, CR1, CR2, MARGIN_1, MARGINS_2)
 
 
 #weighted_averages = []

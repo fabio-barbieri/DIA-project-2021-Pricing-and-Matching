@@ -37,7 +37,7 @@ for e in tqdm(range(config_5.N_EXPS)):
 plt.figure(0, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Expected reward")
-plt.hlines(np.mean(config_5.opt(), axis=0) * config_5.T, 0, 365, linestyles="dashed")
+plt.hlines(np.mean(config_5.OPT, axis=0) * config_5.T, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(values_per_exp, axis=0), axis=0), 'g')
 plt.savefig("expected_values.png", dpi=200)
 plt.show()
