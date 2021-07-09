@@ -25,17 +25,3 @@ CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
 
 OPT = utils_5.build_optimal_matching(NUM_CUSTOMERS, PROMO_PROB, CR1, CR2, MARGIN_1, MARGINS_2)
 
-
-#weighted_averages = []
-#for i, arm in enumerate(MARGIN_1):  # For every price_1
-#    arm_expected_profit = 0
-#    for j, n_customers in enumerate(NUM_CUSTOMERS):  # For every customer class
-#        exp_buyers_item1 = n_customers * CR1[i][j]
-#        margin1 = arm
-#        promo_assigment_prob = MATCHING_PROB[j, :] / n_customers * TOT_CUSTOMERS
-#        margin2 = np.multiply(MARGINS_2, CR2[j, :])
-#
-#        arm_expected_profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))
-#    weighted_averages.append(arm_expected_profit)
-#
-#OPT = np.max(weighted_averages)

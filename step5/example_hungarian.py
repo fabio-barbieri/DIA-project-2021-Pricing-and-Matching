@@ -9,13 +9,13 @@ import matplotlib.pyplot as plt
 np.random.seed(1234)
 
 values_per_exp = []
-#opt_per_exp = []
-for e in range(config_5.N_EXPS):
+
+for e in tqdm(range(config_5.N_EXPS)):
     env = Environment_5(cr1=config_5.CR1, cr2=config_5.CR2)
     h_learner = Learner_5()
 
     daily_values = []
-    for t in tqdm(range(config_5.T)):
+    for t in range(config_5.T):
         # Build the matching at the start of the day with data from t-1
         daily_values.append(np.sum(h_learner.compute_matching()))
 
@@ -31,7 +31,6 @@ for e in range(config_5.N_EXPS):
         h_learner.compute_posterior(x_bar=current_daily_customers)
 
     values_per_exp.append(daily_values)
-    #opt_per_exp.append(daily_values[-1])
 
 # Plot the result
 plt.figure(0, figsize=(12, 7), dpi=200.0)
