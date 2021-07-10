@@ -3,8 +3,10 @@ import utils_6
 
 T = 365  # Time horizon
 N_EXPS = 1  # Number of experiments
+
 N_ARMS_1 = 1  # Number of different candidate prices
 N_ARMS_2 = 1 # Number of candidates for second item price
+
 NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily customers per class
 SD_CUSTOMERS = np.array([2, 4, 1, 3])  # standard deviation on the number of customers per each class
 TOT_CUSTOMERS = np.sum(NUM_CUSTOMERS)
