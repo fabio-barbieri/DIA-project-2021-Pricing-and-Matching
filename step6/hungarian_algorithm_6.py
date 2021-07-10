@@ -109,7 +109,7 @@ def first_zero(m):
     return np.argwhere(m == 0)[0][0], np.argwhere(m == 0)[0][1]
 
 
-def final_assignment(m):
+def final_assignment(initial_matrix, m):
     assignment = np.zeros(m.shape, dtype=int)
     assignment = assignment_single_zero_lines(m, assignment)
     while np.sum(m == 0) > 0:
@@ -119,7 +119,7 @@ def final_assignment(m):
         m[:, j] += 1
         assignment = assignment_single_zero_lines(m, assignment)
 
-    return assignment
+    return assignment, np.sum(assignment * initial_matrix)
 
 
 # FINALLY WE HAVE TO PUT TOGETHER ALL THE FUNCTIONS THAT WE HAVE FOUND
@@ -135,4 +135,4 @@ def hungarian_algorithm(matrix):
         if n_lines != max_length:
             step5(m, lines[0], lines[1])
 
-    return final_assignment(m)
+    return final_assignment(matrix, m)
