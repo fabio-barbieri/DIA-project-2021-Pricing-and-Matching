@@ -24,9 +24,9 @@ class Learner_6:
         self.n_promos = np.array(config_6.PROMO_PROB * self.expected_customers)
 
         self.empirical_means_1 = np.zeros((n_arms_1, 4))
-        self.confidence_1 = np.zeros((1, n_arms_1))
+        self.confidence_1 = np.zeros((n_arms_1, 1))
         self.empirical_means_2 = np.zeros((n_arms_2, 4, 4))
-        self.confidence_2 = np.zeros((1, n_arms_2))
+        self.confidence_2 = np.zeros((n_arms_2, 1, 1))
 
 
     def compute_posterior(self, x_bar):
@@ -52,7 +52,7 @@ class Learner_6:
 
         for arm in range(self.n_arms1):
             number_pulled = max(1, len(self.rewards_per_arm_1[arm]))
-            self.confidence_1[arm] = (2 * np.log(np.sum(self.t1)) / number_pulled) ** 0.5
+            self.confidence_1[arm, 0] = (2 * np.log(np.sum(self.t1)) / number_pulled) ** 0.5
 
         if reward1 == 1:
             self.t2[c_class, promo] += 1
@@ -60,7 +60,7 @@ class Learner_6:
 
             for arm in range(self.n_arms2):
                 number_pulled = max(1, len(self.rewards_per_arm_2[arm]))
-                self.confidence_2[arm] = (2 * np.log(np.sum(self.t2)) / number_pulled) ** 0.5
+                self.confidence_2[arm, 0, 0] = (2 * np.log(np.sum(self.t2)) / number_pulled) ** 0.5
 
     # NOTE: pulled arm here is a tuple (pulled_arm_1, pulled_arm_2)
     def update_observations(self, pulled_arm, reward1, reward2):
@@ -80,14 +80,17 @@ class Learner_6:
         customers_idxs = np.insert(np.cumsum(self.expected_customers), 0, 0)
         promo_idxs = np.insert(np.cumsum(self.n_promos, 0, 0))
 
+        # returning a (4, 4) matrix with P(class, promo) (aka MATCHING_PROB)
         return np.array([np.sum(matching_mask[customers_idxs[i]:customers_idxs[i + 1], promo_idxs[j]:promo_idxs[j + 1]])
                         for i in range(5) for j in range(5)]).reshape((4, 4))
 
-    def build_matrix_optimistic(self, idx1, idx2):
+    def build_matrix_optimistic(self, idx1, idx2, ub_cr1, ub_cr2):
         matrix_dim = np.sum(self.expected_customers)
 
         matrix = np.zeros((4, 0))
-        profit = np.array()
+        profit = np.multiply(ub_cr1[idx1].reshape((4, 1)), config_6.MARGINS_1[idx1] + np.multiply(ub_cr2[idx2], config_6.MARGINS_2[idx2]))
+
+        ######################## ARRIVATI FINO A QUI ###############################
         n_promos = (config_6.PROMO_PROB[1:] * matrix_dim).astype(int)
         n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
 
@@ -104,39 +107,29 @@ class Learner_6:
         return matrix
 
     def pull_arm(self):
+        # bounds on the conversion rates that will be used to compute the matrix for the matching
+        upper_bound_1 = self.empirical_means_1 + self.confidence_1
+        upper_bound_2 = self.empirical_means_2 + self.confidence_2
+
         if np.sum(self.t1) < self.n_arms1 * self.n_arms2:
             idx1 = np.sum(self.t1) // self.n_arms2
             idx2 = np.sum(self.t1) % self.n_arms2
-        else:
-            upper_bound_1 = self.empirical_means_1 + self.confidence_1
-            upper_bound_2 = self.empirical_means_2 + self.confidence_2
 
+            # building matrix in order to be able to compute total daily reward with these arms pulled
+            matching, value = hungarian_algorithm(self.build_matrix_optimistic(idx1, idx2, upper_bound_1, upper_bound_2))
+            matching_prob = self.compute_matching_prob(matching)
+        else:
+            opt_value = -1
             for arm_1 in range(self.n_arms1):  # For every price_1
                 for arm_2 in range(self.n_arms2):
-                    self.build_matrix_optimistic(arm_1, arm_2)
+                    matching, value = hungarian_algorithm(self.build_matrix_optimistic(arm_1, arm_2, upper_bound_1, upper_bound_2))
+                    if value > opt_value:
+                        opt_matching = matching
+                        opt_value = value
+                        idx1 = arm_1
+                        idx2 = arm_2
 
+            matching_prob = self.compute_matching_prob(opt_matching)
 
+        return matching_prob, idx1, idx2
 
-
-
-
-
-
-                profit = 0
-                for c_class in range(len(self.expected_customers)):  # For every customer class
-
-                    exp_buyers_item1 = self.expected_customers[c_class] * upper_bound[arm]
-                    margin1 = config_4.MARGINS_1[arm]
-                    promo_assigment_prob = config_4.MATCHING_PROB[c_class, :] / self.expected_customers[
-                        c_class] * np.sum(self.expected_customers)
-                    margin2 = np.multiply(config_4.MARGINS_2, [
-                        np.random.beta(self.beta_cr2[c_class, k, 0], self.beta_cr2[c_class, k, 1]) for k in
-                        range(4)])
-
-                    profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))
-
-                profit /= np.sum(self.expected_customers)
-                weighted_averages.append(profit)
-
-            idx = np.argmax(weighted_averages)
-        return idx1, idx2
