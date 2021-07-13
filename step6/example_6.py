@@ -25,6 +25,7 @@ for e in tqdm(range(config_6.N_EXPS)):
         for c_class in customer_arrivals:
 
             matching_prob, pulled_arm = learner.pull_arm()
+            print(matching_prob)
             reward1, reward2, promo = env.round(pulled_arm, c_class, matching_prob, learner.expected_customers)
             learner.update(pulled_arm, reward1, reward2, c_class, promo)
 

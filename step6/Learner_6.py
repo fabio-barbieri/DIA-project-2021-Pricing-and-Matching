@@ -9,8 +9,8 @@ class Learner_6:
     def __init__(self, n_arms_1, n_arms_2):
         self.n_arms1 = n_arms_1
         self.n_arms2 = n_arms_2
-        self.t1 = np.zeros((1, 4))
-        self.t2 = np.zeros((4, 4))
+        self.t1 = np.zeros((4, 1), dtype=int)
+        self.t2 = np.zeros((4, 4), dtype=int)
 
         self.n_pulled_arm_1 = np.zeros((n_arms_1, 1))
         self.n_pulled_arm_2 = np.zeros((n_arms_2, 1))
@@ -21,7 +21,8 @@ class Learner_6:
         self.expected_customers = np.random.normal(self.m, np.sqrt(self.s_2)).astype(int)  # initial number of expected customers per class, according to our prior
         self.matching = np.ones((4, 4)) / 16
 
-        self.n_promos = np.array(config_6.PROMO_PROB * self.expected_customers)
+        self.n_promos = np.array([int(config_6.PROMO_PROB[i] * np.sum(self.expected_customers)) for i in range(1, 4)])
+        self.n_promos = np.insert(self.n_promos, 0, np.sum(self.expected_customers) - np.sum(self.n_promos))
 
         self.empirical_means_1 = np.zeros((n_arms_1, 4))
         self.confidence_1 = np.zeros((n_arms_1, 1))
@@ -70,12 +71,16 @@ class Learner_6:
         self.n_pulled_couple[pulled_arm[0], pulled_arm[1]] += 1
 
     def compute_matching_prob(self, matching_mask):
+
+        # inserted 0 at the start of idxs arrays, for ease of computation of the slices used in the return statement
         customers_idxs = np.insert(np.cumsum(self.expected_customers), 0, 0)
-        promo_idxs = np.insert(np.cumsum(self.n_promos, 0, 0))
+        promo_idxs = np.insert(np.cumsum(self.n_promos), 0, 0)
+
+        matching_prob = np.array([np.sum(matching_mask[customers_idxs[i]:customers_idxs[i + 1], promo_idxs[j]:promo_idxs[j + 1]])
+                                 for i in range(4) for j in range(4)]).reshape((4, 4))
 
         # returning a (4, 4) matrix with P(class, promo) (aka MATCHING_PROB)
-        return np.array([np.sum(matching_mask[customers_idxs[i]:customers_idxs[i + 1], promo_idxs[j]:promo_idxs[j + 1]])
-                        for i in range(5) for j in range(5)]).reshape((4, 4))
+        return matching_prob / np.sum(self.expected_customers)
 
     def build_matrix_optimistic(self, idx1, idx2, ub_cr1, ub_cr2):
         matrix_dim = np.sum(self.expected_customers)
