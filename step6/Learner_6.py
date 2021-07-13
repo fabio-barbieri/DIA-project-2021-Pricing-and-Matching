@@ -12,9 +12,9 @@ class Learner_6:
         self.t1 = np.zeros((1, 4))
         self.t2 = np.zeros((4, 4))
 
-        self.rewards_per_arm_1 = np.array([[] for _ in range(n_arms_1)])
-        self.rewards_per_arm_2 = np.array([[] for _ in range(n_arms_2)])
-        #self.collected_rewards = []
+        self.n_pulled_arm_1 = np.zeros((n_arms_1, 1))
+        self.n_pulled_arm_2 = np.zeros((n_arms_2, 1))
+        self.n_pulled_couple = np.zeros((n_arms_1, n_arms_2))
 
         self.m = np.array([config_6.TOT_CUSTOMERS // 4 for _ in range(4)])  # Non-informative prior
         self.s_2 = np.array([1.0, 1.0, 1.0, 1.0])
@@ -51,7 +51,7 @@ class Learner_6:
         self.empirical_means_1[pulled_arm[0], c_class] = (self.empirical_means_1[pulled_arm[0], c_class] * (self.t1[c_class] - 1) + reward1) / self.t1[c_class]
 
         for arm in range(self.n_arms1):
-            number_pulled = max(1, len(self.rewards_per_arm_1[arm]))
+            number_pulled = max(1, self.n_pulled_arm_1[arm])
             self.confidence_1[arm, 0] = (2 * np.log(np.sum(self.t1)) / number_pulled) ** 0.5
 
         if reward1 == 1:
@@ -59,22 +59,15 @@ class Learner_6:
             self.empirical_means_2[pulled_arm[1], c_class, promo] = (self.empirical_means_2[pulled_arm[1], c_class, promo] * (self.t2[c_class, promo] - 1) + reward2) / self.t2[c_class, promo]
 
             for arm in range(self.n_arms2):
-                number_pulled = max(1, len(self.rewards_per_arm_2[arm]))
+                number_pulled = max(1, self.n_pulled_arm_2[arm])
                 self.confidence_2[arm, 0, 0] = (2 * np.log(np.sum(self.t2)) / number_pulled) ** 0.5
 
     # NOTE: pulled arm here is a tuple (pulled_arm_1, pulled_arm_2)
     def update_observations(self, pulled_arm, reward1, reward2):
-        self.rewards_per_arm_1[pulled_arm[0]].append(reward1)
-        if reward1 == 1:
-            self.rewards_per_arm_2[pulled_arm[1]].append(reward2)
-        # self.collected_rewards.append(reward)  # List of N_EXPS arrays of shape (T, 4)
+        self.n_pulled_arm_1[pulled_arm[0]] += 1
+        self.n_pulled_arm_2[pulled_arm[1]] += 1
 
-    def compute_matching(self):
-        # hungarian algorithm starting matrix
-        matrix, n_promo = self.build_matrix_optimistic()
-
-        # matching is a binary matrix
-        return hungarian_algorithm(matrix)  # returns (matching_mask, matching_value)
+        self.n_pulled_couple[pulled_arm[0], pulled_arm[1]] += 1
 
     def compute_matching_prob(self, matching_mask):
         customers_idxs = np.insert(np.cumsum(self.expected_customers), 0, 0)
@@ -88,21 +81,17 @@ class Learner_6:
         matrix_dim = np.sum(self.expected_customers)
 
         matrix = np.zeros((4, 0))
-        profit = np.multiply(ub_cr1[idx1].reshape((4, 1)), config_6.MARGINS_1[idx1] + np.multiply(ub_cr2[idx2], config_6.MARGINS_2[idx2]))
+        profit = np.multiply(ub_cr1[idx1].reshape((4, 1)), config_6.MARGINS_1[idx1] + np.multiply(ub_cr2[idx2],
+                             config_6.MARGINS_2[idx2]))
 
-        ######################## ARRIVATI FINO A QUI ###############################
         n_promos = (config_6.PROMO_PROB[1:] * matrix_dim).astype(int)
         n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
 
-        # profit computed via ucb()...
-        # n_promos = vettore con numero di promo assegnate per tipologia
-        for i, n_promo in enumerate(n_promos):
-            matrix = np.column_stack([matrix, np.repeat(profit[:, i].reshape(4, 1), n_promo, axis=1)])
+        # repeat columns
+        matrix = np.column_stack([matrix, np.repeat(profit, n_promos, axis=1)])
 
-        # n_customers = vettore con numero di clienti per classe
+        # repeat rows
         matrix = np.repeat(matrix, self.expected_customers, axis=0)
-
-        matrix = np.reshape(matrix, (matrix_dim, matrix_dim))
 
         return matrix
 
@@ -131,5 +120,5 @@ class Learner_6:
 
             matching_prob = self.compute_matching_prob(opt_matching)
 
-        return matching_prob, idx1, idx2
+        return matching_prob, (idx1, idx2)
 

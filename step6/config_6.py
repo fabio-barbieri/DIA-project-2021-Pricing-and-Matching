@@ -33,13 +33,6 @@ for margin in MARGINS_2:
         tmp.append(cr)
     CR2.append(tmp)
 
-# fixed assignments of promos by the business unit: [0.40, 0.20, 0.22, 0.18]
-# MATCHING_PROB[i,j] of the TOT_CUSTOMERS is of class i and receives Pj
-MATCHING_PROB = np.array([[0.08, 0.05, 0.04, 0.03],  # Class 1
-                    	  [0.16, 0.06, 0.10, 0.08],  # Class 2 
-                     	  [0.02, 0.03, 0.03, 0.02],  # Class 3 
-                     	  [0.14, 0.06, 0.05, 0.05]]) # Class 4 
-#                    	   p0     p1    p2    p3
 
 weighted_averages = []
 for i, arm in enumerate(MARGINS_1):  # For every price_1

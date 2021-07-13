@@ -27,12 +27,13 @@ class Environment_6():
 
         return customer_arrivals, current_daily_customers
 
-    def round(self, pulled_arm, c_class):
+    def round(self, pulled_arm, c_class, matching_prob, expected_customers):
         # reward by a single customer
         reward1 = np.random.binomial(1, self.cr1[pulled_arm[0]][c_class])
 
         # extracting promo assigned to the customer
-        promo = np.random.choice([0, 1, 2, 3], p=config_6.MATCHING_PROB[c_class] / config_6.NUM_CUSTOMERS[c_class] * config_6.TOT_CUSTOMERS)
+        promo = np.random.choice([0, 1, 2, 3], p=matching_prob[c_class] / expected_customers[c_class]
+                                 * np.sum(expected_customers))
 
         # reward in order to update cr2
         reward2 = np.random.binomial(1, self.cr2[pulled_arm[1]][c_class][promo])

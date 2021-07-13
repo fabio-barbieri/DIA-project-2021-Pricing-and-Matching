@@ -9,6 +9,8 @@ np.random.seed(1234)
 
 ts_reward_per_experiment = []  # Collected reward
 
+opt = []
+
 for e in tqdm(range(config_6.N_EXPS)):
     env = Environment_6(n_arms_1=config_6.N_ARMS_1, n_arms_2=config_6.N_ARMS_2, cr1=config_6.CR1, cr2=config_6.CR2)
     learner = Learner_6(n_arms_1=config_6.N_ARMS_1, n_arms_2=config_6.N_ARMS_2)
@@ -22,13 +24,13 @@ for e in tqdm(range(config_6.N_EXPS)):
         daily_profits = 0
         for c_class in customer_arrivals:
 
-            pulled_arm = learner.pull_arm()
-            reward1, reward2, promo = env.round(pulled_arm, c_class)
+            matching_prob, pulled_arm = learner.pull_arm()
+            reward1, reward2, promo = env.round(pulled_arm, c_class, matching_prob, learner.expected_customers)
             learner.update(pulled_arm, reward1, reward2, c_class, promo)
 
             # reward1 * (margin1 + reward2 * margin2)
-            avg_customer_profit = reward1 * (config_6.MARGINS_1[pulled_arm[0]] + reward2 * (config_6.MARGINS_2[pulled_arm[1]][promo]))
-            daily_profits += avg_customer_profit
+            curr_customer_profit = reward1 * (config_6.MARGINS_1[pulled_arm[0]] + reward2 * (config_6.MARGINS_2[pulled_arm[1]][promo]))
+            daily_profits += curr_customer_profit
 
         daily_rewards.append(daily_profits)
 
@@ -36,16 +38,41 @@ for e in tqdm(range(config_6.N_EXPS)):
 
     ts_reward_per_experiment.append(daily_rewards)
 
-print(np.shape(daily_rewards))
-print(np.shape(ts_reward_per_experiment))
+    # constructing matrix in order to
+    opt_price_1, opt_price_2 = np.unravel_index(np.argmax(learner.n_pulled_couple), learner.n_pulled_couple.shape)
+    opt_value = learner.n_pulled_couple[opt_price_1, opt_price_2]
+
+    opt.append((opt_price_1, opt_price_2, opt_value))
+
+
+def build_matrix_opt(idx1, idx2):
+    matrix_dim = config_6.TOT_CUSTOMERS
+
+    matrix = np.zeros((4, 0))
+    profit = np.multiply(config_6.CR1[idx1].reshape((4, 1)), config_6.MARGINS_1[idx1] + np.multiply(config_6.CR2[idx2],
+                         config_6.MARGINS_2[idx2]))
+
+    n_promos = (config_6.PROMO_PROB[1:] * matrix_dim).astype(int)
+    n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
+
+    # repeat columns
+    matrix = np.column_stack([matrix, np.repeat(profit, n_promos, axis=1)])
+
+    # repeat rows
+    matrix = np.repeat(matrix, config_6.NUM_CUSTOMERS, axis=0)
+
+    return matrix
+
+
+# compute optimum daily reward
+opt_tuple = max(opt, key=lambda x: x[2])
+opt_mask, OPT = hungarian_algorithm(build_matrix_opt(opt_tuple[0], opt_tuple[1]))
 
 # Plot the results
-
-### CALCOLARE config_6.OPT ###
 plt.figure(0, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Expected reward")
-plt.hlines(config_6.OPT, 0, 365, linestyles="dashed")
+plt.hlines(OPT, 0, 365, linestyles="dashed")
 plt.plot(np.mean(ts_reward_per_experiment, axis=0), 'g')
 plt.savefig("expected_reward.png", dpi=200)
 plt.show()
@@ -53,7 +80,7 @@ plt.show()
 plt.figure(1, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Cumulative expected reward")
-plt.hlines(config_6.OPT * 365, 0, 365, linestyles="dashed")
+plt.hlines(OPT * 365, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(ts_reward_per_experiment, axis=0)), 'r')
 plt.savefig("cumulative_expected_reward.png", dpi=200)
 plt.show()
@@ -61,6 +88,6 @@ plt.show()
 plt.figure(2, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Daily regret")
-plt.plot(np.mean(config_6.OPT - ts_reward_per_experiment, axis=0), color='b')
+plt.plot(np.mean(OPT - ts_reward_per_experiment, axis=0), color='b')
 plt.savefig("daily_regret.png", dpi=200)
 plt.show()

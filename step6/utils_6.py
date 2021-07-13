@@ -2,6 +2,7 @@ import numpy as np
 from scipy import stats
 import sys
 from hungarian_algorithm import hungarian_algorithm
+import config_6
 
 def cr1(price,cl):  # conversion rates for prices of item 1
  
