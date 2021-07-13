@@ -145,24 +145,17 @@ def opt_matching(num_customers, promo_prob, conv1, conv2, margin_1, margins_2):
 
 if __name__ == '__main__':
     import json
-    """ 
-    config.json CREATO QUA UNA VOLTA SOLA:
-        
-    config = { ... }    
-    with open('config.json', 'w') as config_file:
-        json.dump(config, config_file)
     
-    """
     config = {}
 
     # COMMON FOR ALL STEPS ----------------------------------------------------
     T = 365
     config['T'] = T
 
-    n_exps = 50
+    n_exps = 1
     config['n_exps'] = n_exps
 
-    n_arms = 50
+    n_arms = 1
     config['n_arms'] = n_arms
 
     num_customers = np.array([20, 40, 10, 30])
