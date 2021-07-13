@@ -1,4 +1,4 @@
-import config_3
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 from Environment_3 import *
@@ -7,15 +7,30 @@ from tqdm import tqdm
 
 np.random.seed(1234)
 
+with open('setup/config.json') as config_file:
+    config = json.load(config_file)
+    config_file.close()
+
+T = config['T']
+N_EXPS = config['n_exps']
+N_ARMS = config['n_arms']
+NUM_CUSTOMERS = np.array(config['num_customers'])
+MARGINS_1 = np.array(config['step3']['margins_1'])
+CR1 = np.array(config['step3']['cr1'])
+MATCHING = np.array(config['step3']['matching'])
+MARGINS_2 = np.array(config['step3']['margins_2'])
+CR2 = np.array(config['step3']['cr2'])
+OPT = config['step3']['opt']
+
 ucb1_reward_per_experiment = []  # Collected reward
 
-tot_customers = sum(config_3.NUM_CUSTOMERS)
-class_probabilities = [i / tot_customers for i in config_3.NUM_CUSTOMERS]
+tot_customers = sum(NUM_CUSTOMERS)
+class_probabilities = [i / tot_customers for i in NUM_CUSTOMERS]
 
-tmp0 = np.zeros(shape=config_3.NUM_CUSTOMERS[0], dtype=int)
-tmp1 = np.ones(shape=config_3.NUM_CUSTOMERS[1], dtype=int)
-tmp2 = np.zeros(shape=config_3.NUM_CUSTOMERS[2], dtype=int) + 2
-tmp3 = np.zeros(shape=config_3.NUM_CUSTOMERS[3], dtype=int) + 3
+tmp0 = np.zeros(shape=NUM_CUSTOMERS[0], dtype=int)
+tmp1 = np.ones(shape=NUM_CUSTOMERS[1], dtype=int)
+tmp2 = np.zeros(shape=NUM_CUSTOMERS[2], dtype=int) + 2
+tmp3 = np.zeros(shape=NUM_CUSTOMERS[3], dtype=int) + 3
 
 customer_arrivals = np.array([], dtype=int)
 customer_arrivals = np.concatenate((customer_arrivals, tmp0), axis=None)
@@ -24,15 +39,18 @@ customer_arrivals = np.concatenate((customer_arrivals, tmp2), axis=None)
 customer_arrivals = np.concatenate((customer_arrivals, tmp3), axis=None)
 
 
-for e in tqdm(range(config_3.N_EXPS)):
-    env = Environment_3(n_arms=config_3.N_ARMS, cr1=config_3.CR1)
-    ucb1_learner = UCB1_Learner_3(n_arms=config_3.N_ARMS)
+for e in tqdm(range(N_EXPS)):
+    env = Environment_3(n_arms=N_ARMS, cr1=CR1)
+    ucb1_learner = UCB1_Learner_3(n_arms=N_ARMS, 
+                                  num_customers=NUM_CUSTOMERS, 
+                                  margins_1=MARGINS_1, 
+                                  matching=MATCHING, 
+                                  margins_2=MARGINS_2, 
+                                  cr2=CR2)
 
     daily_rewards = []
-
-    for t in range(config_3.T):
+    for t in range(T):
         np.random.shuffle(customer_arrivals)
-
         daily_profits = 0
         for c_class in customer_arrivals:
             # UCB1
@@ -41,38 +59,35 @@ for e in tqdm(range(config_3.N_EXPS)):
             ucb1_learner.update(pulled_arm, reward)  # update solo della beta della classe del cliente corrente
 
             # reward * (margin1 + promo * margin2 * conv2[pulled_arm])
-            avg_customer_profit = reward * (config_3.MARGINS_1[pulled_arm] + np.dot(np.multiply(config_3.MATCHING[c_class],
-                                                                                                config_3.MARGINS_2),
-                                                                                    config_3.CR2[c_class]) / config_3.NUM_CUSTOMERS[c_class])
+            avg_customer_profit = reward * (MARGINS_1[pulled_arm] + np.dot(np.multiply(MATCHING[c_class], MARGINS_2), CR2[c_class]) / NUM_CUSTOMERS[c_class])
             daily_profits += avg_customer_profit
 
         daily_rewards.append(daily_profits)
 
     ucb1_reward_per_experiment.append(daily_rewards)
 
-print(np.shape(daily_rewards))
-print(np.shape(ucb1_reward_per_experiment))
+ucb1_reward_per_experiment = np.array(ucb1_reward_per_experiment)
 
 # Plot the results
 plt.figure(0, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Expected reward")
-plt.hlines(config_3.OPT, 0, 365, linestyles="dashed")
+plt.hlines(OPT, 0, 365, linestyles="dashed")
 plt.plot(np.mean(ucb1_reward_per_experiment, axis=0), 'g')
-plt.savefig("expected_reward.png", dpi=200)
+plt.savefig("UCB_expected_reward.png", dpi=200)
 plt.show()
 
 plt.figure(1, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Cumulative expected reward")
-plt.hlines(config_3.OPT * 365, 0, 365, linestyles="dashed")
+plt.hlines(OPT * 365, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(ucb1_reward_per_experiment, axis=0)), 'r')
-plt.savefig("cumulative_expected_reward.png", dpi=200)
+plt.savefig("UCB_cumulative_expected_reward.png", dpi=200)
 plt.show()
 
 plt.figure(2, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Daily regret")
-plt.plot(np.mean(config_3.OPT - ucb1_reward_per_experiment, axis=0), color='b')
-plt.savefig("daily_regret.png", dpi=200)
+plt.plot(np.mean(OPT - ucb1_reward_per_experiment, axis=0), color='b')
+plt.savefig("UCB_daily_regret.png", dpi=200)
 plt.show()

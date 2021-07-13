@@ -1,9 +1,13 @@
 # THIS IS GOING TO BE THE SUPERCLASS OF THE THOMPSON SAMPLING AND GREEDY ALGORITHMS LEARNERS
-import numpy as np
 
 class Learner_3:
-    def __init__(self, n_arms):
+    def __init__(self, n_arms, num_customers, margins_1, matching, margins_2, cr2):
         self.n_arms = n_arms
+        self.num_customers = num_customers
+        self.margins_1 = margins_1
+        self.matching = matching
+        self.margins_2 = margins_2
+        self.cr2 = cr2
         self.t = 0
         self.rewards_per_arm = [[] for _ in range(n_arms)]
         self.collected_rewards = []

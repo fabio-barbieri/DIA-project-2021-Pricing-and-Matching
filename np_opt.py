@@ -1,4 +1,4 @@
-# weighted_averages step3, step4 -------------------------------------------------------------------------------
+# weighted_averages step3, step4 ------------------------------------------------------------------------------- OK
 def fun(i, arm):
     cr1 = np.random.beta(arm[:, 0], arm[:, 1]) # 4x1
     margins1 = config_4.MARGINS_1[i] # 1x1
@@ -18,19 +18,22 @@ def fun(i, arm):
 weighted_averages = [fun(i, arm) for i, arm in enumerate(self.beta_parameters)]
 
 
-# n_promos step5 -----------------------------------------------------------------------------------------------
+# n_promos step5 ----------------------------------------------------------------------------------------------- OK
 n_promos = (config_5.PROMO_PROB[1 :] * matrix_dim).astype(int)
 n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
 
 
-# customers' rows step5 ----------------------------------------------------------------------------------------
-matrix = np.array([])
-for i, n in enumerate(n_promos):
-    matrix = np.append(matrix, [config_5.MARGIN_1 * np.random.beta(self.beta_cr1[:, 0], self.beta_cr1[:, 1]) + config_5.MARGINS_2 * np.random.beta(self.beta_cr2[i, :, 0], self.beta_cr2[i, :, 0]) for _ in range(n)])
-matrix = -1 * matrix
+# customers' rows step5 ---------------------------------------------------------------------------------------- ASPETTA DI SAPERE VALORE CELLE
+matrix = np.zeros((4,0))
+profit = np.array(np.arange(16)).reshape((4, 4))
+n_promos = [9, 4, 4, 2]
+n_customers = [5, 10, 4, 1]
+for i, n_promo in enumerate(n_promos):
+    matrix = np.column_stack([matrix, np.repeat(profit[:, i].reshape(4, 1),n_promo, axis=1)])
+matrix = np.repeat(matrix, n_customers, axis=0)
 
 ######### matrix = np.array([customer0_row, customer1_row, customer2_row, customer3_row])
 
-# matrix building step5 ----------------------------------------------------------------------------------------
+# matrix building step5 ---------------------------------------------------------------------------------------- OK
 matrix = np.repeat(matrix, self.expected_customers, axis=0)
 
