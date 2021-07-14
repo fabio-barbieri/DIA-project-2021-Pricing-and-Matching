@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 np.random.seed(1234)
 
-with open('setup/config.json') as config_file:
+with open('../setup/config.json') as config_file:
     config = json.load(config_file)
     config_file.close()
 
@@ -67,7 +67,7 @@ plt.xlabel("t")
 plt.ylabel("Expected Reward")
 plt.hlines(OPT, 0, 365, linestyles="dashed")
 plt.plot(np.mean(ucb1_reward_per_experiment, axis=0), 'g')
-plt.savefig(f"step4/plots/UCB/UCB_ExpRew_{N_EXPS}-{N_ARMS}.png", dpi=200)
+plt.savefig(f"plots/UCB/UCB_ExpRew_{N_EXPS}-{N_ARMS}.png", dpi=200)
 plt.show()
 
 plt.figure(1, figsize=(12, 7), dpi=200.0)
@@ -75,7 +75,7 @@ plt.xlabel("t")
 plt.ylabel("Cumulative Expected Reward")
 plt.hlines(OPT * 365, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(ucb1_reward_per_experiment, axis=0)), 'r')
-plt.savefig(f"step4/plots/UCB/UCB_CumulativeExpRew_{N_EXPS}-{N_ARMS}.png", dpi=200)
+plt.savefig(f"plots/UCB/UCB_CumulativeExpRew_{N_EXPS}-{N_ARMS}.png", dpi=200)
 plt.show()
 
 plt.figure(2, figsize=(12, 7), dpi=200.0)
@@ -83,5 +83,5 @@ plt.xlabel("t")
 plt.ylabel("Daily Regret")
 plt.hlines(0, 0, 365, linestyles="dashed")
 plt.plot(np.mean(OPT - ucb1_reward_per_experiment, axis=0), color='b')
-plt.savefig(f"step4/plots/UCB/UCB_DailyRegret_{N_EXPS}-{N_ARMS}.png", dpi=200)
+plt.savefig(f"plots/UCB/UCB_DailyRegret_{N_EXPS}-{N_ARMS}.png", dpi=200)
 plt.show()
