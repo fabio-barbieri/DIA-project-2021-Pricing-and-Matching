@@ -29,26 +29,10 @@ class UCB1_Learner_3(Learner_3):
         else:
             upper_bound = self.empirical_means + self.confidence
 
-            profits = [self.profit(i, upper_bound) for i in range(self.n_arms)]
+            profits = np.array([self.profit(i, upper_bound) for i in range(self.n_arms)])
             idx = np.argmax(profits)
         
-        return idx 
-
-            #weighted_averages = []
-            #for arm in range(self.n_arms):  # For every price_1
-            #    profit = 0
-            #    for c_class in range(len(self.num_customers)):  # For every customer class
-            #        exp_buyers_item1 = self.num_customers[c_class] * upper_bound[arm]
-            #        margin1 = self.num_margins_1[arm]
-            #        promo_assigment_prob = self.num_matching[c_class, :] / self.num_customers[c_class]
-            #        margin2 = np.multiply(self.num_margins_2, self.cr2[c_class, :])
-            #
-            #        profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
-            #    profit /= sum(self.num_customers)
-            #    weighted_averages.append(profit)
-            #
-            #idx = np.argmax(weighted_averages)
-        #return idx
+        return idx
 
     def update(self, pulled_arm, reward):
         self.t += 1 # Increment the counter of entered customers

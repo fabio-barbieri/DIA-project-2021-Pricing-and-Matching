@@ -35,16 +35,21 @@ CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
                 [0.1, 0.1, 0.1, 0.7]]) # Senior Amateur
                 # p0   p1   p2   p3
 
-weighted_averages = []
-for i, arm in enumerate(MARGINS_1):  # For every price_1
-    arm_expected_profit = 0
-    for j, n_customers in enumerate(NUM_CUSTOMERS):  # For every customer class
-        exp_buyers_item1 = n_customers * CR1[i][j]
-        margin1 = arm
-        promo_assigment_prob = MATCHING_PROB[j, :] / n_customers * TOT_CUSTOMERS 
-        margin2 = np.multiply(MARGINS_2, CR2[j, :])
 
-        arm_expected_profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))
-    weighted_averages.append(arm_expected_profit)
 
-OPT = np.max(weighted_averages)
+if __name__ == '__main__':
+    weighted_averages = []
+    for i, arm in enumerate(MARGINS_1):  # For every price_1
+        arm_expected_profit = 0
+        for j, n_customers in enumerate(NUM_CUSTOMERS):  # For every customer class
+            exp_buyers_item1 = n_customers * CR1[i][j]
+            margin1 = arm
+            promo_assigment_prob = MATCHING_PROB[j, :] / n_customers * TOT_CUSTOMERS 
+            margin2 = np.multiply(MARGINS_2, CR2[j, :])
+
+            arm_expected_profit += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))
+        weighted_averages.append(arm_expected_profit)
+
+    OPT = np.max(weighted_averages)
+
+    print(OPT)

@@ -40,7 +40,8 @@ customer_arrivals = np.concatenate((customer_arrivals, tmp3), axis=None)
 
 
 for e in tqdm(range(N_EXPS)):
-    env = Environment_3(n_arms=N_ARMS, cr1=CR1)
+    env = Environment_3(n_arms=N_ARMS, 
+                        cr1=CR1)
     ucb1_learner = UCB1_Learner_3(n_arms=N_ARMS, 
                                   num_customers=NUM_CUSTOMERS, 
                                   margins_1=MARGINS_1, 
@@ -88,6 +89,7 @@ plt.show()
 plt.figure(2, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Daily Regret")
+plt.hlines(0, 0, 365, linestyles="dashed")
 plt.plot(np.mean(OPT - ucb1_reward_per_experiment, axis=0), color='b')
 plt.savefig(f"step3/plots/UCB/UCB_DailyRegret_{N_EXPS}-{N_ARMS}.png", dpi=200)
 plt.show()

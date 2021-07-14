@@ -24,7 +24,7 @@ OPT = config['step3']['opt']
 
 ts_reward_per_experiment = []  # Collected reward
 
-tot_customers = sum(NUM_CUSTOMERS)
+tot_customers = np.sum(NUM_CUSTOMERS)
 class_probabilities = [i / tot_customers for i in NUM_CUSTOMERS]
 
 tmp0 = np.zeros(shape=NUM_CUSTOMERS[0], dtype=int)
@@ -40,7 +40,8 @@ customer_arrivals = np.concatenate((customer_arrivals, tmp3), axis=None)
 
 
 for e in tqdm(range(N_EXPS)):
-    env = Environment_3(n_arms=N_ARMS, cr1=CR1)
+    env = Environment_3(n_arms=N_ARMS, 
+                        cr1=CR1)
     ts_learner = TS_Learner_3(n_arms=N_ARMS, 
                               num_customers=NUM_CUSTOMERS, 
                               margins_1=MARGINS_1, 

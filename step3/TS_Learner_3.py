@@ -30,30 +30,10 @@ class TS_Learner_3(Learner_3):
 
     def pull_arm(self):
         # Pull the arm that maximizes the profit w.r.t. all the classes of customers and the beta distributions
-
-        profits = [self.profit(i, arm) for i, arm in enumerate(self.beta_parameters)]
+        profits = np.array([self.profit(i, arm) for i, arm in enumerate(self.beta_parameters)])
         return np.argmax(profits)
 
-        # Pull the arm that maximizes the weighted average of the conv rates over all
-        # the classes of customers w.r.t. the beta distribution
-
-        #for i, arm in enumerate(self.beta_parameters):  # For every price_1
-        #    cr = 0
-        #    for j, params in enumerate(arm):  # For every customer class
-        #        exp_buyers_item1 = self.num_customers[j] * np.random.beta(params[0], params[1])
-        #        margin1 = self.margins_1[i]
-        #        promo_assigment_prob = self.matching[j, :] / self.num_customers[j]
-        #        margin2 = np.multiply(self.margins_2, self.cr2[j, :])
-        #
-        #        cr += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
-        #    cr /= sum(self.num_customers)
-        #    weighted_averages.append(cr)
-        #
-        #idx = np.argmax(weighted_averages)
-        #return idx
-
     def update(self, pulled_arm, reward, c_class):
-        # self.t += 1
         self.update_observations(pulled_arm, reward)
         # Update the parameters of the betas according to the rewards and considering that the average num
         # of customers per class must be considered
