@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 np.random.seed(1234)
 
-with open('setup/config.json') as config_file:
+with open('../setup/config.json') as config_file:
     config = json.load(config_file)
     config_file.close()
 
@@ -40,8 +40,10 @@ customer_arrivals = np.concatenate((customer_arrivals, tmp3), axis=None)
 
 
 for e in tqdm(range(N_EXPS)):
-    env = Environment_3(n_arms=N_ARMS, 
-                        cr1=CR1)
+    env = Environment_3(n_arms=N_ARMS,
+                        matching=MATCHING,
+                        cr1=CR1,
+                        cr2=CR2)
     ucb1_learner = UCB1_Learner_3(n_arms=N_ARMS, 
                                   num_customers=NUM_CUSTOMERS, 
                                   margins_1=MARGINS_1, 
@@ -56,12 +58,13 @@ for e in tqdm(range(N_EXPS)):
         for c_class in customer_arrivals:
             # UCB1
             pulled_arm = ucb1_learner.pull_arm()
-            reward = env.round(pulled_arm, c_class)  # questo deve diventare 0 o 1
-            ucb1_learner.update(pulled_arm, reward)  # update solo della beta della classe del cliente corrente
+            reward1, reward2, promo = env.round(pulled_arm, c_class)  # questo deve diventare 0 o 1
+            ucb1_learner.update(pulled_arm, reward1, reward2, promo)  # update solo della beta della classe del cliente corrente
 
             # reward * (margin1 + promo * margin2 * conv2[pulled_arm])
-            avg_customer_profit = reward * (MARGINS_1[pulled_arm] + np.dot(np.multiply(MATCHING[c_class], MARGINS_2), CR2[c_class]) / NUM_CUSTOMERS[c_class])
-            daily_profits += avg_customer_profit
+            # avg_customer_profit = reward * (MARGINS_1[pulled_arm] + np.dot(np.multiply(MATCHING[c_class], MARGINS_2), CR2[c_class]) / NUM_CUSTOMERS[c_class])
+            customer_profit = reward1 * (MARGINS_1[pulled_arm] + reward2 * MARGINS_2[promo])
+            daily_profits += customer_profit
 
         daily_rewards.append(daily_profits)
 
@@ -75,7 +78,7 @@ plt.xlabel("t")
 plt.ylabel("Expected Reward")
 plt.hlines(OPT, 0, 365, linestyles="dashed")
 plt.plot(np.mean(ucb1_reward_per_experiment, axis=0), 'g')
-plt.savefig(f"step3/plots/UCB/UCB_ExpRew_{N_EXPS}-{N_ARMS}.png", dpi=200)
+plt.savefig(f"plots/UCB/UCB_ExpRew_{N_EXPS}-{N_ARMS}.png", dpi=200)
 plt.show()
 
 plt.figure(1, figsize=(12, 7), dpi=200.0)
@@ -83,7 +86,7 @@ plt.xlabel("t")
 plt.ylabel("Cumulative Expected Reward")
 plt.hlines(OPT * 365, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(ucb1_reward_per_experiment, axis=0)), 'r')
-plt.savefig(f"step3/plots/UCB/UCB_CumulativeExpRew_{N_EXPS}-{N_ARMS}.png", dpi=200)
+plt.savefig(f"plots/UCB/UCB_CumulativeExpRew_{N_EXPS}-{N_ARMS}.png", dpi=200)
 plt.show()
 
 plt.figure(2, figsize=(12, 7), dpi=200.0)
@@ -91,5 +94,5 @@ plt.xlabel("t")
 plt.ylabel("Daily Regret")
 plt.hlines(0, 0, 365, linestyles="dashed")
 plt.plot(np.mean(OPT - ucb1_reward_per_experiment, axis=0), color='b')
-plt.savefig(f"step3/plots/UCB/UCB_DailyRegret_{N_EXPS}-{N_ARMS}.png", dpi=200)
+plt.savefig(f"plots/UCB/UCB_DailyRegret_{N_EXPS}-{N_ARMS}.png", dpi=200)
 plt.show()

@@ -8,9 +8,6 @@ class Learner_3:
         self.matching = matching
         self.margins_2 = margins_2
         self.cr2 = cr2
-        self.t = 0
-        self.rewards_per_arm = [[] for _ in range(n_arms)]
-        self.collected_rewards = []
 
     def update_observations(self, pulled_arm, reward):
         self.rewards_per_arm[pulled_arm].append(reward)  # ... (for UCB ???)

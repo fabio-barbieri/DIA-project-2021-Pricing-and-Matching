@@ -258,7 +258,7 @@ if __name__ == '__main__':
     step8 = {}
     #TODO
 
-    with open('setup/config.json', 'w') as config_file:
+    with open('config.json', 'w') as config_file:
         json.dump(config, config_file, indent=4)
         config_file.close()
 
