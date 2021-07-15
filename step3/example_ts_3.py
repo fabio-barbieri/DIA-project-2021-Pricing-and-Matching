@@ -40,8 +40,10 @@ customer_arrivals = np.concatenate((customer_arrivals, tmp3), axis=None)
 
 
 for e in tqdm(range(N_EXPS)):
-    env = Environment_3(n_arms=N_ARMS, 
-                        cr1=CR1)
+    env = Environment_3(n_arms=N_ARMS,
+                        matching=MATCHING,
+                        cr1=CR1,
+                        cr2=CR2)
     ts_learner = TS_Learner_3(n_arms=N_ARMS, 
                               num_customers=NUM_CUSTOMERS, 
                               margins_1=MARGINS_1, 
@@ -56,12 +58,12 @@ for e in tqdm(range(N_EXPS)):
         for c_class in customer_arrivals:
             # Thompson Sampling
             pulled_arm = ts_learner.pull_arm()
-            reward = env.round(pulled_arm, c_class)  # questo deve diventare 0 o 1
-            ts_learner.update(pulled_arm, reward, c_class)  # update solo della beta della classe del cliente corrente
+            reward1, reward2, promo = env.round(pulled_arm, c_class)  # questo deve diventare 0 o 1
+            ts_learner.update(pulled_arm, reward1, c_class)  # update solo della beta della classe del cliente corrente
 
             # reward * (margin1 + promo * margin2 * conv2[pulled_arm])
-            avg_customer_profit = reward * (MARGINS_1[pulled_arm] + np.dot(np.multiply(MATCHING[c_class], MARGINS_2), CR2[c_class]) / NUM_CUSTOMERS[c_class])
-            daily_profits += avg_customer_profit
+            customer_profit = reward1 * (MARGINS_1[pulled_arm] + reward2 * MARGINS_2[promo])
+            daily_profits += customer_profit
 
         daily_rewards.append(daily_profits)
 

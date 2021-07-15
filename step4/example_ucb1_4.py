@@ -48,11 +48,12 @@ for e in tqdm(range(N_EXPS)):
             # UCB1
             pulled_arm = ucb1_learner.pull_arm()
             reward1, reward2, promo = env.round(pulled_arm, c_class)  # questo deve diventare 0 o 1
-            ucb1_learner.update(pulled_arm, reward1, reward2, c_class, promo)  # update solo della beta della classe del cliente corrente
+            # update solo della beta della classe del cliente corrente
+            ucb1_learner.update(pulled_arm, reward1, reward2, c_class, promo)
 
             # reward * (margin1 + promo * margin2 * conv2[pulled_arm])
-            avg_customer_profit = reward1 * (MARGINS_1[pulled_arm] + reward2 * MARGINS_2[promo])
-            daily_profits += avg_customer_profit
+            customer_profit = reward1 * (MARGINS_1[pulled_arm] + reward2 * MARGINS_2[promo])
+            daily_profits += customer_profit
 
         daily_rewards.append(daily_profits)
         ucb1_learner.compute_posterior(x_bar=current_daily_customers)

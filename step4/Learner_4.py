@@ -12,8 +12,6 @@ class Learner_4:
         self.matching_prob = matching_prob
         self.margins_2 = margins_2
         self.t = 0
-        self.rewards_per_arm = [[] for _ in range(n_arms)]
-        self.collected_rewards = []
         self.m = np.array([self.tot_customers // 4 for _ in range(4)])  # Non-informative prior
         self.s_2 = np.array([1.0, 1.0, 1.0, 1.0])
         self.expected_customers = np.random.normal(self.m, np.sqrt(self.s_2)).astype(int)  # initial number of expected customers per class, according to our prior

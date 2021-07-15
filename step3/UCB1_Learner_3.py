@@ -12,20 +12,6 @@ class UCB1_Learner_3(Learner_3):
         self.t = 0
         self.n_pulled_arm = np.zeros(n_arms, dtype=int)
 
-    #def profit(self, i, upper_bound):
-    #    cr1 = upper_bound[i]                                                       # 4x1
-    #    margins1 = self.margins_1[i]                                               # 1x1
-    #    cr2 = self.cr2                                                             # 4x4
-    #    matching_prob = self.matching / np.expand_dims(self.num_customers, axis=1) # 4x4
-    #    margins2 = self.margins_2                                                  # 4x1
-
-    #    a = cr1 * (margins1 + np.dot(cr2 * matching_prob, margins2)) #   4x1 * (1x1 + dot(4x4 * 4x4 + 4x1)) =
-                                                                     # = 4x1 * (1x1 + dot(4x4, 4x1) = 
-                                                                     # = 4x1 * (1x1 + 4x1) = 
-                                                                     # = 4x1 * 4x1 = 
-                                                                     # = 4x1
-    #   return np.dot(a, self.num_customers)
-
     def pull_arm(self):
         if self.t < self.n_arms:
             idx = self.t

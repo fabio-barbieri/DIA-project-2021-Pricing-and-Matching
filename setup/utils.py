@@ -132,10 +132,10 @@ if __name__ == '__main__':
     T = 365
     config['T'] = T
 
-    n_exps = 20
+    n_exps = 10
     config['n_exps'] = n_exps
 
-    n_arms = 20
+    n_arms = 10
     config['n_arms'] = n_arms
 
     num_customers = np.array([20, 40, 10, 30])
