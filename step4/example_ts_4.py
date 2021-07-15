@@ -47,14 +47,15 @@ for e in tqdm(range(N_EXPS)):
         for c_class in customer_arrivals:
             # Thompson Sampling
             pulled_arm = ts_learner.pull_arm()
-            reward1, reward2, promo = env.round(pulled_arm, c_class)  # questo deve diventare 0 o 1
-            ts_learner.update(pulled_arm, reward1, reward2, c_class, promo)  # update solo della beta della classe del cliente corrente
+            reward1, reward2, promo = env.round(pulled_arm, c_class)
+            ts_learner.update(pulled_arm, reward1, reward2, c_class, promo)
 
             # reward1 * (margin1 + reward2 * margin2)
-            avg_customer_profit = reward1 * (MARGINS_1[pulled_arm] + reward2 * (MARGINS_2[promo]))
-            daily_profits += avg_customer_profit
+            customer_profit = reward1 * (MARGINS_1[pulled_arm] + reward2 * (MARGINS_2[promo]))
+            daily_profits += customer_profit
 
         daily_rewards.append(daily_profits)
+
         ts_learner.compute_posterior(x_bar=current_daily_customers)
 
     ts_reward_per_experiment.append(daily_rewards)

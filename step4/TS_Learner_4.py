@@ -32,30 +32,7 @@ class TS_Learner_4(Learner_4):
         profits = np.array([self.profit(i, arm) for i, arm in enumerate(self.beta_parameters)])
         return np.argmax(profits)
 
-    #def pull_arm(self):
-        # Pull the arm that maximizes the weighted average of the conv rates over all
-        # the classes of customers w.r.t. the beta distribution
-    #    weighted_averages = []
-    #
-    #    for i, arm in enumerate(self.beta_parameters):  # For every price_1
-    #        cr = 0
-    #        for j, params in enumerate(arm):  # For every customer class
-    #            exp_buyers_item1 = self.expected_customers[j] * np.random.beta(params[0], params[1])
-    #            margin1 = self.margins_1[i]
-    #            promo_assigment_prob = self.matching_prob[j, :] / self.expected_customers[j] * np.sum(self.expected_customers)
-    #            margin2 = np.multiply(self.margins_2, [np.random.beta(self.beta_cr2[j, k, 0], self.beta_cr2[j, k, 1]) for k in range(4)])
-    #
-    #            cr += exp_buyers_item1 * (margin1 + np.dot(promo_assigment_prob, margin2))            
-    #        cr /= np.sum(self.expected_customers)
-    #
-    #        weighted_averages.append(cr)
-    #
-    #    idx = np.argmax(weighted_averages)
-    #    return idx
-
     def update(self, pulled_arm, reward1, reward2, c_class, promo):
-        # self.t += 1
-        self.update_observations(pulled_arm, reward1)
         # Update the parameters of the betas according to the rewards and considering that the average num
         # of customers per class must be considered
         self.beta_parameters[pulled_arm, c_class, 0] = self.beta_parameters[pulled_arm, c_class, 0] + reward1
@@ -66,6 +43,4 @@ class TS_Learner_4(Learner_4):
             self.beta_cr2[c_class, promo, 0] = self.beta_cr2[c_class, promo, 0] + reward2
             self.beta_cr2[c_class, promo, 1] = self.beta_cr2[c_class, promo, 1] + (1.0 - reward2)
 
-    #def update_expected_customers(self, current_daily_customers, t):
-    #    self.expected_customers = (self.expected_customers * (t - 1) + current_daily_customers) / t
 
