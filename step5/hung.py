@@ -131,4 +131,4 @@ def hungarian_algorithm(matrix, dim):
     #         step4(m, lines[0], lines[1])
     # return final_assignment(matrix, m)
     a = 1
-    return np.eye(np.sum(dim))
+    return a, np.eye(np.sum(dim))
