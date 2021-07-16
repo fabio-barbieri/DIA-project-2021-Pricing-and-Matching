@@ -1,7 +1,8 @@
 # THIS IS GOING TO BE THE SUPERCLASS OF THE THOMPSON SAMPLING AND GREEDY ALGORITHMS LEARNERS
 import numpy as np
 import config_5
-from hungarian_algorithm import hungarian_algorithm
+#from hungarian_algorithm import hungarian_algorithm
+from hung import hungarian_algorithm
 
 np.random.seed(1234)
 
