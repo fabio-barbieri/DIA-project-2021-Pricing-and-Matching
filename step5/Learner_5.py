@@ -14,6 +14,9 @@ class Learner_5:
         self.beta_cr1 = np.ones((4, 2))
         self.beta_cr2 = np.ones((4, 4, 2))
 
+        self.n_promos = (config_5.PROMO_PROB[1 :] * np.sum(self.expected_customers)).astype(int)
+        self.n_promos = np.insert(self.n_promos, 0, np.sum(self.expected_customers) - np.sum(self.n_promos))
+
 
     def build_matrix(self):
         matrix_dim = np.sum(self.expected_customers)
@@ -24,11 +27,11 @@ class Learner_5:
         profit = sampled_cr1 * (config_5.MARGIN_1 + sampled_cr2 * config_5.MARGINS_2)
 
         # First set integers p1, p2, p3 and the remaining are p0 
-        n_promos = (config_5.PROMO_PROB[1 :] * matrix_dim).astype(int)
-        n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
+        self.n_promos = (config_5.PROMO_PROB[1 :] * matrix_dim).astype(int)
+        self.n_promos = np.insert(self.n_promos, 0, matrix_dim - np.sum(self.n_promos))
 
         # repeat columns
-        matrix = np.column_stack([matrix, np.repeat(profit, n_promos, axis=1)])
+        matrix = np.column_stack([matrix, np.repeat(profit, self.n_promos, axis=1)])
 
         # repeat rows
         matrix = np.repeat(matrix, self.expected_customers, axis=0)
