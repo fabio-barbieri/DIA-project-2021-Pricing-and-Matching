@@ -118,7 +118,7 @@ def final_assignment(initial_matrix, m):
     return assignment * initial_matrix, assignment
 
 
-def hungarian_algorithm(matrix, dim):
+def hungarian_algorithm(matrix):
     m = np.max(matrix) - matrix
     step1(m)
     step2(m)
