@@ -29,6 +29,10 @@ class Environment_5():
         reward1 = np.random.binomial(1, self.cr1[c_class])
 
         # extracting promo assigned to the customer
+        print(matching_prob)
+        print()
+        print(matching_prob[c_class] / expected_customers[c_class] * np.sum(expected_customers))
+
         promo = np.random.choice([0, 1, 2, 3], p=matching_prob[c_class] / expected_customers[c_class] * np.sum(expected_customers))
 
         # reward in order to update cr2

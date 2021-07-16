@@ -20,6 +20,10 @@ for e in tqdm(range(config_5.N_EXPS)):
         matching_values, matching_mask = h_learner.compute_matching()
         daily_values.append(np.sum(matching_values))
 
+        print('_____________')
+        print(np.sum(matching_mask, axis=1))
+        print('_____________')
+
         # Compute matching_prob
         matching_prob = h_learner.compute_matching_prob(matching_mask)
 
