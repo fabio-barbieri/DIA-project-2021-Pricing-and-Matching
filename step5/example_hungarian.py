@@ -10,12 +10,12 @@ np.random.seed(1234)
 
 values_per_exp = []
 
-for e in tqdm(range(config_5.N_EXPS)):
+for e in range(config_5.N_EXPS):
     env = Environment_5(cr1=config_5.CR1, cr2=config_5.CR2)
     h_learner = Learner_5()
 
     daily_values = []
-    for t in range(config_5.T):
+    for t in tqdm(range(config_5.T)):
         # Build the matching at the start of the day with data from t-1
         matching_values, matching_mask = h_learner.compute_matching()
         daily_values.append(np.sum(matching_values))

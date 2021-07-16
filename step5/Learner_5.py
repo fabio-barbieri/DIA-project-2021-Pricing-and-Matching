@@ -2,7 +2,6 @@
 import numpy as np
 import config_5
 from hungarian_algorithm import hungarian_algorithm
-#from hung import hungarian_algorithm
 
 np.random.seed(1234)
 
@@ -44,7 +43,6 @@ class Learner_5:
         # hungarian algorithm starting matrix
         #matrix = self.build_matrix()
         matrix = 100 * np.random.rand(np.sum(self.expected_customers), np.sum(self.expected_customers))
-        #return hungarian_algorithm(matrix, self.expected_customers)
         return hungarian_algorithm(matrix)
 
 
