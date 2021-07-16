@@ -21,7 +21,7 @@ class Learner_5:
         matrix = np.zeros((4, 0))
         sampled_cr1 = np.random.beta(self.beta_cr1[:, 0], self.beta_cr1[:, 1])
         sampled_cr2 = np.random.beta(self.beta_cr2[:, :, 0], self.beta_cr2[:, :, 1])
-        profit = sampled_cr1 * (config_5.MARGINS_1 + sampled_cr2 * config_5.MARGINS_2)
+        profit = sampled_cr1 * (config_5.MARGIN_1 + sampled_cr2 * config_5.MARGINS_2)
 
         # First set integers p1, p2, p3 and the remaining are p0 
         n_promos = (config_5.PROMO_PROB[1 :] * matrix_dim).astype(int)
