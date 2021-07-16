@@ -1,8 +1,8 @@
 # THIS IS GOING TO BE THE SUPERCLASS OF THE THOMPSON SAMPLING AND GREEDY ALGORITHMS LEARNERS
 import numpy as np
 import config_5
-#from hungarian_algorithm import hungarian_algorithm
-from hung import hungarian_algorithm
+from hungarian_algorithm import hungarian_algorithm
+#from hung import hungarian_algorithm
 
 np.random.seed(1234)
 
@@ -43,8 +43,9 @@ class Learner_5:
     def compute_matching(self):
         # hungarian algorithm starting matrix
         #matrix = self.build_matrix()
-        matrix = 1
-        return hungarian_algorithm(matrix, self.expected_customers)
+        matrix = 100 * np.random.rand(self.expected_customers, self.expected_customers)
+        #return hungarian_algorithm(matrix, self.expected_customers)
+        return hungarian_algorithm(matrix)
 
 
     def compute_matching_prob(self, matching_mask):

@@ -112,8 +112,8 @@ def final_assignment(initial_matrix, m):
     while(has_zeros(m)):
         i, j = first_zero(m)
         assignment[i, j] = 1
-        m[i, :] +=1
-        m[:, j] +=1
+        m[i, :] += 1
+        m[:, j] += 1
         assignment= assignment_single_zero_lines(m, assignment)
     return assignment * initial_matrix, assignment
 
