@@ -41,9 +41,9 @@ class Learner_5:
 
     def compute_matching(self):
         # hungarian algorithm starting matrix
-        matrix = self.build_matrix()
-
-        return hungarian_algorithm(matrix)
+        #matrix = self.build_matrix()
+        matrix = 1
+        return hungarian_algorithm(matrix, self.expected_customers)
 
 
     def compute_matching_prob(self, matching_mask):
