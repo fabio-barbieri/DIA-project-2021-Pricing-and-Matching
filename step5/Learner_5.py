@@ -14,6 +14,47 @@ class Learner_5:
         self.beta_cr1 = np.ones((4, 2))
         self.beta_cr2 = np.ones((4, 4, 2))
 
+
+    def build_matrix(self):
+        matrix_dim = np.sum(self.expected_customers)
+
+        matrix = np.zeros((4, 0))
+        sampled_cr1 = np.random.beta(self.beta_cr1[:, 0], self.beta_cr1[:, 1])
+        sampled_cr2 = np.random.beta(self.beta_cr2[:, :, 0], self.beta_cr2[:, :, 1])
+        profit = sampled_cr1 * (config_5.MARGINS_1 + sampled_cr2 * config_5.MARGINS_2)
+
+        # First set integers p1, p2, p3 and the remaining are p0 
+        n_promos = (config_5.PROMO_PROB[1 :] * matrix_dim).astype(int)
+        n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
+
+        # repeat columns
+        matrix = np.column_stack([matrix, np.repeat(profit, n_promos, axis=1)])
+
+        # repeat rows
+        matrix = np.repeat(matrix, self.expected_customers, axis=0)
+
+        return matrix
+
+
+    def compute_matching(self):
+        # hungarian algorithm starting matrix
+        matrix = self.build_matrix()
+
+        return hungarian_algorithm(matrix)
+
+
+    def compute_matching_prob(self, matching_mask):
+        # inserted 0 at the start of idxs arrays, for ease of computation of the slices used in the return statement
+        customers_idxs = np.insert(np.cumsum(self.expected_customers), 0, 0)
+        promo_idxs = np.insert(np.cumsum(self.n_promos), 0, 0)
+
+        matching_prob = np.array([np.sum(matching_mask[customers_idxs[i] : customers_idxs[i + 1], promo_idxs[j] : promo_idxs[j + 1]])
+                                 for i in range(4) for j in range(4)]).reshape((4, 4))
+
+        # returning a (4, 4) matrix with P(class, promo) (aka MATCHING_PROB)
+        return matching_prob / np.sum(self.expected_customers)
+
+
     def update_betas(self, reward1, reward2, c_class, promo):
         # Update the parameters of the betas according to the rewards and considering that the average num
         # of customers per class must be considered
@@ -34,47 +75,6 @@ class Learner_5:
         self.m = (s_2 * x_bar + m * sigma_2) / (s_2 + sigma_2)
         self.s_2 = (s_2 * sigma_2) / (s_2 + sigma_2)
         self.expected_customers = np.random.normal(self.m, np.sqrt(self.s_2)).astype(int)
-
-
-    def compute_matching(self):
-        # hungarian algorithm starting matrix
-        matrix = self.build_matrix()
-
-        return hungarian_algorithm(matrix)
-
-    def build_matrix(self):
-        matrix_dim = np.sum(self.expected_customers)
-        matrix = np.array([])
-
-        # array containing the number of promos, assigned by the marketing unit
-        n_promos = np.array([int(config_5.PROMO_PROB[i] * matrix_dim) for i in range(1, 4)])
-        n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
-
-        customer0_row = np.array([])
-        customer1_row = np.array([])
-        customer2_row = np.array([])
-        customer3_row = np.array([])
-
-        for i, n_promo in enumerate(n_promos):
-            customer0_row = np.append(customer0_row, [np.random.beta(self.beta_cr1[0, 0], self.beta_cr1[0, 1]) * (config_5.MARGIN_1 + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 0, 0], self.beta_cr2[i, 0, 1])) for _ in range(n_promo)])
-            customer1_row = np.append(customer1_row, [np.random.beta(self.beta_cr1[1, 0], self.beta_cr1[1, 1]) * (config_5.MARGIN_1 + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 1, 0], self.beta_cr2[i, 1, 1])) for _ in range(n_promo)])
-            customer2_row = np.append(customer2_row, [np.random.beta(self.beta_cr1[2, 0], self.beta_cr1[2, 1]) * (config_5.MARGIN_1 + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 2, 0], self.beta_cr2[i, 2, 1])) for _ in range(n_promo)])
-            customer3_row = np.append(customer3_row, [np.random.beta(self.beta_cr1[3, 0], self.beta_cr1[3, 1]) * (config_5.MARGIN_1 + config_5.MARGINS_2[i] * np.random.beta(self.beta_cr2[i, 3, 0], self.beta_cr2[i, 3, 1])) for _ in range(n_promo)])
-
-        for i, num in enumerate(self.expected_customers):
-            for _ in range(num):
-                if i == 0:
-                    matrix = np.concatenate((matrix, customer0_row), axis=0)
-                elif i == 1:
-                    matrix = np.concatenate((matrix, customer1_row), axis=0)
-                elif i == 2:
-                    matrix = np.concatenate((matrix, customer2_row), axis=0)
-                else:
-                    matrix = np.concatenate((matrix, customer3_row), axis=0)
-
-        matrix = np.reshape(matrix, (matrix_dim, matrix_dim))
-
-        return matrix
 
 
 if __name__ == '__main__':

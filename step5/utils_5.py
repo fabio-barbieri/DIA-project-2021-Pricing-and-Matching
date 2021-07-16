@@ -74,39 +74,29 @@ def cr1(price,cl):  # conversion rates for prices of item 1
     return np.exp(0.02*(M-price))/np.exp(0.02*(M-m+2))
 
 
-def build_optimal_matching(num_customers, promo_prob, conv1, conv2, margin_1, margins_2):
+def build_matrix(num_customers, promo_prob, conv1, conv2, margin_1, margins_2):
     matrix_dim = np.sum(num_customers)
-    matrix = np.array([])
 
-    # array containing the number of promos, assigned by the marketing unit
-    n_promos = np.array([int(promo_prob[i] * matrix_dim) for i in range(1, 4)])
+    matrix = np.zeros((4, 0))
+    profit = conv1 * (margin_1 + conv2 * margins_2)
+
+    # First set integers p1, p2, p3 and the remaining are p0 
+    n_promos = (promo_prob[1 :] * matrix_dim).astype(int)
     n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
 
-    customer0_row = np.array([])
-    customer1_row = np.array([])
-    customer2_row = np.array([])
-    customer3_row = np.array([])
+    # repeat columns
+    matrix = np.column_stack([matrix, np.repeat(profit, n_promos, axis=1)])
 
-    for i, n_promo in enumerate(n_promos):
-        customer0_row = np.append(customer0_row, [conv1[0] * (margin_1 + margins_2[i] * conv2[0, i]) for _ in range(n_promo)])
-        customer1_row = np.append(customer1_row, [conv1[1] * (margin_1 + margins_2[i] * conv2[1, i]) for _ in range(n_promo)])
-        customer2_row = np.append(customer2_row, [conv1[2] * (margin_1 + margins_2[i] * conv2[2, i]) for _ in range(n_promo)])
-        customer3_row = np.append(customer3_row, [conv1[3] * (margin_1 + margins_2[i] * conv2[3, i]) for _ in range(n_promo)])
+    # repeat rows
+    matrix = np.repeat(matrix, num_customers, axis=0)
 
-    for i, num in enumerate(num_customers):
-        for _ in range(num):
-            if i == 0:
-                matrix = np.concatenate((matrix, customer0_row), axis=0)
-            elif i == 1:
-                matrix = np.concatenate((matrix, customer1_row), axis=0)
-            elif i == 2:
-                matrix = np.concatenate((matrix, customer2_row), axis=0)
-            else:
-                matrix = np.concatenate((matrix, customer3_row), axis=0)
+    return matrix
 
-    matrix = np.reshape(matrix, (matrix_dim, matrix_dim))
+
+def build_optimal_matching(num_customers, promo_prob, conv1, conv2, margin_1, margins_2):
+    matrix = build_matrix(num_customers, promo_prob, conv1, conv2, margin_1, margins_2)
 
     # computing optimal value for plotting purposes
-    optimal_value = np.sum(hungarian_algorithm(matrix))
+    optimal_value = np.sum(hungarian_algorithm(matrix)[0])
 
     return optimal_value

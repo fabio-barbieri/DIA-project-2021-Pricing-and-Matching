@@ -17,14 +17,18 @@ for e in tqdm(range(config_5.N_EXPS)):
     daily_values = []
     for t in range(config_5.T):
         # Build the matching at the start of the day with data from t-1
-        daily_values.append(np.sum(h_learner.compute_matching()))
+        matching_values, matching_mask = h_learner.compute_matching()
+        daily_values.append(np.sum(matching_values))
+
+        # Compute matching_prob
+        matching_prob = h_learner.compute_matching_prob(matching_mask)
 
         # Observe the actual number of arrived customers and their order
         customer_arrivals, current_daily_customers = env.customers()
 
         # Simulate the rewards and update the betas
         for c_class in customer_arrivals:
-            reward1, reward2, promo = env.round(c_class)
+            reward1, reward2, promo = env.round(c_class, matching_prob)
             h_learner.update_betas(reward1, reward2, c_class, promo)
 
         # Compute posterior at the end of the day
