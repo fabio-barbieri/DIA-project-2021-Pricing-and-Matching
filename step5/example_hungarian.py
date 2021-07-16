@@ -28,7 +28,7 @@ for e in tqdm(range(config_5.N_EXPS)):
 
         # Simulate the rewards and update the betas
         for c_class in customer_arrivals:
-            reward1, reward2, promo = env.round(c_class, matching_prob)
+            reward1, reward2, promo = env.round(c_class, matching_prob, current_daily_customers)
             h_learner.update_betas(reward1, reward2, c_class, promo)
 
         # Compute posterior at the end of the day
