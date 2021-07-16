@@ -41,8 +41,8 @@ class Learner_5:
 
     def compute_matching(self):
         # hungarian algorithm starting matrix
-        #matrix = self.build_matrix()
-        matrix = 100 * np.random.rand(np.sum(self.expected_customers), np.sum(self.expected_customers))
+        matrix = self.build_matrix()
+        #matrix = 100 * np.random.rand(np.sum(self.expected_customers), np.sum(self.expected_customers))
         return hungarian_algorithm(matrix)
 
 

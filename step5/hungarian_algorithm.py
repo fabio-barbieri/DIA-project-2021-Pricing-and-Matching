@@ -1,5 +1,6 @@
 import numpy as np
 import copy
+from scipy.optimize import linear_sum_assignment
 
 def step1(m):
     return m - np.min(m, axis=1).reshape((m.shape[0], 1))
@@ -120,13 +121,20 @@ def final_assignment(initial_matrix, m):
 
 def hungarian_algorithm(matrix):
     m = np.max(matrix) - matrix
-    step1(m)
-    step2(m)
-    n_lines = 0
-    max_length = np.maximum(m.shape[0], m.shape[1])
-    while n_lines != max_length:
-       lines = step3(m)
-       n_lines = len(lines[0]) + len(lines[1])
-       if n_lines != max_length:
-            step4(m, lines[0], lines[1])
-    return final_assignment(matrix, m)
+    row, col = linear_sum_assignment(m)
+    matching_mask = np.zeros(matrix.shape, dtype=int)
+    matching_mask[row, col] = 1
+    return matching_mask * matrix, matching_mask
+
+##def hungarian_algorithm(matrix):
+#    m = np.max(matrix) - matrix
+#    step1(m)
+#    step2(m)
+#    n_lines = 0
+#    max_length = np.maximum(m.shape[0], m.shape[1])
+#    while n_lines != max_length:
+#       lines = step3(m)
+#       n_lines = len(lines[0]) + len(lines[1])
+#       if n_lines != max_length:
+#            step4(m, lines[0], lines[1])
+#    return final_assignment(matrix, m)
