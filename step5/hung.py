@@ -130,4 +130,5 @@ def hungarian_algorithm(matrix, dim):
     #    if n_lines != max_length:
     #         step4(m, lines[0], lines[1])
     # return final_assignment(matrix, m)
-    return np.eye(dim)
+    a = 1
+    return np.eye(np.sum(dim))
