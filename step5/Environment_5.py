@@ -32,6 +32,8 @@ class Environment_5():
         print(matching_prob)
         print()
         print(matching_prob[c_class] / expected_customers[c_class] * np.sum(expected_customers))
+        print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+
 
         promo = np.random.choice([0, 1, 2, 3], p=matching_prob[c_class] / expected_customers[c_class] * np.sum(expected_customers))
 
