@@ -108,13 +108,13 @@ def assignment_single_zero_lines(m, assignment):
 
 def final_assignment(initial_matrix, m):
     assignment = np.zeros(m.shape, dtype=int)
-    assignment = assignment_single_zero_lines(initial_matrix, m, assignment)
+    assignment = assignment_single_zero_lines(m, assignment)
     while(has_zeros(m)):
         i, j = first_zero(m)
         assignment[i, j] = 1
         m[i, :] +=1
         m[:, j] +=1
-        assignment= assignment_single_zero_lines(initial_matrix, m, assignment)
+        assignment= assignment_single_zero_lines(m, assignment)
     return assignment * initial_matrix, assignment
 
 
