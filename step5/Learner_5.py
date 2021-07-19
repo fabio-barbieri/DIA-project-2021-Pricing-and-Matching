@@ -32,7 +32,8 @@ class Learner_5:
 
         sampled_cr1 = np.random.beta(self.beta_cr1[:, 0], self.beta_cr1[:, 1])
         sampled_cr2 = np.random.beta(self.beta_cr2[:, :, 0], self.beta_cr2[:, :, 1])
-        profit = sampled_cr1 * (self.margin_1 + sampled_cr2 * self.margins_2)
+        # profit = sampled_cr1.reshape((4, 1)) * (self.margin_1 + sampled_cr2 * self.margins_2) ###################################################################
+        profit = sampled_cr1 * (self.margin_1 + sampled_cr2 * self.margins_2)                   ###################################################################
 
         # repeat columns
         #matrix = np.column_stack([matrix, np.repeat(profit, self.n_promos, axis=1)])

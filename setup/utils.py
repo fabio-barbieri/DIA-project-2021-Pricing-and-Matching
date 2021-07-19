@@ -93,7 +93,8 @@ def build_matrix(num_customers, promo_prob, cr1, cr2, margin_1, margins_2):
     n_promos = (promo_prob[1 :] * matrix_dim).astype(int)
     n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
 
-    profit = cr1 * (margin_1 + cr2 * margins_2)
+    # profit = cr1.reshape((4, 1)) * (margin_1 + cr2 * margins_2) ##################################################
+    profit = cr1 * (margin_1 + cr2 * margins_2)                   ##################################################
 
     # repeat columns
     matrix = np.repeat(profit, n_promos, axis=1)
@@ -119,7 +120,7 @@ if __name__ == '__main__':
     T = 365
     config['T'] = T
 
-    n_exps = 200
+    n_exps = 30
     config['n_exps'] = n_exps
 
     n_arms = 10

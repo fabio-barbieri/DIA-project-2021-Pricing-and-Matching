@@ -1,6 +1,6 @@
 {
     "T": 365,
-    "n_exps": 200,
+    "n_exps": 30,
     "n_arms": 10,
     "num_customers": [
         20,
