@@ -78,48 +78,35 @@ def profit(i, cr1, margin1, cr2, margins2, matching, num_customers, step):
     tot_customers = np.sum(num_customers) if step == 4 else 1
 
     matching_prob = matching / np.expand_dims(num_customers, axis=1) * tot_customers
-    a = cr1[i] * (margin1 + np.dot(cr2 * matching_prob, margins2)) # 4x1 * (1x1 + dot(4x4 * 4x4 + 4x1)) = 
-                                                                # = 4x1 * (1x1 + dot(4x4, 4x1) = 
-                                                                # = 4x1 * (1x1 + 4x1) = 
-                                                                # = 4x1 * 4x1 = 
-                                                                # = 4x1
+    a = cr1[i] * (margin1 + np.dot(cr2 * matching_prob, margins2))  # 4x1 * (1x1 + dot(4x4 * 4x4 + 4x1)) = 
+                                                                    # = 4x1 * (1x1 + dot(4x4, 4x1) = 
+                                                                    # = 4x1 * (1x1 + 4x1) = 
+                                                                    # = 4x1 * 4x1 = 
+                                                                    # = 4x1
     return np.dot(a, num_customers)
 
-# Opt matching for step 5 --------------------------------------------------------------------------------------
-def opt_matching(num_customers, promo_prob, conv1, conv2, margin_1, margins_2):
+# Matrix building for step 5 opt
+def build_matrix(num_customers, promo_prob, cr1, cr2, margin_1, margins_2):
     matrix_dim = np.sum(num_customers)
-    matrix = np.array([])
 
-    # array containing the number of promos, assigned by the marketing unit
-    n_promos = np.array([int(promo_prob[i] * matrix_dim) for i in range(1, 4)])
+    # First set integers p1, p2, p3 and the remaining are p0 
+    n_promos = (promo_prob[1 :] * matrix_dim).astype(int)
     n_promos = np.insert(n_promos, 0, matrix_dim - np.sum(n_promos))
 
-    customer0_row = np.array([])
-    customer1_row = np.array([])
-    customer2_row = np.array([])
-    customer3_row = np.array([])
+    profit = cr1 * (margin_1 + cr2 * margins_2)
 
-    for i, n_promo in enumerate(n_promos):
-        customer0_row = np.append(customer0_row, [conv1[0] * (margin_1 + margins_2[i] * conv2[0, i]) for _ in range(n_promo)])
-        customer1_row = np.append(customer1_row, [conv1[1] * (margin_1 + margins_2[i] * conv2[1, i]) for _ in range(n_promo)])
-        customer2_row = np.append(customer2_row, [conv1[2] * (margin_1 + margins_2[i] * conv2[2, i]) for _ in range(n_promo)])
-        customer3_row = np.append(customer3_row, [conv1[3] * (margin_1 + margins_2[i] * conv2[3, i]) for _ in range(n_promo)])
+    # repeat columns
+    matrix = np.repeat(profit, n_promos, axis=1)
 
-    for i, num in enumerate(num_customers):
-        for _ in range(num):
-            if i == 0:
-                matrix = np.concatenate((matrix, customer0_row), axis=0)
-            elif i == 1:
-                matrix = np.concatenate((matrix, customer1_row), axis=0)
-            elif i == 2:
-                matrix = np.concatenate((matrix, customer2_row), axis=0)
-            else:
-                matrix = np.concatenate((matrix, customer3_row), axis=0)
+    # repeat rows
+    matrix = np.repeat(matrix, num_customers, axis=0)
 
-    matrix = np.reshape(matrix, (matrix_dim, matrix_dim))
+    return matrix
 
-    # computing optimal value for plotting purposes
-    optimal_value = np.sum(hungarian_algorithm(matrix))
+# Opt matching for step 5 --------------------------------------------------------------------------------------
+def opt_matching(num_customers, promo_prob, cr1, cr2, margin_1, margins_2):
+    matrix = build_matrix(num_customers, promo_prob, cr1, cr2, margin_1, margins_2)
+    optimal_value = np.sum(hungarian_algorithm(matrix)[0])
 
     return optimal_value
 
@@ -132,7 +119,7 @@ if __name__ == '__main__':
     T = 365
     config['T'] = T
 
-    n_exps = 10
+    n_exps = 200
     config['n_exps'] = n_exps
 
     n_arms = 10
@@ -192,8 +179,6 @@ if __name__ == '__main__':
     sd_customers = np.array([2, 4, 1, 3])
     step4['sd_customers'] = sd_customers.tolist()
 
-    #tot_customers ????
-
     step4['margins_1'] = margins_1.tolist()
 
     step4['cr1'] = cr1_list
@@ -222,15 +207,13 @@ if __name__ == '__main__':
     # STEP 5 ------------------------------------------------------------------
     step5 = {}
 
-    step5['sd_customers'] = sd_customers.tolist()
-
-    #tot_customers ????
-
     margin_1 = 200
     step5['margin_1'] = margin_1
 
     cr1 = np.array([compute_cr1(margin_1, c_class) for c_class in range(len(num_customers))])
     step5['cr1'] = cr1.tolist()
+
+    step5['sd_customers'] = sd_customers.tolist()
     
     step5['promo_prob'] = promo_prob.tolist()
 
@@ -258,7 +241,7 @@ if __name__ == '__main__':
     step8 = {}
     #TODO
 
-    with open('config.json', 'w') as config_file:
+    with open('setup/config.json', 'w') as config_file:
         json.dump(config, config_file, indent=4)
         config_file.close()
 

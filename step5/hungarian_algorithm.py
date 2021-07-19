@@ -9,6 +9,7 @@ def step1(m):
 def step2(m):
     return m - np.min(m, axis=0)
 
+
 def min_n_zeros(m, assigned):
     min_n = m.shape[1]
     if np.sum(m == 0) == 0:

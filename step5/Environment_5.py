@@ -1,18 +1,19 @@
 import numpy as np
-import config_5
 
 
 class Environment_5():
-    def __init__(self, cr1, cr2):
+    def __init__(self, cr1, cr2, num_customers, sd_customers):
         self.cr1 = cr1
         self.cr2 = cr2
+        self.num_customers = num_customers
+        self.sd_customers = sd_customers
 
     def customers(self):
         # extracting number of customer per class given a normal distribution
-        tmp0 = np.zeros(shape=int(np.random.normal(config_5.NUM_CUSTOMERS[0], config_5.SD_CUSTOMERS[0])), dtype=int)
-        tmp1 = np.ones(shape=int(np.random.normal(config_5.NUM_CUSTOMERS[1], config_5.SD_CUSTOMERS[1])), dtype=int)
-        tmp2 = np.zeros(shape=int(np.random.normal(config_5.NUM_CUSTOMERS[2], config_5.SD_CUSTOMERS[2])), dtype=int) + 2
-        tmp3 = np.zeros(shape=int(np.random.normal(config_5.NUM_CUSTOMERS[3], config_5.SD_CUSTOMERS[3])), dtype=int) + 3
+        tmp0 = np.zeros(shape=int(np.random.normal(self.num_customers[0], self.sd_customers[0])), dtype=int)
+        tmp1 = np.ones(shape=int(np.random.normal(self.num_customers[1], self.sd_customers[1])), dtype=int)
+        tmp2 = np.zeros(shape=int(np.random.normal(self.num_customers[2], self.sd_customers[2])), dtype=int) + 2
+        tmp3 = np.zeros(shape=int(np.random.normal(self.num_customers[3], self.sd_customers[3])), dtype=int) + 3
         customer_arrivals = np.array([], dtype=int)
         customer_arrivals = np.concatenate((customer_arrivals, tmp0), axis=None)
         customer_arrivals = np.concatenate((customer_arrivals, tmp1), axis=None)

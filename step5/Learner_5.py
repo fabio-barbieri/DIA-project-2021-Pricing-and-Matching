@@ -1,37 +1,42 @@
 # THIS IS GOING TO BE THE SUPERCLASS OF THE THOMPSON SAMPLING AND GREEDY ALGORITHMS LEARNERS
 import numpy as np
-import config_5
 from hungarian_algorithm import hungarian_algorithm
 
 np.random.seed(1234)
 
 class Learner_5:
-    def __init__(self):
-        self.m = np.array([config_5.TOT_CUSTOMERS // 4 for _ in range(4)])  # Non-informative prior
+    def __init__(self, tot_customers, promo_prob, margin_1, margins_2, sd_customers):
+        self.promo_prob = promo_prob
+        self.margin_1 = margin_1
+        self.margins_2 = margins_2
+        self.sd_customers = sd_customers
+        
+        self.m = np.array([tot_customers // 4 for _ in range(4)])  # Non-informative prior
         self.s_2 = np.array([1.0, 1.0, 1.0, 1.0])
         self.expected_customers = np.random.normal(self.m, np.sqrt(self.s_2)).astype(int)  # initial number of expected customers
                                                                                            # per class, according to our prior                                                               
         self.beta_cr1 = np.ones((4, 2))
         self.beta_cr2 = np.ones((4, 4, 2))
 
-        self.n_promos = (config_5.PROMO_PROB[1 :] * np.sum(self.expected_customers)).astype(int)
+        self.n_promos = (promo_prob[1 :] * np.sum(self.expected_customers)).astype(int)
         self.n_promos = np.insert(self.n_promos, 0, np.sum(self.expected_customers) - np.sum(self.n_promos))
 
 
     def build_matrix(self):
         matrix_dim = np.sum(self.expected_customers)
-
-        matrix = np.zeros((4, 0))
-        sampled_cr1 = np.random.beta(self.beta_cr1[:, 0], self.beta_cr1[:, 1])
-        sampled_cr2 = np.random.beta(self.beta_cr2[:, :, 0], self.beta_cr2[:, :, 1])
-        profit = sampled_cr1 * (config_5.MARGIN_1 + sampled_cr2 * config_5.MARGINS_2)
+        #matrix = np.zeros((4, 0))
 
         # First set integers p1, p2, p3 and the remaining are p0 
-        self.n_promos = (config_5.PROMO_PROB[1 :] * matrix_dim).astype(int)
+        self.n_promos = (self.promo_prob[1 :] * matrix_dim).astype(int)
         self.n_promos = np.insert(self.n_promos, 0, matrix_dim - np.sum(self.n_promos))
 
+        sampled_cr1 = np.random.beta(self.beta_cr1[:, 0], self.beta_cr1[:, 1])
+        sampled_cr2 = np.random.beta(self.beta_cr2[:, :, 0], self.beta_cr2[:, :, 1])
+        profit = sampled_cr1 * (self.margin_1 + sampled_cr2 * self.margins_2)
+
         # repeat columns
-        matrix = np.column_stack([matrix, np.repeat(profit, self.n_promos, axis=1)])
+        #matrix = np.column_stack([matrix, np.repeat(profit, self.n_promos, axis=1)])
+        matrix = np.repeat(profit, self.n_promos, axis=1)
 
         # repeat rows
         matrix = np.repeat(matrix, self.expected_customers, axis=0)
@@ -71,20 +76,10 @@ class Learner_5:
 
 
     def compute_posterior(self, x_bar):
-        sigma_2 = config_5.SD_CUSTOMERS ** 2
+        sigma_2 = self.sd_customers ** 2
         m = self.m
         s_2 = self.s_2
 
         self.m = (s_2 * x_bar + m * sigma_2) / (s_2 + sigma_2)
         self.s_2 = (s_2 * sigma_2) / (s_2 + sigma_2)
         self.expected_customers = np.random.normal(self.m, np.sqrt(self.s_2)).astype(int)
-
-
-if __name__ == '__main__':
-    l = Learner_5()
-    l.compute_matching()
-
-
-
-
-
