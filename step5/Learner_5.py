@@ -16,7 +16,7 @@ class Learner_5:
         self.s_2 = np.array([1.0, 1.0, 1.0, 1.0])
 
         clip_a = np.zeros(4)
-        clip_b = np.array([self.m * 5 / 2])  
+        clip_b = self.m * 5 / 2
         a, b = (clip_a - self.m) / np.sqrt(self.s_2), (clip_b - self.m) / np.sqrt(self.s_2) 
         self.expected_customers = truncnorm.rvs(a, b, self.m, np.sqrt(self.s_2)).astype(int) # initial number of expected customers
                                                                                              # per class, according to our prior                                                               
@@ -87,6 +87,6 @@ class Learner_5:
         self.s_2 = (s_2 * sigma_2) / (s_2 + sigma_2)
 
         clip_a = np.zeros(4)
-        clip_b = np.array([self.m * 5 / 2])  
+        clip_b = self.m * 5 / 2
         a, b = (clip_a - self.m) / np.sqrt(self.s_2), (clip_b - self.m) / np.sqrt(self.s_2) 
         self.expected_customers = truncnorm.rvs(a, b, self.m, np.sqrt(self.s_2)).astype(int)

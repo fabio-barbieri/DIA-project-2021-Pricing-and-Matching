@@ -15,7 +15,7 @@ class Environment_4():
         # extracting number of customer per class given a normal distribution
 
         clip_a = np.zeros(4)
-        clip_b = np.array([self.num_customers * 5 / 2])  
+        clip_b = self.num_customers * 5 / 2  
         a, b = (clip_a - self.num_customers) / self.sd_customers, (clip_b - self.num_customers) / self.sd_customers 
             
         customers = truncnorm.rvs(a, b, self.num_customers, self.sd_customers).astype(int)    
