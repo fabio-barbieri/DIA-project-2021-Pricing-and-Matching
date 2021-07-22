@@ -5,8 +5,6 @@ from tqdm import tqdm
 from Learner_5 import *
 import matplotlib.pyplot as plt
 
-np.random.seed(1234)
-
 with open('setup/config.json') as config_file:
     config = json.load(config_file)
     config_file.close()

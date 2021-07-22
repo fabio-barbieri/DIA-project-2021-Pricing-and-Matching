@@ -119,10 +119,10 @@ if __name__ == '__main__':
     T = 365
     config['T'] = T
 
-    n_exps = 30
+    n_exps = 50
     config['n_exps'] = n_exps
 
-    n_arms = 10
+    n_arms = 50
     config['n_arms'] = n_arms
 
     num_customers = np.array([20, 40, 10, 30])
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     # STEP 4 ------------------------------------------------------------------
     step4 = {}
 
-    sd_customers = np.array([2, 4, 1, 3])
+    sd_customers = np.array([5, 10, 3, 7])
     step4['sd_customers'] = sd_customers.tolist()
 
     step4['margins_1'] = margins_1.tolist()

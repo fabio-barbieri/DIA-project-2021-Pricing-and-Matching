@@ -31,12 +31,8 @@ tmp0 = np.zeros(shape=NUM_CUSTOMERS[0], dtype=int)
 tmp1 = np.ones(shape=NUM_CUSTOMERS[1], dtype=int)
 tmp2 = np.zeros(shape=NUM_CUSTOMERS[2], dtype=int) + 2
 tmp3 = np.zeros(shape=NUM_CUSTOMERS[3], dtype=int) + 3
+customer_arrivals = np.concatenate((tmp0, tmp1, tmp2, tmp3), axis=None)
 
-customer_arrivals = np.array([], dtype=int)
-customer_arrivals = np.concatenate((customer_arrivals, tmp0), axis=None)
-customer_arrivals = np.concatenate((customer_arrivals, tmp1), axis=None)
-customer_arrivals = np.concatenate((customer_arrivals, tmp2), axis=None)
-customer_arrivals = np.concatenate((customer_arrivals, tmp3), axis=None)
 
 
 for e in tqdm(range(N_EXPS)):
