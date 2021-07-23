@@ -2,6 +2,7 @@ import numpy as np
 
 np.random.seed(1234)
 
+
 class Environment_3:
     def __init__(self, n_arms, matching, cr1, cr2):
         self.n_arms = n_arms

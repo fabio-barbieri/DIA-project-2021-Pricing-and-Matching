@@ -10,5 +10,5 @@ class Learner_3:
         self.cr2 = cr2
 
     def update_observations(self, pulled_arm, reward):
-        self.rewards_per_arm[pulled_arm].append(reward)  # ... (for UCB ???)
+        self.rewards_per_arm[pulled_arm].append(reward)
         self.collected_rewards.append(reward)  # List of N_EXPS arrays of shape (T, 4)
