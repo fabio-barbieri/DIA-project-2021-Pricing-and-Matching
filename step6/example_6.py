@@ -11,7 +11,7 @@ ts_reward_per_experiment = []  # Collected reward
 
 opt = []
 
-for e in tqdm(range(config_6.N_EXPS)):
+for e in range(config_6.N_EXPS):
     env = Environment_6(num_customers=config_6.NUM_CUSTOMERS, 
                         sd_customers=config_6.SD_CUSTOMERS, 
                         n_arms_1=config_6.N_ARMS_1, 
@@ -21,7 +21,7 @@ for e in tqdm(range(config_6.N_EXPS)):
 
     daily_rewards = []
 
-    for t in range(config_6.T):
+    for t in tqdm(range(config_6.T)):
 
         customer_arrivals, current_daily_customers = env.customers()
 
