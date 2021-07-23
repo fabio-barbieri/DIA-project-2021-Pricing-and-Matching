@@ -119,7 +119,7 @@ if __name__ == '__main__':
     T = 365
     config['T'] = T
 
-    n_exps = 50
+    n_exps = 200
     config['n_exps'] = n_exps
 
     n_arms = 50
