@@ -1,5 +1,6 @@
 import numpy as np
 import utils_6
+from hungarian_algorithm_6 import hungarian_algorithm
 
 T = 365  # Time horizon
 N_EXPS = 1  # Number of experiments
@@ -33,3 +34,37 @@ for margin in MARGINS_2:
         tmp.append(cr)
     CR2.append(tmp)
 
+print('CR1:' + str(CR1))
+print()
+print('CR2:' + str(CR2))
+
+def compute_opt_matching():
+        opt_value = -1
+        for arm_1 in range(N_ARMS_1):  # For every price_1
+            for arm_2 in range(N_ARMS_2):
+                #matching, value = hungarian_algorithm(self.build_matrix(arm_1, arm_2, upper_bound_1, upper_bound_2))
+                matching, mask = hungarian_algorithm(build_matrix(arm_1, arm_2))
+                value = np.sum(matching)
+                if value > opt_value:
+                    opt_value = value
+                    idx1 = arm_1
+                    idx2 = arm_2
+
+        return opt_value  #, (idx1, idx2)
+
+def build_matrix(self, idx1, idx2): 
+        n_promos = (PROMO_PROB[1 :] * TOT_CUSTOMERS).astype(int)
+        n_promos = np.insert(n_promos, 0, TOT_CUSTOMERS - np.sum(n_promos))
+
+        profit =   CR1 * (MARGINS_1[idx1] + CR2 * MARGINS_2[idx2])
+
+        # repeat columns
+        matrix = np.repeat(profit, n_promos, axis=1)
+
+        # repeat rows
+        matrix = np.repeat(matrix, NUM_CUSTOMERS, axis=0)
+
+        return matrix
+
+
+OPT = compute_opt_matching

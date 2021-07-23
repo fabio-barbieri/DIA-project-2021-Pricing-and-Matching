@@ -34,7 +34,6 @@ class TS_Learner_3(Learner_3):
         return np.argmax(profits)
 
     def update(self, pulled_arm, reward, c_class):
-        # self.update_observations(pulled_arm, reward)
         # Update the parameters of the betas according to the rewards and considering that the average num
         # of customers per class must be considered
         self.beta_parameters[pulled_arm, c_class, 0] = self.beta_parameters[pulled_arm, c_class, 0] + reward

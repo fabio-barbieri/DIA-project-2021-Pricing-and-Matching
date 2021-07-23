@@ -28,12 +28,6 @@ class Learner_5:
 
 
     def build_matrix(self):
-        matrix_dim = np.sum(self.expected_customers)
-
-        # First set integers p1, p2, p3 and the remaining are p0 
-        self.n_promos = (self.promo_prob[1 :] * matrix_dim).astype(int)
-        self.n_promos = np.insert(self.n_promos, 0, matrix_dim - np.sum(self.n_promos))
-
         sampled_cr1 = np.random.beta(self.beta_cr1[:, 0], self.beta_cr1[:, 1])
         sampled_cr2 = np.random.beta(self.beta_cr2[:, :, 0], self.beta_cr2[:, :, 1])
         profit = sampled_cr1.reshape((4, 1)) * (self.margin_1 + sampled_cr2 * self.margins_2) 
@@ -90,3 +84,7 @@ class Learner_5:
         clip_b = self.m * 5 / 2
         a, b = (clip_a - self.m) / np.sqrt(self.s_2), (clip_b - self.m) / np.sqrt(self.s_2) 
         self.expected_customers = truncnorm.rvs(a, b, self.m, np.sqrt(self.s_2)).astype(int)
+
+        matrix_dim = np.sum(self.expected_customers)
+        self.n_promos = (self.promo_prob[1 :] * matrix_dim).astype(int)
+        self.n_promos = np.insert(self.n_promos, 0, matrix_dim - np.sum(self.n_promos))
