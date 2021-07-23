@@ -33,7 +33,7 @@ tmp2 = np.zeros(shape=NUM_CUSTOMERS[2], dtype=int) + 2
 tmp3 = np.zeros(shape=NUM_CUSTOMERS[3], dtype=int) + 3
 customer_arrivals = np.concatenate((tmp0, tmp1, tmp2, tmp3), axis=None)
 
-
+np.random.shuffle(customer_arrivals)
 
 for e in tqdm(range(N_EXPS)):
     env = Environment_3(n_arms=N_ARMS,
