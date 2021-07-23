@@ -1,6 +1,9 @@
 import numpy as np
 from scipy.stats import truncnorm
 
+#####################################################################################################
+np.random.seed(1234)                                                                       # ?????? #
+#####################################################################################################
 
 class Environment_4():
     def __init__(self, n_arms, cr1, cr2, num_customers, sd_customers, matching_prob):
@@ -25,6 +28,10 @@ class Environment_4():
         tmp2 = np.zeros(shape=customers[2], dtype=int) + 2
         tmp3 = np.zeros(shape=customers[3], dtype=int) + 3
         customer_arrivals = np.concatenate((tmp0, tmp1, tmp2, tmp3), axis=None)
+
+        #####################################################################################################
+        np.random.shuffle(customer_arrivals)                                                                #
+        #####################################################################################################
 
         current_daily_customers = np.array([len(tmp0), len(tmp1), len(tmp2), len(tmp3)])
 
