@@ -34,10 +34,6 @@ for margin in MARGINS_2:
         tmp.append(cr)
     CR2.append(tmp)
 
-print('CR1:' + str(CR1))
-print()
-print('CR2:' + str(CR2))
-
 def compute_opt_matching():
         opt_value = -1
         for arm_1 in range(N_ARMS_1):  # For every price_1
