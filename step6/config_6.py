@@ -55,7 +55,7 @@ def build_matrix(idx1, idx2):
         n_promos = (PROMO_PROB[1 :] * TOT_CUSTOMERS).astype(int)
         n_promos = np.insert(n_promos, 0, TOT_CUSTOMERS - np.sum(n_promos))
 
-        profit =   CR1[idx1] * (MARGINS_1[idx1] + CR2[idx2] * MARGINS_2[idx2])
+        profit = CR1[idx1].reshape((4, 1)) * (MARGINS_1[idx1] + CR2[idx2] * MARGINS_2[idx2])
 
         # repeat columns
         matrix = np.repeat(profit, n_promos, axis=1)

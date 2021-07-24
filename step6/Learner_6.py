@@ -14,10 +14,6 @@ class Learner_6:
         self.t1 = np.zeros((4, 1), dtype=int)
         self.t2 = np.zeros((4, 4), dtype=int)
 
-        # self.n_pulled_arm_1 = np.zeros((n_arms_1, 1))
-        # self.n_pulled_arm_2 = np.zeros((n_arms_2, 1))
-        # self.n_pulled_couple = np.zeros((n_arms_1, n_arms_2))
-
         self.m = np.array([config_6.TOT_CUSTOMERS // 4 for _ in range(4)])  # Non-informative prior
         self.s_2 = np.array([1.0, 1.0, 1.0, 1.0])
 
@@ -34,12 +30,6 @@ class Learner_6:
 
         self.beta1 = np.ones(shape=(n_arms_1, 4, 2))  # n_arms x class x beta_parameters
         self.beta2 = np.ones(shape=(n_arms_2, 4, 4, 2))  # n_arms x class x promo x beta_parameters
-
-        # self.empirical_means_1 = np.zeros((n_arms_1, 4))
-        # self.confidence_1 = np.zeros((n_arms_1, 1))
-        # self.empirical_means_2 = np.zeros((n_arms_2, 4, 4))
-        # self.confidence_2 = np.zeros((n_arms_2, 1, 1))
-
 
     def compute_posterior(self, x_bar):
         sigma_2 = config_6.SD_CUSTOMERS ** 2
@@ -68,31 +58,6 @@ class Learner_6:
         if reward1 == 1:
             self.beta2[pulled_arm[1], c_class, promo, 0] = self.beta2[pulled_arm[1], c_class, promo, 0] + reward2
             self.beta2[pulled_arm[1], c_class, promo, 1] = self.beta2[pulled_arm[1], c_class, promo, 1] + (1.0 - reward2)
-        #self.update_observations(pulled_arm, reward1, reward2)
-        #self.update_bounds(pulled_arm, reward1, reward2, c_class, promo)
-
-    # def update_bounds(self, pulled_arm, reward1, reward2, c_class, promo):
-    #     self.t1[c_class] += 1  # Increment the counter of entered customers
-    #     self.empirical_means_1[pulled_arm[0], c_class] = (self.empirical_means_1[pulled_arm[0], c_class] * (self.t1[c_class] - 1) + reward1) / self.t1[c_class]
-
-    #     for arm in range(self.n_arms1):
-    #         number_pulled = max(1, self.n_pulled_arm_1[arm])
-    #         self.confidence_1[arm, 0] = (2 * np.log(np.sum(self.t1)) / number_pulled) ** 0.5
-
-    #     if reward1 == 1:
-    #         self.t2[c_class, promo] += 1
-    #         self.empirical_means_2[pulled_arm[1], c_class, promo] = (self.empirical_means_2[pulled_arm[1], c_class, promo] * (self.t2[c_class, promo] - 1) + reward2) / self.t2[c_class, promo]
-
-    #         for arm in range(self.n_arms2):
-    #             number_pulled = max(1, self.n_pulled_arm_2[arm])
-    #             self.confidence_2[arm, 0, 0] = (2 * np.log(np.sum(self.t2)) / number_pulled) ** 0.5
-
-    # NOTE: pulled arm here is a tuple (pulled_arm_1, pulled_arm_2)
-    # def update_observations(self, pulled_arm, reward1, reward2):
-    #     self.n_pulled_arm_1[pulled_arm[0]] += 1
-    #     self.n_pulled_arm_2[pulled_arm[1]] += 1
-
-    #     self.n_pulled_couple[pulled_arm[0], pulled_arm[1]] += 1
 
     def compute_matching_prob(self, matching_mask):
 
@@ -121,18 +86,6 @@ class Learner_6:
         return matrix
 
     def pull_arm(self):
-        # bounds on the conversion rates that will be used to compute the matrix for the matching
-        # upper_bound_1 = self.empirical_means_1 + self.confidence_1
-        # upper_bound_2 = self.empirical_means_2 + self.confidence_2
-
-        # if np.sum(self.t1) < self.n_arms1 * self.n_arms2:
-        #     idx1 = np.sum(self.t1) // self.n_arms2
-        #     idx2 = np.sum(self.t1) % self.n_arms2
-
-        #     # building matrix in order to be able to compute total daily reward with these arms pulled
-        #     matching, value = hungarian_algorithm(self.build_matrix_optimistic(idx1, idx2, upper_bound_1, upper_bound_2))
-        #     matching_prob = self.compute_matching_prob(matching)
-        # else:
         opt_value = -1
         for arm_1 in range(self.n_arms1):  # For every price_1
             for arm_2 in range(self.n_arms2):
