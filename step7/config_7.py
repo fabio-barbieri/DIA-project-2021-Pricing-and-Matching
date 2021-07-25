@@ -1,6 +1,6 @@
 import numpy as np
-import utils_6
-from hungarian_algorithm_6 import hungarian_algorithm
+import utils_7
+from hungarian_algorithm_7 import hungarian_algorithm
 
 T = 365  # Time horizon
 N_EXPS = 1  # Number of experiments
@@ -23,14 +23,14 @@ CR2 = []
 
 # constructing matrix of conversion rates for the first product
 for margin in MARGINS_1:
-    cr = np.array([utils_6.cr1(margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
+    cr = np.array([utils_7.cr1(margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
     CR1.append(cr)
 
 # constructing matrix of conversion rates for the second product
 for margin in MARGINS_2:
     tmp = []
     for c_class in range(len(NUM_CUSTOMERS)):
-        cr = np.array([utils_6.cr2(discounted_margin, c_class) for discounted_margin in margin])
+        cr = np.array([utils_7.cr2(discounted_margin, c_class) for discounted_margin in margin])
         tmp.append(cr)
     CR2.append(tmp)
 
