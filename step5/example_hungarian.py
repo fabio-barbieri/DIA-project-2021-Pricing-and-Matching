@@ -1,9 +1,22 @@
 import json
+import config_5
 from Environment_5 import *
 import numpy as np
 from tqdm import tqdm
 from Learner_5 import *
 import matplotlib.pyplot as plt
+
+# Inititalize all constants using config_5.py
+# T = config_5.T
+# N_EXPS = config_5.N_EXPS
+# NUM_CUSTOMERS = config_5.NUM_CUSTOMERS
+# MARGIN_1 = config_5.MARGIN_1
+# CR1 = config_5.CR1
+# SD_CUSTOMERS = config_5.SD_CUSTOMERS
+# PROMO_PROB = config_5.PROMO_PROB
+# MARGINS_2 = config_5.MARGINS_2
+# CR2 = config_5.CR2
+# OPT = config_5.OPT
 
 with open('setup/config.json') as config_file:
     config = json.load(config_file)

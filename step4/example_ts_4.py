@@ -1,4 +1,5 @@
 import json
+import config_4
 import numpy as np
 import matplotlib.pyplot as plt
 from Environment_4 import *
@@ -6,6 +7,20 @@ from TS_Learner_4 import *
 from tqdm import tqdm
 
 np.random.seed(1234)
+
+# Inititalize all constants using config_4.py
+# T = config_4.T
+# N_EXPS = config_4.N_EXPS
+# N_ARMS = config_4.N_ARMS
+# NUM_CUSTOMERS = config_4.NUM_CUSTOMERS
+# MARGINS_1 = config_4.MARGINS_1
+# CR1 = config_4.CR1
+# SD_CUSTOMERS = config_4.SD_CUSTOMERS
+# PROMO_PROB = config_4.PROMO_PROB
+# MATCHING_PROB = config_4.MATCHING_PROB
+# MARGINS_2 = config_4.MARGINS_2
+# CR2 = config_4.CR2
+# OPT = config_4.OPT
 
 with open('setup/config.json') as config_file:
     config = json.load(config_file)
