@@ -28,7 +28,7 @@ class Learner_7:
         self.beta1 = np.ones(shape=(n_arms_1, 4, 2))  # n_arms x class x beta_parameters
         self.beta2 = np.ones(shape=(n_arms_2, 4, 4, 2))  # n_arms x class x promo x beta_parameters
 
-        self.window_size = window_size
+        self.window_size = window_size * np.sum(self.expected_customers)
 
         self.pulled_arms_1 = []
         self.pulled_arms_2 = []
@@ -61,39 +61,22 @@ class Learner_7:
         self.pulled_arms_2.append((pulled_arm[1], c_class, promo))
 
         for arm in range(self.n_arms1):
-            n_samples = self.pulled_arm_1.count((arm, c_class))
+            n_samples = self.pulled_arm_1[-self.window_size:].count((arm, c_class))
             cum_rew = np.sum(self.rewards_per_arm_1[arm][c_class][-n_samples:]) if n_samples > 0 else 0
             self.beta1[arm, c_class, 0] = cum_rew + 1.0
-            self.beta_parameters[arm, 1] = n_samples - cum_rew + 1.0 
+            self.beta1[arm, c_class, 1] = n_samples - cum_rew + 1.0 
 
-        ##### ARRIVATI QUI #####
-        for arm in range(self.n_arms1):
-
-        # Update the parameters of the betas according to the rewards and considering that the average num
-        # of customers per class must be considered
-        self.beta1[pulled_arm[0], c_class, 0] = self.beta1[pulled_arm[0], c_class, 0] + reward1
-        self.beta1[pulled_arm[0], c_class, 1] = self.beta1[pulled_arm[0], c_class, 1] + (1.0 - reward1)
-
-        # update beta parameters associated with conversion rates on product 2, only if the first item has been bought
-        if reward1 == 1:
-            self.beta2[pulled_arm[1], c_class, promo, 0] = self.beta2[pulled_arm[1], c_class, promo, 0] + reward2
-            self.beta2[pulled_arm[1], c_class, promo, 1] = self.beta2[pulled_arm[1], c_class, promo, 1] + (1.0 - reward2)
-
-    # def update(self, pulled_arm, reward):
-    #     self.update_observations(pulled_arm, reward)
-    #     self.pulled_arms = np.append(self.pulled_arms, pulled_arm)
-    #     for arm in range(self.n_arms):
-    #         n_samples = np.sum(self.pulled_arms[-self.window_size:] == arm)
-    #         cum_rew = np.sum(self.rewards_per_arm[arm][-n_samples:]) if n_samples > 0 else 0
-    #         self.beta_parameters[arm, 0] = cum_rew + 1.0
-    #         self.beta_parameters[arm, 1] = n_samples - cum_rew + 1.0
+        for arm in range(self.n_arms2):
+            n_samples = self.pulled_arm_2[-self.window_size:].count((arm, c_class, promo))
+            cum_rew = np.sum(self.rewards_per_arm_2[arm][c_class][promo][-n_samples:]) if n_samples > 0 else 0
+            self.beta2[arm, c_class, promo, 0] = cum_rew + 1.0
+            self.beta2[arm, c_class, promo, 1] = n_samples - cum_rew + 1.0 
 
     def update_observations(self, pulled_arm, c_class, promo, reward1, reward2):
         self.rewards_per_arm_1[pulled_arm[0][c_class]].append(reward1)
         self.rewards_per_arm_2[pulled_arm[1][c_class][promo]].append(reward1 * reward2)
 
     def compute_matching_prob(self, matching_mask):
-
         # inserted 0 at the start of idxs arrays, for ease of computation of the slices used in the return statement
         customers_idxs = np.insert(np.cumsum(self.expected_customers), 0, 0)
         promo_idxs = np.insert(np.cumsum(self.n_promos), 0, 0)

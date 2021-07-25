@@ -37,6 +37,10 @@ for margin in MARGINS_2:
 CR1 = np.array(CR1)
 CR2 = np.array(CR2)
 
+WINDOW_SIZE = int(np.sqrt(T))
+
+N_PHASES = 4
+
 def compute_opt_matching():
         opt_value = -1
         for arm_1 in range(N_ARMS_1):  # For every price_1
@@ -46,8 +50,8 @@ def compute_opt_matching():
                 value = np.sum(matching)
                 if value > opt_value:
                     opt_value = value
-                    idx1 = arm_1
-                    idx2 = arm_2
+                    # idx1 = arm_1
+                    # idx2 = arm_2
 
         return opt_value  #, (idx1, idx2)
 
