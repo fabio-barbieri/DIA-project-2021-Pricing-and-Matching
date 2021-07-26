@@ -21,32 +21,37 @@ MARGINS_2 = np.multiply(np.linspace(25, 35, N_ARMS_2).reshape((N_ARMS_2, 1)), PR
 CR1 = []
 CR2 = []
 
-# constructing matrix of conversion rates for the first product
-for margin in MARGINS_1:
-    cr = np.array([utils_7.cr1(margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
-    CR1.append(cr)
-
-# constructing matrix of conversion rates for the second product
-for margin in MARGINS_2:
-    tmp = []
-    for c_class in range(len(NUM_CUSTOMERS)):
-        cr = np.array([utils_7.cr2(discounted_margin, c_class) for discounted_margin in margin])
-        tmp.append(cr)
-    CR2.append(tmp)
-
-CR1 = np.array(CR1)
-CR2 = np.array(CR2)
-
 WINDOW_SIZE = int(np.sqrt(T))
 
 N_PHASES = 4
 
-def compute_opt_matching():
+# constructing matrix of conversion rates for the first product
+for season in range(N_PHASES):
+    tmp = []
+    for margin in MARGINS_1:
+        cr = np.array([utils_7.cr1(season, margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
+        tmp.append(cr)
+    CR1.append(tmp)
+
+# constructing matrix of conversion rates for the second product
+for season in range(N_PHASES):
+    tmp2 = []
+    for margin in MARGINS_2:
+        tmp1 = []
+        for c_class in range(len(NUM_CUSTOMERS)):
+            cr = np.array([utils_7.cr2(season, discounted_margin, c_class) for discounted_margin in margin])
+            tmp1.append(cr)
+        tmp2.append(tmp1)
+    CR2.append(tmp2)
+
+CR1 = np.array(CR1)
+CR2 = np.array(CR2)
+
+def compute_opt_matching(season):
         opt_value = -1
         for arm_1 in range(N_ARMS_1):  # For every price_1
             for arm_2 in range(N_ARMS_2):
-                #matching, value = hungarian_algorithm(self.build_matrix(arm_1, arm_2, upper_bound_1, upper_bound_2))
-                matching, mask = hungarian_algorithm(build_matrix(arm_1, arm_2))
+                matching, _ = hungarian_algorithm(build_matrix(season, arm_1, arm_2))
                 value = np.sum(matching)
                 if value > opt_value:
                     opt_value = value
@@ -55,11 +60,11 @@ def compute_opt_matching():
 
         return opt_value  #, (idx1, idx2)
 
-def build_matrix(idx1, idx2): 
+def build_matrix(season, idx1, idx2): 
         n_promos = (PROMO_PROB[1 :] * TOT_CUSTOMERS).astype(int)
         n_promos = np.insert(n_promos, 0, TOT_CUSTOMERS - np.sum(n_promos))
 
-        profit = CR1[idx1].reshape((4, 1)) * (MARGINS_1[idx1] + CR2[idx2] * MARGINS_2[idx2])
+        profit = CR1[season][idx1].reshape((4, 1)) * (MARGINS_1[idx1] + CR2[season][idx2] * MARGINS_2[idx2])
 
         # repeat columns
         matrix = np.repeat(profit, n_promos, axis=1)
@@ -69,5 +74,8 @@ def build_matrix(idx1, idx2):
 
         return matrix
 
+OPT = []
+for season in range(N_PHASES):
+    OPT.append(compute_opt_matching(season))
 
-OPT = compute_opt_matching()
+OPT = np.array(OPT)

@@ -89,7 +89,6 @@ class Learner_6:
         opt_value = -1
         for arm_1 in range(self.n_arms1):  # For every price_1
             for arm_2 in range(self.n_arms2):
-                #matching, value = hungarian_algorithm(self.build_matrix(arm_1, arm_2, upper_bound_1, upper_bound_2))
                 matching, mask = hungarian_algorithm(self.build_matrix(arm_1, arm_2))
                 value = np.sum(matching)
                 if value > opt_value:

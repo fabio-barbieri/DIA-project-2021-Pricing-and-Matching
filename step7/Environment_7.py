@@ -40,7 +40,7 @@ class Environment_7():
         return customer_arrivals, current_daily_customers
 
     def round(self, pulled_arm, c_class, matching_prob, expected_customers):
-        current_phase = self.t // self.phase_size
+        current_phase = min(self.t // self.phase_size, 3)
 
         cr1 = self.cr1[current_phase][pulled_arm[0]][c_class]
         # reward by a single customer
@@ -52,8 +52,6 @@ class Environment_7():
         cr2 = self.cr2[current_phase][pulled_arm[1]][c_class][promo]
         # reward in order to update cr2
         reward2 = np.random.binomial(1, cr2)
-
-        self.t += 1
         
         return reward1, reward2, promo
 

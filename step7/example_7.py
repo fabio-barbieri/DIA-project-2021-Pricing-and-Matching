@@ -18,7 +18,8 @@ for e in tqdm(range(config_7.N_EXPS)):
                         n_arms_2=config_7.N_ARMS_2, 
                         cr1=config_7.CR1, 
                         cr2=config_7.CR2,
-                        n_phases=config_7.N_PHASES)
+                        n_phases=config_7.N_PHASES,
+                        horizon=config_7.T)
     learner = Learner_7(n_arms_1=config_7.N_ARMS_1, n_arms_2=config_7.N_ARMS_2, window_size=config_7.WINDOW_SIZE)
 
     daily_rewards = []
@@ -47,27 +48,33 @@ for e in tqdm(range(config_7.N_EXPS)):
 
     ts_reward_per_experiment.append(daily_rewards)
 
-
+opt = np.dot(config_7.OPT, [91, 91, 91, 92])
 # Plot the results
 plt.figure(0, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Expected reward")
-plt.hlines(config_7.OPT, 0, 365, linestyles="dashed")
+plt.step([0, 91, 182, 273, 365], np.insert(config_7.OPT, -1, config_7.OPT[-1]), where='post', linestyle='dashed')
+plt.axis([0, 365, 0, 18000])
 plt.plot(np.mean(ts_reward_per_experiment, axis=0), 'g')
-plt.savefig("step6/plots/expected_reward.png", dpi=200)
+plt.savefig("step7/plots/expected_reward.png", dpi=200)
 plt.show()
+
 
 plt.figure(1, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Cumulative expected reward")
-plt.hlines(config_7.OPT * 365, 0, 365, linestyles="dashed")
+plt.hlines(opt, 0, 365, linestyle="dashed")
 plt.plot(np.cumsum(np.mean(ts_reward_per_experiment, axis=0)), 'r')
-plt.savefig("step6/plots/cumulative_expected_reward.png", dpi=200)
+plt.savefig("step7/plots/cumulative_expected_reward.png", dpi=200)
 plt.show()
+
 
 plt.figure(2, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Daily regret")
-plt.plot(np.mean(config_7.OPT - ts_reward_per_experiment, axis=0), color='b')
-plt.savefig("step6/plots/daily_regret.png", dpi=200)
+opt = np.repeat(config_7.OPT, [91, 91, 91, 92])
+plottable = (-1) * (np.array(ts_reward_per_experiment, dtype=int) - opt)
+plt.plot(np.mean(plottable, axis=0), color='b')
+plt.hlines(0, 0, 365, linestyle='dashed')
+plt.savefig("step7/plots/daily_regret.png", dpi=200)
 plt.show()
