@@ -1,6 +1,6 @@
 import numpy as np
 import utils_7
-from hungarian_algorithm_7 import hungarian_algorithm
+from hungarian_algorithm_8 import hungarian_algorithm
 
 T = 365  # Time horizon
 N_EXPS = 1  # Number of experiments
@@ -24,6 +24,12 @@ CR2 = []
 WINDOW_SIZE = int(np.sqrt(T))
 
 N_PHASES = 4
+
+M = 100
+
+EPS = 0.1
+
+H = np.log(T) * 2
 
 # constructing matrix of conversion rates for the first product
 for season in range(N_PHASES):

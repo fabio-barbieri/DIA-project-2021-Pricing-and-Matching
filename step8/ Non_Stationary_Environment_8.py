@@ -2,7 +2,7 @@ import numpy as np
 from scipy.stats import truncnorm
 
 
-class Environment_7():
+class Non_Stationary_Environment_8():
     def __init__(self, num_customers, sd_customers, n_arms_1, n_arms_2, cr1, cr2, n_phases, horizon):
         self.num_customers = num_customers
         self.sd_customers = sd_customers
