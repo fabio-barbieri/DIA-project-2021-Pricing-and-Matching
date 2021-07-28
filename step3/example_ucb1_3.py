@@ -33,7 +33,7 @@ for e in tqdm(range(config_3.N_EXPS)):
                                   cr2=config_3.CR2)
 
     daily_rewards = []
-    for t in range(T):
+    for t in range(config_3.T):
         np.random.shuffle(customer_arrivals)
         daily_profits = 0
         for c_class in customer_arrivals:
@@ -56,7 +56,7 @@ plt.xlabel("t")
 plt.ylabel("Expected Reward")
 plt.hlines(config_3.OPT, 0, 365, linestyles="dashed")
 plt.plot(np.mean(ucb1_reward_per_experiment, axis=0), 'g')
-plt.savefig(f"step3/plots/UCB/UCB_ExpRew_{config_3.N_EXPS}-{config_3.N_ARMS}.png", dpi=200)
+plt.savefig(f"step3/plots/UCB/UCB_ExpRew_{config_3.N_EXPS}e-{config_3.N_ARMS}a.png", dpi=200)
 plt.show()
 
 plt.figure(1, figsize=(12, 7), dpi=200.0)
@@ -64,7 +64,7 @@ plt.xlabel("t")
 plt.ylabel("Cumulative Expected Reward")
 plt.hlines(config_3.OPT * 365, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(ucb1_reward_per_experiment, axis=0)), 'r')
-plt.savefig(f"step3/plots/UCB/UCB_CumulativeExpRew_{config_3.N_EXPS}-{config_3.N_ARMS}.png", dpi=200)
+plt.savefig(f"step3/plots/UCB/UCB_CumulativeExpRew_{config_3.N_EXPS}e-{config_3.N_ARMS}a.png", dpi=200)
 plt.show()
 
 plt.figure(2, figsize=(12, 7), dpi=200.0)
@@ -72,7 +72,7 @@ plt.xlabel("t")
 plt.ylabel("Daily Regret")
 plt.hlines(0, 0, 365, linestyles="dashed")
 plt.plot(np.mean(config_3.OPT - ucb1_reward_per_experiment, axis=0), color='b')
-plt.savefig(f"step3/plots/UCB/UCB_DailyRegret_{config_3.N_EXPS}-{config_3.N_ARMS}.png", dpi=200)
+plt.savefig(f"step3/plots/UCB/UCB_DailyRegret_{config_3.N_EXPS}e-{config_3.N_ARMS}a.png", dpi=200)
 plt.show()
 
 plt.figure(2, figsize=(12, 7), dpi=200.0)
@@ -80,5 +80,5 @@ plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
 plt.hlines(0, 0, 365, linestyles="dashed")
 plt.plot(np.sumsum(np.mean(config_3.OPT - ucb1_reward_per_experiment, axis=0)), color='c')
-plt.savefig(f"step3/plots/UCB/UCB_CumulativeRegret_{config_3.N_EXPS}-{config_3.N_ARMS}.png", dpi=200)
+plt.savefig(f"step3/plots/UCB/UCB_CumulativeRegret_{config_3.N_EXPS}e-{config_3.N_ARMS}a.png", dpi=200)
 plt.show()

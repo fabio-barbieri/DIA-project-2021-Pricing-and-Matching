@@ -1,4 +1,0 @@
-- Stima clienti che arrivano effettivamente come step 4 per poi modificare expected_customers
-- Costruire matrice per Hungarian con expected_customers e percentuali promo sul totale che sono fissate
-- Runnare Hungarian
-- (Postprocessing + plots, could be intresting)

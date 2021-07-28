@@ -25,7 +25,7 @@ for e in tqdm(range(config_4.N_EXPS)):
                               margins_2=config_4.MARGINS_2)
 
     daily_rewards = []
-    for t in range(T):
+    for t in range(config_4.T):
         customer_arrivals, current_daily_customers = env.customers()
         daily_profits = 0
         for c_class in customer_arrivals:
@@ -52,7 +52,7 @@ plt.xlabel("t")
 plt.ylabel("Expected reward")
 plt.hlines(config_4.OPT, 0, 365, linestyles="dashed")
 plt.plot(np.mean(ts_reward_per_experiment, axis=0), 'g')
-plt.savefig(f"step4/plots/TS/TS_ExpRew_{config_4.N_EXPS}-{config_4.N_ARMS}.png", dpi=200)
+plt.savefig(f"step4/plots/TS/TS_ExpRew_{config_4.N_EXPS}e-{config_4.N_ARMS}a.png", dpi=200)
 plt.show()
 
 plt.figure(1, figsize=(12, 7), dpi=200.0)
@@ -60,7 +60,7 @@ plt.xlabel("t")
 plt.ylabel("Cumulative expected reward")
 plt.hlines(config_4.OPT * 365, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(ts_reward_per_experiment, axis=0)), 'r')
-plt.savefig(f"step4/plots/TS/TS_CumulativeExpRew_{config_4.N_EXPS}-{config_4.N_ARMS}.png", dpi=200)
+plt.savefig(f"step4/plots/TS/TS_CumulativeExpRew_{config_4.N_EXPS}e-{config_4.N_ARMS}a.png", dpi=200)
 plt.show()
 
 plt.figure(2, figsize=(12, 7), dpi=200.0)
@@ -68,7 +68,7 @@ plt.xlabel("t")
 plt.ylabel("Daily regret")
 plt.hlines(0, 0, 365, linestyles="dashed")
 plt.plot(np.mean(config_4.OPT - ts_reward_per_experiment, axis=0), color='b')
-plt.savefig(f"step4/plots/TS/TS_DailyRegret_{config_4.N_EXPS}-{config_4.N_ARMS}.png", dpi=200)
+plt.savefig(f"step4/plots/TS/TS_DailyRegret_{config_4.N_EXPS}e-{config_4.N_ARMS}a.png", dpi=200)
 plt.show()
 
 plt.figure(2, figsize=(12, 7), dpi=200.0)
@@ -76,5 +76,5 @@ plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
 plt.hlines(0, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(config_4.OPT - ts_reward_per_experiment, axis=0)), color='c')
-plt.savefig(f"step4/plots/UCB/UCB_CumulativeRegret_{config_4.N_EXPS}-{config_4.N_ARMS}.png", dpi=200)
+plt.savefig(f"step4/plots/UCB/UCB_CumulativeRegret_{config_4.N_EXPS}e-{config_4.N_ARMS}a.png", dpi=200)
 plt.show()

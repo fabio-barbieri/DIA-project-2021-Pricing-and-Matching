@@ -19,7 +19,7 @@ for e in tqdm(range(config_5.N_EXPS)):
                           sd_customers=config_5.SD_CUSTOMERS)
 
     daily_values = []
-    for t in range(T):
+    for t in range(config_5.T):
         # Build the matching at the start of the day with data from t-1
         matching_values, matching_mask = h_learner.compute_matching()
         daily_values.append(np.sum(matching_values))
@@ -46,7 +46,7 @@ plt.xlabel("t")
 plt.ylabel("Expected Profit")
 plt.hlines(config_5.OPT, 0, 365, linestyles="dashed")
 plt.plot(np.mean(values_per_exp, axis=0), 'g')
-plt.savefig(f"step5/plots/ExpProfit_{config_5.N_EXPS}.png", dpi=200)
+plt.savefig(f"step5/plots/ExpProfit_{config_5.N_EXPS}e.png", dpi=200)
 plt.show()
 
 plt.figure(1, figsize=(12, 7), dpi=200.0)
@@ -54,7 +54,7 @@ plt.xlabel("t")
 plt.ylabel("Cumulative Expected Profit")
 plt.hlines(config_5.OPT * 365, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(values_per_exp, axis=0), axis=0), 'r')
-plt.savefig(f"step5/plots/CumulativeExpProfit_{config_5.N_EXPS}.png", dpi=200)
+plt.savefig(f"step5/plots/CumulativeExpProfit_{config_5.N_EXPS}e.png", dpi=200)
 plt.show()
 
 plt.figure(2, figsize=(12, 7), dpi=200.0)
@@ -62,6 +62,6 @@ plt.xlabel("t")
 plt.ylabel("Cumulative Regret")
 plt.hlines(0, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(config_5.OPT - values_per_exp, axis=0)), color='c')
-plt.savefig(f"step5/plots/CumulativeRegret_{config_5.N_EXPS}-{config_5.N_ARMS}.png", dpi=200)
+plt.savefig(f"step5/plots/CumulativeRegret_{config_5.N_EXPS}e.png", dpi=200)
 plt.show()
 
