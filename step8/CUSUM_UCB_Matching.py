@@ -19,13 +19,15 @@ class CUSUM_UCB_Matching():
         if np.random.binomial(1, 1 - self.alpha):  # we are going to execute this block of code with probability 1-alpha (exploitation)
             upper_conf = self.empirical_means + self.confidence
             upper_conf[np.isinf(upper_conf)] = 1e3
-            row_ind, col_ind, matching, matching_mask = hungarian_algorithm(upper_conf.reshape(self.n_rows, self.n_cols))
-            return row_ind, col_ind
+
+            # returning --> row_ind, col_ind, matching, matching_mask
+            return hungarian_algorithm(upper_conf.reshape(self.n_rows, self.n_cols))
+
         else:  # with probability alpha we get a random matching, pulling, in this way, random arms (exploration )
             costs_random = np.random.randint(0, 10, size=(self.n_rows, self.n_cols))
-            return hungarian_algorithm(costs_random)
 
-    ################################ ARRIVATI QUI ##################################
+            # returning --> row_ind, col_ind, matching, matching_mask RANDOM!!
+            return hungarian_algorithm(costs_random)
 
     def update(self, pulled_arms, rewards):
         self.t += 1

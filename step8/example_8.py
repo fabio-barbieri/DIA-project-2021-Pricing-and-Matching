@@ -1,11 +1,10 @@
 import config_8
 import numpy as np
 import matplotlib.pyplot as plt
-from  Non_Stationary_Environment_8 import *
-from Learner_7 import *
+from Non_Stationary_Environment_8 import *
+from Learner_8 import *
 from tqdm import tqdm
 from CUSUM_UCB_Matching import CUSUM_UCB_Matching
-from UCB_Matching import UCB_Matching
 
 np.random.seed(1234)
 
@@ -24,7 +23,7 @@ for e in tqdm(range(config_8.N_EXPS)):
                         cr2=config_8.CR2,
                         n_phases=config_8.N_PHASES,
                         horizon=config_8.T)
-    learner = Learner_7(n_arms_1=config_8.N_ARMS_1, n_arms_2=config_8.N_ARMS_2, window_size=config_8.WINDOW_SIZE)
+    learner = Learner_8(n_arms_1=config_8.N_ARMS_1, n_arms_2=config_8.N_ARMS_2, window_size=config_8.WINDOW_SIZE)
 
     daily_rewards = []
 
@@ -35,7 +34,7 @@ for e in tqdm(range(config_8.N_EXPS)):
         daily_profits = 0
         for c_class in customer_arrivals:
 
-            matching_prob, pulled_arm = learner.pull_arm()
+            pulled_cells, matching_prob, pulled_arm = learner.pull_arm()
             # print(matching_prob)
             reward1, reward2, promo = env.round(pulled_arm, c_class, matching_prob, learner.expected_customers)
             learner.update(pulled_arm, reward1, reward2, c_class, promo)

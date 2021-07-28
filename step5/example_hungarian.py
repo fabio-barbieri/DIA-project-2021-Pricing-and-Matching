@@ -1,4 +1,3 @@
-import json
 import config_5
 from Environment_5 import *
 import numpy as np
@@ -6,45 +5,18 @@ from tqdm import tqdm
 from Learner_5 import *
 import matplotlib.pyplot as plt
 
-# Inititalize all constants using config_5.py
-# T = config_5.T
-# N_EXPS = config_5.N_EXPS
-# NUM_CUSTOMERS = config_5.NUM_CUSTOMERS
-# MARGIN_1 = config_5.MARGIN_1
-# CR1 = config_5.CR1
-# SD_CUSTOMERS = config_5.SD_CUSTOMERS
-# PROMO_PROB = config_5.PROMO_PROB
-# MARGINS_2 = config_5.MARGINS_2
-# CR2 = config_5.CR2
-# OPT = config_5.OPT
-
-with open('setup/config.json') as config_file:
-    config = json.load(config_file)
-    config_file.close()
-
-T = config['T']
-N_EXPS = config['n_exps']
-NUM_CUSTOMERS = np.array(config['num_customers'])
-MARGIN_1 = np.array(config['step5']['margin_1'])
-CR1 = np.array(config['step5']['cr1'])
-SD_CUSTOMERS = np.array(config['step5']['sd_customers'])
-PROMO_PROB = np.array(config['step5']['promo_prob'])
-MARGINS_2 = np.array(config['step5']['margins_2'])
-CR2 = np.array(config['step5']['cr2'])
-OPT = config['step5']['opt']
-
 values_per_exp = []
 
-for e in tqdm(range(N_EXPS)):
-    env = Environment_5(cr1=CR1, 
-                        cr2=CR2, 
-                        num_customers=NUM_CUSTOMERS, 
-                        sd_customers=SD_CUSTOMERS)
-    h_learner = Learner_5(tot_customers=np.sum(NUM_CUSTOMERS), 
-                          promo_prob=PROMO_PROB, 
-                          margin_1=MARGIN_1, 
-                          margins_2=MARGINS_2, 
-                          sd_customers=SD_CUSTOMERS)
+for e in tqdm(range(config_5.N_EXPS)):
+    env = Environment_5(cr1=config_5.CR1, 
+                        cr2=config_5.CR2, 
+                        num_customers=config_5.NUM_CUSTOMERS, 
+                        sd_customers=config_5.SD_CUSTOMERS)
+    h_learner = Learner_5(tot_customers=np.sum(config_5.NUM_CUSTOMERS), 
+                          promo_prob=config_5.PROMO_PROB, 
+                          margin_1=config_5.MARGIN_1, 
+                          margins_2=config_5.MARGINS_2, 
+                          sd_customers=config_5.SD_CUSTOMERS)
 
     daily_values = []
     for t in range(T):
@@ -72,16 +44,24 @@ for e in tqdm(range(N_EXPS)):
 plt.figure(0, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Expected Profit")
-plt.hlines(OPT, 0, 365, linestyles="dashed")
+plt.hlines(config_5.OPT, 0, 365, linestyles="dashed")
 plt.plot(np.mean(values_per_exp, axis=0), 'g')
-plt.savefig(f"step5/plots/ExpProfit_{N_EXPS}.png", dpi=200)
+plt.savefig(f"step5/plots/ExpProfit_{config_5.N_EXPS}.png", dpi=200)
 plt.show()
 
-plt.figure(0, figsize=(12, 7), dpi=200.0)
+plt.figure(1, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Cumulative Expected Profit")
-plt.hlines(OPT * 365, 0, 365, linestyles="dashed")
+plt.hlines(config_5.OPT * 365, 0, 365, linestyles="dashed")
 plt.plot(np.cumsum(np.mean(values_per_exp, axis=0), axis=0), 'r')
-plt.savefig(f"step5/plots/CumulativeExpProfit_{N_EXPS}.png", dpi=200)
+plt.savefig(f"step5/plots/CumulativeExpProfit_{config_5.N_EXPS}.png", dpi=200)
+plt.show()
+
+plt.figure(2, figsize=(12, 7), dpi=200.0)
+plt.xlabel("t")
+plt.ylabel("Cumulative Regret")
+plt.hlines(0, 0, 365, linestyles="dashed")
+plt.plot(np.cumsum(np.mean(config_5.OPT - values_per_exp, axis=0)), color='c')
+plt.savefig(f"step5/plots/CumulativeRegret_{config_5.N_EXPS}-{config_5.N_ARMS}.png", dpi=200)
 plt.show()
 

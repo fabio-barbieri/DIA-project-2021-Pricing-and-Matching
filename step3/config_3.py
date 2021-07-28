@@ -75,11 +75,6 @@ def compute_cr1(price, cl):
 
 CR1 = np.array([compute_cr1(m1, c) for m1 in MARGINS_1 for c, _ in enumerate(NUM_CUSTOMERS)]).reshape(len(MARGINS_1), len(NUM_CUSTOMERS))
 
-# CR1 = []
-# for margin in MARGINS_1:
-#     cr = np.array([utils_3.cr1(margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
-#     CR1.append(cr)
-
 MATCHING = np.array([[8,  5, 4,  3],  # Class 1 -> tot = NUM_CUSTOMERS[0]
                      [16, 6, 10, 8],  # Class 2 -> tot = NUM_CUSTOMERS[1]
                      [2,  3, 3,  2],  # Class 3 -> tot = NUM_CUSTOMERS[2]
@@ -105,5 +100,6 @@ def compute_profit(i, cr1, margin1, cr2, margins2, matching, num_customers):
     return np.dot(a, num_customers)
 
 known_profits = [compute_profit(i, CR1, m1, CR2, MARGINS_2, MATCHING, NUM_CUSTOMERS,) for i, m1 in enumerate(MARGINS_1)]
+
 OPT = max(known_profits)
 
