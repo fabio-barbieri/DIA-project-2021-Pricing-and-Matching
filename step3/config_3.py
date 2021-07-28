@@ -16,61 +16,68 @@ def compute_cr1(price, cl):
     # MAXIMUM and minimun prices for item 1
     M = 250
     m = 150
-    
-    if (price < m) or (price > M): 
-        sys.exit('price not in range')
 
-    if cl == 0:       # Junior Professional
+    if (price < m) or (price > M): 
+        sys.exit('Price not in range')
+
+    # Junior Professional ######################################################################################
+    if cl == 0:
         def f(y):
-            # parameters for the first truncated normal
+            # Parameters for the first truncated normal
             loc1 = 200
             scale1 = 50
             a1 = (m - loc1) / scale1
             b1 = (M - loc1) / scale1
-            # parameters for the second truncated normal
+
+            # Parameters for the second truncated normal
             loc2 = 220
             scale2 = 80
             a2 = (m - loc2) / scale2
             b2 = (M - loc2) / scale2 
+
             return truncnorm.pdf(y, a1, b1, loc1, scale1) * truncnorm.pdf(y, a2, b2, loc2, scale2)
 
-        xx = np.linspace(150,250,2000)
+        xx = np.linspace(150, 250, 2000)
         ff = f(xx)
         mm = np.argmin(ff)
         MM = np.argmax(ff)
         fmin = f(xx[mm])
         fmax = f(xx[MM])
+
         return 0.95 * (f(price) - fmin) / (fmax - fmin)
 
-    
-    if cl == 1:       # Junior Amateur
+    # Junior Amateur ###########################################################################################
+    if cl == 1:
         return np.exp(0.04 * (M - price)) / np.exp(0.04 * (M - m + 2))
 
-    if cl == 2:       # Senior Professional
+    # Senior Professional ######################################################################################
+    if cl == 2:
         def g(y):
-            # parameters for the first truncated normal
+            # Parameters for the first truncated normal
             loc1 = 200
             scale1 = 60
             a1 = (m - loc1) / scale1
             b1 = (M - loc1) / scale1
 
-            # parameters for the second truncated normal
+            # Parameters for the second truncated normal
             loc2 = 230
             scale2 = 40
             a2 = (m - loc2) / scale2
             b2 = (M - loc2) / scale2 
-            return truncnorm.pdf(y, a1, b1, loc1, scale1) * truncnorm.pdf(y, 2, b2, loc2, scale2)
 
-        xx = np.linspace(150, 250, 2000)
+            return truncnorm.pdf(y, a1, b1, loc1, scale1) * truncnorm.pdf(y, a2, b2, loc2, scale2)
+
+        xx = np.linspace(150,250,2000)
         gg = g(xx)
         mm = np.argmin(gg)
         MM = np.argmax(gg)
         gmin = g(xx[mm])
         gmax = g(xx[MM])
+
         return 0.95 * (g(price) - gmin) / (gmax - gmin)
 
-
-    if cl == 3:       # Senior Amateur
+    # Senior Amateur ########################################################################################### 
+    if cl == 3:
         return np.exp(0.02 * (M - price)) / np.exp(0.02 * (M - m + 2))
 
 CR1 = np.array([compute_cr1(m1, c) for m1 in MARGINS_1 for c, _ in enumerate(NUM_CUSTOMERS)]).reshape(len(MARGINS_1), len(NUM_CUSTOMERS))
@@ -100,6 +107,5 @@ def compute_profit(i, cr1, margin1, cr2, margins2, matching, num_customers):
     return np.dot(a, num_customers)
 
 known_profits = [compute_profit(i, CR1, m1, CR2, MARGINS_2, MATCHING, NUM_CUSTOMERS,) for i, m1 in enumerate(MARGINS_1)]
-
 OPT = max(known_profits)
 
