@@ -21,9 +21,12 @@ for e in tqdm(range(config_8.N_EXPS)):
                                       n_arms_2=config_8.N_ARMS_2, 
                                       cr1=config_8.CR1, 
                                       cr2=config_8.CR2,
-                                      n_phases=config_8.N_PHASES,
+                                      n_phases=len(config_8.SEASONS),
                                       horizon=config_8.T)
-    learner = Learner_8(n_arms_1=config_8.N_ARMS_1, n_arms_2=config_8.N_ARMS_2, params=config_8.DETECTION_PARAMS)
+
+    learner = Learner_8(n_arms_1=config_8.N_ARMS_1, 
+                        n_arms_2=config_8.N_ARMS_2, 
+                        params=config_8.DETECTION_PARAMS)
 
     daily_rewards = []
     for t in range(config_8.T):
