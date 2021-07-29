@@ -21,6 +21,9 @@ for e in tqdm(range(config_8.N_EXPS)):
 
     learner = Learner_8(n_arms_1=config_8.N_ARMS_1, 
                         n_arms_2=config_8.N_ARMS_2, 
+                        tot_customers=np.sum(config_8.NUM_CUSTOMERS),
+                        promo_prob=config_8.PROMO_PROB,
+                        sd_customers=config_8.SD_CUSTOMERS,
                         detection_params=config_8.DETECTION_PARAMS)
 
     daily_rewards = []
