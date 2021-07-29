@@ -38,7 +38,7 @@ class CUSUM_UCB_Matching():
             rows, cols = linear_sum_assignment(m, maximize=True)
             matching_mask = np.zeros(m.shape, dtype=int)
             matching_mask[rows, cols] = 1
-            return rows, cols, matching_mask * m, matching_mask
+            return matching_mask * m, matching_mask
 
         if np.random.binomial(1, 1 - self.alpha):  # we are going to execute this block of code with probability 1-alpha (exploitation)
             upper_confidence = (self.empirical_means + self.confidences).reshape((self.n_rows, self.n_cols))
