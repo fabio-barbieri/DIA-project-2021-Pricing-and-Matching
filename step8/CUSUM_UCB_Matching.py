@@ -7,7 +7,7 @@ from scipy.optimize import linear_sum_assignment
 np.random.seed(1234)
 
 class CUSUM_UCB_Matching():
-    def __init__(self, n_rows, n_cols, M, eps, h, alpha=0.01):
+    def __init__(self, n_rows, n_cols, params, alpha=0.01):
         self.n_rows = n_rows
         self.n_cols = n_cols
         self.n_cells = self.n_rows * self.n_cols # num of cells in the matching adjacency matrix
@@ -18,7 +18,7 @@ class CUSUM_UCB_Matching():
         self.confidences = np.array([np.inf] * self.n_cells)
 
         # here I have a CUSUM for each of the 4 x 4 = 16 cells in the CUSUM_MATCHING matrix
-        self.change_detection = [CUSUM(M, eps, h) for _ in range(self.n_cells)]
+        self.change_detection = [CUSUM(*params) for _ in range(self.n_cells)]
         self.valid_rewards_per_cell = [[] for _ in range(self.n_cells)]
         self.detections = [[] for _ in range(self.n_cells)]  # to keep track of how many times a warning has been raised for a specific cell
         self.alpha = alpha

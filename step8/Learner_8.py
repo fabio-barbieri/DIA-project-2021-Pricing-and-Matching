@@ -7,8 +7,8 @@ from scipy.stats import truncnorm
 
 np.random.seed(1234)
 
-class Learner_8:
-    def __init__(self, n_arms_1, n_arms_2, M, eps, h):
+class Learner_8():
+    def __init__(self, n_arms_1, n_arms_2, params):
         self.n_arms1 = n_arms_1
         self.n_arms2 = n_arms_2
 
@@ -32,9 +32,7 @@ class Learner_8:
         assert np.sum(self.expected_customers) == np.sum(self.n_promos)
         self.cusum_ucbs_per_arm = [CUSUM_UCB_Matching(n_rows=len(self.expected_customers), 
                                                       n_cols=len(self.n_promos), 
-                                                      M=M, 
-                                                      eps=eps,
-                                                      h=h) for _ in range(self.n_arms1 * self.n_arms2)]  # Arm = couple of p1, p2
+                                                      params=params) for _ in range(self.n_arms1 * self.n_arms2)]  # Arm = couple of p1, p2
 
     def pull_arm(self): # The selected arm is the couple p1, p2 that maximizes the value of the matching
         opt_value = -1
