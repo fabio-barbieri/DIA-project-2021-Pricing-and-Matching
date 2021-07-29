@@ -105,7 +105,7 @@ MATCHING_PROB = np.array([[0.08, 0.05, 0.04, 0.03],  # Class 1
 def compute_profit(i, cr1, margin1, cr2, margins2, matching_prob, num_customers):
     tot_customers = np.sum(num_customers)
     matching_prob = matching_prob / np.expand_dims(num_customers, axis=1) * tot_customers
-    a = cr1[i] * (margin1 + np.dot(cr2 * matching_prob, margins2))  # 4x1 * (1x1 + dot(4x4 * 4x4 + 4x1)) = 
+    a = cr1[i] * (margin1 + np.dot(cr2 * matching_prob, margins2))  #   4x1 * (1x1 + dot(4x4 * 4x4 + 4x1)) = 
                                                                     # = 4x1 * (1x1 + dot(4x4, 4x1) = 
                                                                     # = 4x1 * (1x1 + 4x1) = 
                                                                     # = 4x1 * 4x1 = 

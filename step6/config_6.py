@@ -190,7 +190,7 @@ def opt_matching(matrix):
 
 def compute_opt_matching():
     opt_value = -1
-    for a1 in range(N_ARMS_1):  # For every price_1
+    for a1 in range(N_ARMS_1):
         for a2 in range(N_ARMS_2):
             matrix = build_matrix(a1, a2)
             matching, mask = opt_matching(matrix) ##############################

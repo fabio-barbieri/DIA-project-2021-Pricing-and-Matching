@@ -99,7 +99,7 @@ CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
 
 def compute_profit(i, cr1, margin1, cr2, margins2, matching, num_customers):
     matching_prob = matching / np.expand_dims(num_customers, axis=1)
-    a = cr1[i] * (margin1 + np.dot(cr2 * matching_prob, margins2))  # 4x1 * (1x1 + dot(4x4 * 4x4 + 4x1)) = 
+    a = cr1[i] * (margin1 + np.dot(cr2 * matching_prob, margins2))  #   4x1 * (1x1 + dot(4x4 * 4x4 + 4x1)) = 
                                                                     # = 4x1 * (1x1 + dot(4x4, 4x1) = 
                                                                     # = 4x1 * (1x1 + 4x1) = 
                                                                     # = 4x1 * 4x1 = 
