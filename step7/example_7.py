@@ -48,7 +48,9 @@ for e in tqdm(range(config_7.N_EXPS)):
 
     ts_reward_per_experiment.append(daily_rewards)
 
+
 opt = np.dot(config_7.OPT, [91, 91, 91, 92])
+
 # Plot the results
 plt.figure(0, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")

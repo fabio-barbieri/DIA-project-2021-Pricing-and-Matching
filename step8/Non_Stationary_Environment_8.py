@@ -33,12 +33,13 @@ class Non_Stationary_Environment_8():
         tmp3 = np.zeros(shape=customers[3], dtype=int) + 3
         customer_arrivals = np.concatenate((tmp0, tmp1, tmp2, tmp3), axis=None)
 
-        np.random.shuffle(customer_arrivals)
+        np.random.shuffle(self.customer_arrivals)
 
         current_daily_customers = np.array([len(tmp0), len(tmp1), len(tmp2), len(tmp3)])
 
         return customer_arrivals, current_daily_customers
 
+    # MUST BE ADAPTED TO DAILY UPDATE (now is for updating customer after customer) 
     def round(self, pulled_arm, c_class, matching_prob, expected_customers):
         current_phase = min(self.t // self.phase_size, 3)
 

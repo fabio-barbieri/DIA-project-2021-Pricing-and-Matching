@@ -1,5 +1,5 @@
 import numpy as np
-import utils_7
+import utils_8
 from hungarian_algorithm import hungarian_algorithm
 
 T = 365  # Time horizon
@@ -23,17 +23,13 @@ CR2 = []
 
 N_PHASES = 4
 
-M = 100
-
-EPS = 0.1
-
-H = np.log(T) * 2
+DETECTION_PARAMS = (25, 0.1, np.log(T) * 2) # M, epsilon, h
 
 # constructing matrix of conversion rates for the first product
 for season in range(N_PHASES):
     tmp = []
     for margin in MARGINS_1:
-        cr = np.array([utils_7.cr1(season, margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
+        cr = np.array([utils_8.cr1(season, margin, c_class) for c_class in range(len(NUM_CUSTOMERS))])
         tmp.append(cr)
     CR1.append(tmp)
 
@@ -43,7 +39,7 @@ for season in range(N_PHASES):
     for margin in MARGINS_2:
         tmp1 = []
         for c_class in range(len(NUM_CUSTOMERS)):
-            cr = np.array([utils_7.cr2(season, discounted_margin, c_class) for discounted_margin in margin]).reshape((4, 1)) # 1 x n_promo
+            cr = np.array([utils_8.cr2(season, discounted_margin, c_class) for discounted_margin in margin]).reshape((4, 1)) # 1 x n_promo
             tmp1.append(cr)
         tmp2.append(np.array(tmp1).reshape((4, 4)))
     CR2.append(tmp2)
@@ -59,10 +55,8 @@ def compute_opt_matching(season):
                 value = np.sum(matching)
                 if value > opt_value:
                     opt_value = value
-                    # idx1 = arm_1
-                    # idx2 = arm_2
 
-        return opt_value  #, (idx1, idx2)
+        return opt_value
 
 def build_matrix(season, idx1, idx2): 
         n_promos = (PROMO_PROB[1 :] * TOT_CUSTOMERS).astype(int)
@@ -78,11 +72,11 @@ def build_matrix(season, idx1, idx2):
 
         return matrix
 
-# OPT = []
-# for season in range(N_PHASES):
-#     OPT.append(compute_opt_matching(season))
+OPT = []
+for season in range(N_PHASES):
+     OPT.append(compute_opt_matching(season))
 
-# OPT = np.array(OPT)
+OPT = np.array(OPT)
 
 if __name__ == "__main__":
     print(CR1)

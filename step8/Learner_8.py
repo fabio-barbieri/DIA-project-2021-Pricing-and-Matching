@@ -8,7 +8,7 @@ from scipy.stats import truncnorm
 np.random.seed(1234)
 
 class Learner_8:
-    def __init__(self, n_arms_1, n_arms_2):
+    def __init__(self, n_arms_1, n_arms_2, M, eps, h):
         self.n_arms1 = n_arms_1
         self.n_arms2 = n_arms_2
 
@@ -30,14 +30,18 @@ class Learner_8:
         # self.rewards_per_arm_2 = [[[[] for _ in range(4)] for _ in range(4)] for _ in range(n_arms_2)]
 
         assert np.sum(self.expected_customers) == np.sum(self.n_promos)
-        self.cusum_ucbs_per_arm = [CUSUM_UCB_Matching(n_rows=np.sum(self.expected_customers), n_cols=np.sum(self.n_promos)) for _ in range(self.n_arms1 * self.n_arms2)]  # Arm = couple of p1, p2
+        self.cusum_ucbs_per_arm = [CUSUM_UCB_Matching(n_rows=len(self.expected_customers), 
+                                                      n_cols=len(self.n_promos), 
+                                                      M=M, 
+                                                      eps=eps,
+                                                      h=h) for _ in range(self.n_arms1 * self.n_arms2)]  # Arm = couple of p1, p2
 
     def pull_arm(self): # The selected arm is the couple p1, p2 that maximizes the value of the matching
         opt_value = -1
         for arm_1 in range(self.n_arms1):  # For every price_1
             for arm_2 in range(self.n_arms2):
                 index = np.ravel_multi_index((arm_1, arm_2), dims=(self.n_arms1, self.n_arms2))  # Index to get the right cusum_ucb
-                rows, cols, matching, mask = self.cusum_ucbs_per_arm[index].pull_cells()
+                matching, mask = self.cusum_ucbs_per_arm[index].pull_cells()
                 value = np.sum(matching)
                 if value > opt_value:
                     opt_mask = mask
@@ -45,15 +49,8 @@ class Learner_8:
                     idx1 = arm_1
                     idx2 = arm_2
 
-        ##########################################################################################################################################################
-        idx_for_update = np.ravel_multi_index((idx1, idx2), dims=(self.n_arms1, self.n_arms2)) # Index to get the right cusum_ucb to be updated
-        self.cusum_ucbs_per_arm[idx_for_update].update()
-        ##########################################################################################################################################################
-        # TODO: ARRIVATI QUA: PROBLEMA UPDATE/REWARDS
-        ##########################################################################################################################################################
-
         matching_prob = self.compute_matching_prob(opt_mask)
-        return zip(rows, cols), matching_prob, (idx1, idx2)
+        return matching_prob, (idx1, idx2)
 
     def compute_matching_prob(self, matching_mask):
         # inserted 0 at the start of idxs arrays, for ease of computation of the slices used in the return statement
@@ -66,8 +63,12 @@ class Learner_8:
         # returning a (4, 4) matrix with P(class, promo) (aka MATCHING_PROB)
         return matching_prob / np.sum(self.expected_customers)
 
-    def update():
-        pass
+    def update(self, pulled_arm, c_class, promo, normalized_curr_profit):
+        index = np.ravel_multi_index(pulled_arm, dims=(self.n_arms1, self.n_arms2))
+        self.cusum_ucbs_per_arm[index].update(c_class, promo, normalized_curr_profit)
+
+        for cusum_ucb in self.cusum_ucbs_per_arm:
+            cusum_ucb.update_confidence()
 
     def compute_posterior(self, x_bar):
         sigma_2 = config_8.SD_CUSTOMERS ** 2
