@@ -1,6 +1,4 @@
-# THIS IS GOING TO BE THE SUPERCLASS OF THE THOMPSON SAMPLING AND GREEDY ALGORITHMS LEARNERS
-from numpy.core.fromnumeric import shape
-from step8.CUSUM_UCB_Matching import CUSUM_UCB_Matching
+import CUSUM_UCB_Matching
 import numpy as np
 import config_8
 from scipy.stats import truncnorm

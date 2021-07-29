@@ -8,6 +8,8 @@ np.random.seed(1234)
 
 class CUSUM_UCB_Matching():
     def __init__(self, n_rows, n_cols, params, alpha=0.01):
+        self.t = 0
+
         self.n_rows = n_rows
         self.n_cols = n_cols
         self.n_cells = self.n_rows * self.n_cols # num of cells in the matching adjacency matrix
