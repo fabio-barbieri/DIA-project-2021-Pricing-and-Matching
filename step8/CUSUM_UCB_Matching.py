@@ -75,7 +75,7 @@ class CUSUM_UCB_Matching():
         total_valid_samples = sum([len(x) for x in self.valid_rewards_per_cell])
         for cell in range(self.n_cells):  # and also the confidences have to be updated only on the basis of the valid samples (of rewards), for each cell
             n_samples = len(self.valid_rewards_per_cell[cell])
-            self.confidence[cell] = (2*np.log(total_valid_samples)/n_samples) ** 0.5 if n_samples > 0 else np.inf
+            self.confidences[cell] = (2*np.log(total_valid_samples)/n_samples) ** 0.5 if n_samples > 0 else np.inf
 
     # def update_observations(self, cell_index, normalized_profit):
     #     self.reward_per_arm[pulled_arm].append(reward)
