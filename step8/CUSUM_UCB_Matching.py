@@ -41,7 +41,7 @@ class CUSUM_UCB_Matching():
             return rows, cols, matching_mask * m, matching_mask
 
         if np.random.binomial(1, 1 - self.alpha):  # we are going to execute this block of code with probability 1-alpha (exploitation)
-            upper_confidence = self.empirical_means + self.confidences
+            upper_confidence = (self.empirical_means + self.confidences).reshape((self.n_rows, self.n_cols))
             upper_confidence[np.isinf(upper_confidence)] = 1e3
             matching, mask = compute_matching(upper_confidence, n_promos, expected_customers)
 
