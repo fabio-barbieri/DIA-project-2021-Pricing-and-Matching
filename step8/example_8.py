@@ -4,15 +4,10 @@ import matplotlib.pyplot as plt
 from Non_Stationary_Environment_8 import *
 from Learner_8 import *
 from tqdm import tqdm
-from CUSUM_UCB_Matching import CUSUM_UCB_Matching
 
 np.random.seed(1234)
 
 ucb_reward_per_experiment = []  # Collected reward
-
-detections = [[[] for _ in range(config_8.N_ARMS_1 * config_8.N_ARMS_2)] for _ in range(config_8.N_EXPS)]
-
-opt = []
 
 for e in tqdm(range(config_8.N_EXPS)):
     env = Non_Stationary_Environment_8(num_customers=config_8.NUM_CUSTOMERS, 

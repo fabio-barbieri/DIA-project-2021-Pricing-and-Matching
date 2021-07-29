@@ -12,6 +12,7 @@ for e in tqdm(range(config_5.N_EXPS)):
                         cr2=config_5.CR2, 
                         num_customers=config_5.NUM_CUSTOMERS, 
                         sd_customers=config_5.SD_CUSTOMERS)
+                        
     h_learner = Learner_5(tot_customers=np.sum(config_5.NUM_CUSTOMERS), 
                           promo_prob=config_5.PROMO_PROB, 
                           margin_1=config_5.MARGIN_1, 

@@ -22,7 +22,12 @@ for e in tqdm(range(config_7.N_EXPS)):
                         horizon=config_7.T)
 
     learner = Learner_7(n_arms_1=config_7.N_ARMS_1, 
-                        n_arms_2=config_7.N_ARMS_2, 
+                        n_arms_2=config_7.N_ARMS_2,
+                        tot_customers=np.sum(config_7.NUM_CUSTOMERS),
+                        promo_prob=config_7.PROMO_PROB,
+                        sd_customers=config_7.SD_CUSTOMERS,
+                        margins_1=config_7.MARGINS_1,
+                        margins_2=config_7.MARGINS_2, 
                         window_size=config_7.WINDOW_SIZE)
 
     daily_rewards = []

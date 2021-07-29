@@ -16,8 +16,16 @@ for e in tqdm(range(config_6.N_EXPS)):
                         sd_customers=config_6.SD_CUSTOMERS, 
                         n_arms_1=config_6.N_ARMS_1, 
                         n_arms_2=config_6.N_ARMS_2, 
-                        cr1=config_6.CR1, cr2=config_6.CR2)
-    learner = Learner_6(n_arms_1=config_6.N_ARMS_1, n_arms_2=config_6.N_ARMS_2)
+                        cr1=config_6.CR1, 
+                        cr2=config_6.CR2)
+
+    learner = Learner_6(n_arms_1=config_6.N_ARMS_1, 
+                        n_arms_2=config_6.N_ARMS_2,
+                        tot_customers=np.sum(config_6.NUM_CUSTOMERS),
+                        promo_prob=config_6.PROMO_PROB,
+                        sd_customers=config_6.SD_CUSTOMERS,
+                        margins_1=config_6.MARGINS_1,
+                        margins_2=config_6.MARGINS_2,)
 
     daily_rewards = []
 

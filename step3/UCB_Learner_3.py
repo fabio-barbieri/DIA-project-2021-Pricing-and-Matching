@@ -3,7 +3,7 @@ from Learner_3 import *
 
 np.random.seed(1234)
 
-class UCB1_Learner_3(Learner_3):
+class UCB_Learner_3(Learner_3):
 
     def __init__(self, n_arms, num_customers, margins_1, matching, margins_2, cr2):
         super().__init__(n_arms, num_customers, margins_1, matching, margins_2, cr2)

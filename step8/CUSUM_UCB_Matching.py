@@ -1,13 +1,11 @@
 import numpy as np
-from numpy.core.fromnumeric import shape
-import config_8
 from CUSUM import CUSUM
 from scipy.optimize import linear_sum_assignment
 
 np.random.seed(1234)
 
 class CUSUM_UCB_Matching():
-    def __init__(self, n_rows, n_cols, params, alpha=0.01):
+    def __init__(self, n_rows, n_cols, detection_params, alpha=0.01):
         self.t = 0
 
         self.n_rows = n_rows
@@ -20,7 +18,7 @@ class CUSUM_UCB_Matching():
         self.confidences = np.array([np.inf] * self.n_cells)
 
         # here I have a CUSUM for each of the 4 x 4 = 16 cells in the CUSUM_MATCHING matrix
-        self.change_detection = [CUSUM(*params) for _ in range(self.n_cells)]
+        self.change_detection = [CUSUM(*detection_params) for _ in range(self.n_cells)]
         self.valid_rewards_per_cell = [[] for _ in range(self.n_cells)]
         self.detections = [[] for _ in range(self.n_cells)]  # to keep track of how many times a warning has been raised for a specific cell
         self.alpha = alpha
@@ -54,10 +52,6 @@ class CUSUM_UCB_Matching():
         
         return matching, mask
 
-    # array = [(customer, promo, reward)]
-    # array_2 = [(customer, promo, np.sum(reward, np.where((customer, promo) == (elem[0], elem[1])))) for elem in array]    
-
-    # to be changed (customer, promo, reward) to be passed instead of pulled_arms
     def update(self, c_class, promo, normalized_profit):
         self.t += 1
         flat_cell_index = np.ravel_multi_index((c_class, promo), (self.n_rows, self.n_cols))
@@ -76,8 +70,3 @@ class CUSUM_UCB_Matching():
         for cell in range(self.n_cells):  # and also the confidences have to be updated only on the basis of the valid samples (of rewards), for each cell
             n_samples = len(self.valid_rewards_per_cell[cell])
             self.confidences[cell] = (2*np.log(total_valid_samples)/n_samples) ** 0.5 if n_samples > 0 else np.inf
-
-    # def update_observations(self, cell_index, normalized_profit):
-    #     self.reward_per_arm[pulled_arm].append(reward)
-    #     self.valid_rewards_per_arms[pulled_arm].append(reward)  # notice that here we're also updating the VALID rewards for each arm
-    #     self.collected_rewards = np.append(self.collected_rewards, reward)  # we update the rewards cumulatively

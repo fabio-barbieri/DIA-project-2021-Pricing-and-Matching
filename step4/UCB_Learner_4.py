@@ -2,7 +2,7 @@ from Learner_4 import *
 import numpy as np
 
 
-class UCB1_Learner_4(Learner_4):
+class UCB_Learner_4(Learner_4):
 
     def __init__(self, n_arms, tot_customers, sd_customers, margins_1, matching_prob, margins_2):
         super().__init__(n_arms, tot_customers, sd_customers, margins_1, matching_prob, margins_2)

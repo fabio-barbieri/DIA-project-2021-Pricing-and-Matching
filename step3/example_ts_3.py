@@ -26,6 +26,7 @@ for e in tqdm(range(config_3.N_EXPS)):
                         matching=config_3.MATCHING,
                         cr1=config_3.CR1,
                         cr2=config_3.CR2)
+                        
     ts_learner = TS_Learner_3(n_arms=config_3.N_ARMS, 
                               num_customers=config_3.NUM_CUSTOMERS, 
                               margins_1=config_3.MARGINS_1, 
