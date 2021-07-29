@@ -1,4 +1,4 @@
-import CUSUM_UCB_Matching
+from CUSUM_UCB_Matching import *
 import numpy as np
 import config_8
 from scipy.stats import truncnorm
