@@ -1,6 +1,6 @@
 import numpy as np
 import utils_7
-from hungarian_algorithm_8 import hungarian_algorithm
+from hungarian_algorithm import hungarian_algorithm
 
 T = 365  # Time horizon
 N_EXPS = 1  # Number of experiments
@@ -20,8 +20,6 @@ MARGINS_2 = np.multiply(np.linspace(25, 35, N_ARMS_2).reshape((N_ARMS_2, 1)), PR
 
 CR1 = []
 CR2 = []
-
-WINDOW_SIZE = int(np.sqrt(T))
 
 N_PHASES = 4
 
@@ -45,9 +43,9 @@ for season in range(N_PHASES):
     for margin in MARGINS_2:
         tmp1 = []
         for c_class in range(len(NUM_CUSTOMERS)):
-            cr = np.array([utils_7.cr2(season, discounted_margin, c_class) for discounted_margin in margin])
+            cr = np.array([utils_7.cr2(season, discounted_margin, c_class) for discounted_margin in margin]).reshape((4, 1)) # 1 x n_promo
             tmp1.append(cr)
-        tmp2.append(tmp1)
+        tmp2.append(np.array(tmp1).reshape((4, 4)))
     CR2.append(tmp2)
 
 CR1 = np.array(CR1)
@@ -80,8 +78,13 @@ def build_matrix(season, idx1, idx2):
 
         return matrix
 
-OPT = []
-for season in range(N_PHASES):
-    OPT.append(compute_opt_matching(season))
+# OPT = []
+# for season in range(N_PHASES):
+#     OPT.append(compute_opt_matching(season))
 
-OPT = np.array(OPT)
+# OPT = np.array(OPT)
+
+if __name__ == "__main__":
+    print(CR1)
+    print('--------------------------------------------------------')
+    print(CR2)

@@ -16,17 +16,17 @@ opt = []
 
 for e in tqdm(range(config_8.N_EXPS)):
     env = Non_Stationary_Environment_8(num_customers=config_8.NUM_CUSTOMERS, 
-                        sd_customers=config_8.SD_CUSTOMERS, 
-                        n_arms_1=config_8.N_ARMS_1, 
-                        n_arms_2=config_8.N_ARMS_2, 
-                        cr1=config_8.CR1, 
-                        cr2=config_8.CR2,
-                        n_phases=config_8.N_PHASES,
-                        horizon=config_8.T)
-    learner = Learner_8(n_arms_1=config_8.N_ARMS_1, n_arms_2=config_8.N_ARMS_2, window_size=config_8.WINDOW_SIZE)
+                                      sd_customers=config_8.SD_CUSTOMERS, 
+                                      n_arms_1=config_8.N_ARMS_1, 
+                                      n_arms_2=config_8.N_ARMS_2, 
+                                      cr1=config_8.CR1, 
+                                      cr2=config_8.CR2,
+                                      n_phases=config_8.N_PHASES,
+                                      horizon=config_8.T)
+    learner = Learner_8(n_arms_1=config_8.N_ARMS_1, 
+                        n_arms_2=config_8.N_ARMS_2)
 
     daily_rewards = []
-
     for t in range(config_8.T):
 
         customer_arrivals, current_daily_customers = env.customers()

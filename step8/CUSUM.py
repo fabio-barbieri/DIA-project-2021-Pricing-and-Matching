@@ -1,6 +1,4 @@
-# cumulative sum is the mechanism with which we implement change detection
-
-class CUSUM:
+class CUSUM: # cumulative sum is the mechanism with which we implement change detection
     def __init__(self, M, eps, h):
         self.M = M  # M is going to be used to compute the reference point
         self.eps = eps

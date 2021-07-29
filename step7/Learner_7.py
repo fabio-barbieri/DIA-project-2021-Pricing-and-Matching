@@ -20,7 +20,7 @@ class Learner_7:
         a, b = (clip_a - self.m) / np.sqrt(self.s_2), (clip_b - self.m) / np.sqrt(self.s_2) 
         self.expected_customers = truncnorm.rvs(a, b, self.m, np.sqrt(self.s_2)).astype(int)
 
-        self.matching = np.ones((4, 4)) / 16
+        # self.matching = np.ones((4, 4)) / 16
 
         self.n_promos = (config_7.PROMO_PROB[1 :] * np.sum(self.expected_customers)).astype(int)
         self.n_promos = np.insert(self.n_promos, 0, np.sum(self.expected_customers) - np.sum(self.n_promos))

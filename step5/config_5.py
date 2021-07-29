@@ -114,15 +114,14 @@ def build_matrix(num_customers, promo_prob, cr1, margin_1, cr2, margins_2):
     return matrix
 
 def opt_matching(matrix):
-    m = np.max(matrix) - matrix
-    row, col = linear_sum_assignment(m)
+    row, col = linear_sum_assignment(matrix, maximize=True)
     matching_mask = np.zeros(matrix.shape, dtype=int)
     matching_mask[row, col] = 1
     return matching_mask * matrix, matching_mask
 
 def compute_opt(num_customers, promo_prob, cr1, margin_1, cr2, margins_2):
     matrix = build_matrix(num_customers, promo_prob, cr1, cr2, margin_1, margins_2)
-    optimal_value = np.sum(opt_matching(matrix))
+    return np.sum(opt_matching(matrix))
 
 OPT = compute_opt(NUM_CUSTOMERS, PROMO_PROB, CR1, MARGIN_1, CR2, MARGINS_2)
 

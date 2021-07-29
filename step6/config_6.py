@@ -183,8 +183,7 @@ def build_matrix(idx1, idx2):
     return matrix
 
 def opt_matching(matrix):
-    m = np.max(matrix) - matrix
-    row, col = linear_sum_assignment(m)
+    row, col = linear_sum_assignment(matrix, maximize=True)
     matching_mask = np.zeros(matrix.shape, dtype=int)
     matching_mask[row, col] = 1
     return matching_mask * matrix, matching_mask

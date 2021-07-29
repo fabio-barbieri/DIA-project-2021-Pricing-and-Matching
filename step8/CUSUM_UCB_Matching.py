@@ -1,6 +1,6 @@
 import numpy as np
 from CUSUM import CUSUM
-from hungarian_algorithm_8 import hungarian_algorithm
+from scipy.optimize import linear_sum_assignment
 
 np.random.seed(1234)
 
@@ -11,23 +11,31 @@ class CUSUM_UCB_Matching():
         self.n_cells = self.n_rows * self.n_cols # num of cells in the matching adjacency matrix
 
         self.change_detection = [CUSUM(M, eps, h) for _ in range(self.n_cells)]
-        self.valid_rewards_per_arms = [[] for _ in range(self.n_cells)]
-        self.detections = [[] for _ in range(self.n_cells)]  # to keep track of how many times a warning has been raised for a specific arm
+        self.valid_rewards_per_cell = [[] for _ in range(self.n_cells)]
+        self.detections = [[] for _ in range(self.n_cells)]  # to keep track of how many times a warning has been raised for a specific cell
         self.alpha = alpha
 
+    
     def pull_cells(self):
+
+        def compute_matching(matrix):
+            rows, cols = linear_sum_assignment(matrix, maximize=True)
+            matching_mask = np.zeros(matrix.shape, dtype=int)
+            matching_mask[rows, cols] = 1
+            return rows, cols, matching_mask * matrix, matching_mask
+
         if np.random.binomial(1, 1 - self.alpha):  # we are going to execute this block of code with probability 1-alpha (exploitation)
             upper_conf = self.empirical_means + self.confidence
             upper_conf[np.isinf(upper_conf)] = 1e3
-
             # returning --> row_ind, col_ind, matching, matching_mask
-            return hungarian_algorithm(upper_conf.reshape(self.n_rows, self.n_cols))
+            rows, cols, matching, mask = compute_matching(upper_conf.reshape(self.n_rows, self.n_cols))
 
-        else:  # with probability alpha we get a random matching, pulling, in this way, random arms (exploration )
-            costs_random = np.random.randint(0, 10, size=(self.n_rows, self.n_cols))
-
+        else:  # with probability alpha we get a random matching, pulling, in this way, random arms (exploration)
+            random_costs = np.random.randint(0, 10, size=(self.n_rows, self.n_cols))
             # returning --> row_ind, col_ind, matching, matching_mask RANDOM!!
-            return hungarian_algorithm(costs_random)
+            rows, cols, matching, mask = compute_matching(random_costs)
+        
+        return rows, cols, matching, mask
 
     def update(self, pulled_arms, rewards):
         self.t += 1
