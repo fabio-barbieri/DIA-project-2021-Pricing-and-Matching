@@ -24,7 +24,7 @@ class CUSUM_UCB_Matching():
         self.alpha = alpha
 
     
-    def pull_cells(self):
+    def pull_cells(self, n_promos, expected_customers):
 
         def build_matrix(upper_confidence, n_promos, expected_customers):
             # repeat columns
@@ -43,7 +43,7 @@ class CUSUM_UCB_Matching():
         if np.random.binomial(1, 1 - self.alpha):  # we are going to execute this block of code with probability 1-alpha (exploitation)
             upper_confidence = self.empirical_means + self.confidences
             upper_confidence[np.isinf(upper_confidence)] = 1e3
-            matching, mask = compute_matching(upper_confidence, self.n_promos, self.expected_customers)
+            matching, mask = compute_matching(upper_confidence, n_promos, expected_customers)
 
         else:  # with probability alpha we get a random matching, pulling, in this way, random arms (exploration)
             random_costs = np.random.randint(0, 10, size=(self.n_rows, self.n_cols))

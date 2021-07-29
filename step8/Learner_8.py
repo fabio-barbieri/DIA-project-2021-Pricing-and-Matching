@@ -39,7 +39,7 @@ class Learner_8():
         for arm_1 in range(self.n_arms1):  # For every price_1
             for arm_2 in range(self.n_arms2):
                 index = np.ravel_multi_index((arm_1, arm_2), dims=(self.n_arms1, self.n_arms2))  # Index to get the right cusum_ucb
-                matching, mask = self.cusum_ucbs_per_arm[index].pull_cells()
+                matching, mask = self.cusum_ucbs_per_arm[index].pull_cells(self.n_promos, self.expected_customers)
                 value = np.sum(matching)
                 if value > opt_value:
                     opt_mask = mask
