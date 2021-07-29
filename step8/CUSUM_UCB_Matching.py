@@ -50,7 +50,7 @@ class CUSUM_UCB_Matching():
         else:  # with probability alpha we get a random matching, pulling, in this way, random arms (exploration)
             random_costs = np.random.randint(0, 10, size=(self.n_rows, self.n_cols))
             # returning --> row_ind, col_ind, matching, matching_mask RANDOM!!
-            matching, mask = compute_matching(random_costs)
+            matching, mask = compute_matching(random_costs, n_promos, expected_customers)
         
         return matching, mask
 
