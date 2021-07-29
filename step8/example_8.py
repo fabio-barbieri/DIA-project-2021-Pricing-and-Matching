@@ -21,7 +21,7 @@ for e in tqdm(range(config_8.N_EXPS)):
 
     learner = Learner_8(n_arms_1=config_8.N_ARMS_1, 
                         n_arms_2=config_8.N_ARMS_2, 
-                        params=config_8.DETECTION_PARAMS)
+                        detection_params=config_8.DETECTION_PARAMS)
 
     daily_rewards = []
     for t in range(config_8.T):
