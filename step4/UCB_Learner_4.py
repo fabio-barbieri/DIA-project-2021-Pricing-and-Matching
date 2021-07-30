@@ -29,11 +29,6 @@ class UCB_Learner_4(Learner_4):
         self.empirical_means[pulled_arm] = (self.empirical_means[pulled_arm] * (self.t - 1) + profit) / self.t
         self.confidence = ((2 * np.log(self.t) / np.maximum(1, self.n_pulled_arm)) ** 0.5) * profit
 
-        # update beta parameters associated with conversion rates on product 2, if the first item has been bought
-        if reward1 == 1:
-            self.beta_cr2[c_class, promo, 0] = self.beta_cr2[c_class, promo, 0] + reward2
-            self.beta_cr2[c_class, promo, 1] = self.beta_cr2[c_class, promo, 1] + (1.0 - reward2)
-
         self.n_pulled_arm[pulled_arm] += 1
 
 

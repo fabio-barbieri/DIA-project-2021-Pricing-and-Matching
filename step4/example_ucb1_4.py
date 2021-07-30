@@ -16,6 +16,7 @@ for e in tqdm(range(config_4.N_EXPS)):
                         num_customers=config_4.NUM_CUSTOMERS,
                         sd_customers=config_4.SD_CUSTOMERS,
                         matching_prob=config_4.MATCHING_PROB)
+                        
     ucb_learner = UCB_Learner_4(n_arms=config_4.N_ARMS, 
                                   tot_customers=np.sum(config_4.NUM_CUSTOMERS),
                                   sd_customers=config_4.SD_CUSTOMERS,
