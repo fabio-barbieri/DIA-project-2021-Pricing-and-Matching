@@ -2,6 +2,11 @@ import numpy as np
 from scipy.stats import truncnorm
 import sys
 
+setting = int(input('Specify the setting for the current experiment (0 or 1): '))
+while (setting != 0) and (setting != 1):
+    print('Wrong setting, try again!')
+    setting = int(input('Specify the setting for the current experiment (0 or 1): '))
+    
 T = 365  # Time horizon
 
 N_EXPS = 20  # Number of experiments
@@ -82,15 +87,22 @@ def compute_cr1(price, cl):
 
 CR1 = np.array([compute_cr1(m1, c) for m1 in MARGINS_1 for c, _ in enumerate(NUM_CUSTOMERS)]).reshape(len(MARGINS_1), len(NUM_CUSTOMERS))
 
-MATCHING = np.array([[8,  5, 4,  3],  # Class 1 -> tot = NUM_CUSTOMERS[0]
-                     [16, 6, 10, 8],  # Class 2 -> tot = NUM_CUSTOMERS[1]
-                     [2,  3, 3,  2],  # Class 3 -> tot = NUM_CUSTOMERS[2]
-                     [14, 6, 5,  5]]) # Class 4 -> tot = NUM_CUSTOMERS[3]
-                    # p0  p1 p2  p3
-    
-PROMO_DISCOUNTS = np.array([1, 0.85, 0.75, 0.60])
-                         # p0   p1    p2    p3
-MARGINS_2 = (29.99 * PROMO_DISCOUNTS).reshape((1,4))
+if setting == 0:
+    MATCHING = np.array([[8,  5, 4,  3], # Class 1 -> tot = NUM_CUSTOMERS[0]
+                         [16, 6, 10, 8], # Class 2 -> tot = NUM_CUSTOMERS[1]
+                         [2,  3, 3,  2], # Class 3 -> tot = NUM_CUSTOMERS[2]
+                         [14, 6, 5,  5]]) # Class 4 -> tot = NUM_CUSTOMERS[3]
+#                         p0  p1 p2  p3
+else:
+    MATCHING = np.array([[5, 7,  2,  6], # Class 1 -> tot = NUM_CUSTOMERS[0]
+                         [5, 8,  1, 26], # Class 2 -> tot = NUM_CUSTOMERS[1]
+                         [3, 3,  2,  2], # Class 3 -> tot = NUM_CUSTOMERS[2]
+                         [7, 12, 5,  6]]) # Class 4 -> tot = NUM_CUSTOMERS[3]
+#                         p0 p1  p2  p3
+
+#                           p0  p1    p2    p3  
+promo_discounts = np.array([1, 0.85, 0.75, 0.60])
+MARGINS_2 = (29.99 * promo_discounts).reshape((1, 4))
                    
 CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
                 [0.0, 0.2, 0.3, 0.5],  # Junior Amateur

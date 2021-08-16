@@ -3,6 +3,11 @@ from scipy.stats import truncnorm
 import sys
 from scipy.optimize import linear_sum_assignment
 
+setting = int(input('Specify the setting for the current experiment (0 or 1): '))
+while (setting != 0) and (setting != 1):
+    print('Wrong setting, try again!')
+    setting = int(input('Specify the setting for the current experiment (0 or 1): '))
+
 T = 365  # Time horizon
 
 N_EXPS = 1  # Number of experiments
@@ -151,9 +156,9 @@ def compute_cr1(season, price, cl):
 
 CR1 = np.array([np.array([compute_cr1(season, m1, c) for m1 in MARGINS_1 for c, _ in enumerate(NUM_CUSTOMERS)]).reshape((len(MARGINS_1), len(NUM_CUSTOMERS))) for season in SEASONS])
 
-PROMO_DISCOUNTS = np.array([1, 0.85, 0.75, 0.60])
-
-MARGINS_2 = np.linspace(25, 35, N_ARMS_2).reshape((N_ARMS_2, 1)) * PROMO_DISCOUNTS.reshape((1, 4))
+#                           p0  p1    p2    p3  
+promo_discounts = np.array([1, 0.85, 0.75, 0.60])
+MARGINS_2 = np.linspace(25, 35, N_ARMS_2).reshape((N_ARMS_2, 1)) * promo_discounts.reshape((1, 4))
 
 def compute_cr2(season, discounted_price, cl):
     # MAXIMUM and minimun prices for item 1
@@ -303,7 +308,10 @@ CR2 = np.array([np.array([np.array([compute_cr2(season, discounted_m2, c) for c,
 
 SD_CUSTOMERS = np.array([2, 4, 1, 3])  # standard deviation on the number of customers per each class
 
-PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18]) # Promo-assignments for each class, fixed by the Business Unit of the shop
+if setting == 0:
+    PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18]) # Promo-assignments for each class, fixed by the Business Unit of the shop
+else:
+    PROMO_PROB = np.array([0.2, 0.3, 0.1, 0.4]) # Promo-assignments for each class, fixed by the Business Unit of the shop
 
 DETECTION_PARAMS = (25, 0.1, np.log(T) * 2) # M, epsilon, h
 

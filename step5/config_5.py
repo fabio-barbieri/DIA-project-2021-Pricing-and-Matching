@@ -3,6 +3,11 @@ from scipy.stats import truncnorm
 import sys
 from scipy.optimize import linear_sum_assignment
 
+setting = int(input('Specify the setting for the current experiment (0 or 1): '))
+while (setting != 0) and (setting != 1):
+    print('Wrong setting, try again!')
+    setting = int(input('Specify the setting for the current experiment (0 or 1): '))
+
 T = 365  # Time horizon
 
 N_EXPS = 20  # Number of experiments
@@ -83,9 +88,9 @@ def compute_cr1(price, cl):
 
 CR1 = np.array([compute_cr1(MARGIN_1, c) for c, _ in enumerate(NUM_CUSTOMERS)])
 
-PROMO_DISCOUNTS = np.array([1, 0.85, 0.75, 0.60])
-                         # p0   p1    p2    p3
-MARGINS_2 = (29.99 * PROMO_DISCOUNTS).reshape((1,4))
+#                           p0  p1    p2    p3  
+promo_discounts = np.array([1, 0.85, 0.75, 0.60])
+MARGINS_2 = (29.99 * promo_discounts).reshape((1, 4))
 
 CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
                 [0.0, 0.2, 0.3, 0.5],  # Junior Amateur
@@ -95,7 +100,10 @@ CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
 
 SD_CUSTOMERS = np.array([2, 4, 1, 3])  # standard deviation on the number of customers per each class
 
-PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18]) # Promo-assignments for each class, fixed by the Business Unit of the shop
+if setting == 0:
+    PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18]) # Promo-assignments for each class, fixed by the Business Unit of the shop
+else:
+    PROMO_PROB = np.array([0.2, 0.3, 0.1, 0.4]) # Promo-assignments for each class, fixed by the Business Unit of the shop
 
 def build_matrix(num_customers, promo_prob, cr1, margin_1, cr2, margins_2):
     matrix_dim = np.sum(num_customers)
