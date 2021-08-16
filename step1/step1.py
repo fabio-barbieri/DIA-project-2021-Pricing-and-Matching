@@ -119,10 +119,10 @@ def profit2(p1, p2):
                                                       for j in range(TOT_P)], lowBound=0, upBound=1, cat='Binary') 
     
     # Objective Function 
-    prob += pulp.lpSum([(p2 * (1-PROMOS_VALUES[PROMOS[j]]) - COST2) *
-                        CONV_RATE1[str(p1)][customer2class(i)] *
-                        CONV_RATE2[str(p2)][str(p2 * (1-PROMOS_VALUES[PROMOS[j]]))][customer2class(i)] *
-                        x[(i,j)]
+    prob += pulp.lpSum([CONV_RATE1[str(p1)][customer2class(i)] * 
+                        ( (p1 - COST1) + (p2 * (1-PROMOS_VALUES[PROMOS[j]]) - COST2) *
+                                          CONV_RATE2[str(p2)][str(p2 * (1-PROMOS_VALUES[PROMOS[j]]))][customer2class(i)] *
+                                          x[(i,j)] )
                         for i in range(TOT_C) for j in range(TOT_P)]) 
     
     # Constraints 
