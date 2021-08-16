@@ -89,7 +89,7 @@ CR1 = np.array([compute_cr1(m1, c) for m1 in MARGINS_1 for c, _ in enumerate(NUM
 
 #                           p0  p1    p2    p3  
 promo_discounts = np.array([1, 0.85, 0.75, 0.60])
-MARGINS_2 = (29.99 * promo_discounts).reshape((1, 4))
+MARGINS_2 = 29.99 * promo_discounts
 
 CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
                 [0.0, 0.2, 0.3, 0.5],  # Junior Amateur
@@ -98,16 +98,6 @@ CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
                 # p0   p1   p2   p3
 
 SD_CUSTOMERS = np.array([2, 4, 1, 3])  # standard deviation on the number of customers per each class
-
-# PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18]) # Promo-assignments for each class, fixed by the Business Unit of the shop
-
-# # MATCHING_PROB[i,j] = Probability that a customer is of class i and gets promo j
-# MATCHING_PROB = np.array([[0.08, 0.05, 0.04, 0.03],  # Class 1
-#                     	  [0.16, 0.06, 0.10, 0.08],  # Class 2 
-#                      	  [0.02, 0.03, 0.03, 0.02],  # Class 3 
-#                      	  [0.14, 0.06, 0.05, 0.05]]) # Class 4 
-# #                    	   p0     p1    p2    p3
-
 
 if setting == 0:
     PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18]) # Promo-assignments for each class, fixed by the Business Unit of the shop

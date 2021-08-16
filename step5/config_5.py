@@ -90,7 +90,7 @@ CR1 = np.array([compute_cr1(MARGIN_1, c) for c, _ in enumerate(NUM_CUSTOMERS)])
 
 #                           p0  p1    p2    p3  
 promo_discounts = np.array([1, 0.85, 0.75, 0.60])
-MARGINS_2 = (29.99 * promo_discounts).reshape((1, 4))
+MARGINS_2 = 29.99 * promo_discounts
 
 CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
                 [0.0, 0.2, 0.3, 0.5],  # Junior Amateur
