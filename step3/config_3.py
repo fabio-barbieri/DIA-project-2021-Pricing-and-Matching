@@ -87,10 +87,11 @@ MATCHING = np.array([[8,  5, 4,  3],  # Class 1 -> tot = NUM_CUSTOMERS[0]
                      [2,  3, 3,  2],  # Class 3 -> tot = NUM_CUSTOMERS[2]
                      [14, 6, 5,  5]]) # Class 4 -> tot = NUM_CUSTOMERS[3]
                     # p0  p1 p2  p3
-
-MARGINS_2 = np.array([29.99, 24.99, 20.99, 10.99])
-                    # p0     p1     p2     p3
-
+    
+PROMO_DISCOUNTS = np.array([1, 0.85, 0.75, 0.60])
+                         # p0   p1    p2    p3
+MARGINS_2 = (29.99 * PROMO_DISCOUNTS).reshape((1,4))
+                   
 CR2 = np.array([[0.2, 0.4, 0.3, 0.3],  # Junior Professionals
                 [0.0, 0.2, 0.3, 0.5],  # Junior Amateur
                 [0.1, 0.5, 0.3, 0.1],  # Senior Professionals
