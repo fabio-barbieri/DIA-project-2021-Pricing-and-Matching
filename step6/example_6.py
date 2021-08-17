@@ -25,7 +25,7 @@ for e in tqdm(range(config_6.N_EXPS)):
                         promo_prob=config_6.PROMO_PROB,
                         sd_customers=config_6.SD_CUSTOMERS,
                         margins_1=config_6.MARGINS_1,
-                        margins_2=config_6.MARGINS_2,)
+                        margins_2=config_6.MARGINS_2)
 
     daily_rewards = []
 
@@ -55,7 +55,7 @@ for e in tqdm(range(config_6.N_EXPS)):
 plt.figure(0, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Expected Reward")
-plt.hlines(config_6.OPT, 0, 365, linestyles="dashed", color = 'darkgreen')
+plt.hlines(config_6.OPT, 0, 365, linestyles="dashed")
 xx = range(365)
 exp_rew_mean = np.mean(ts_reward_per_experiment, axis=0)
 exp_rew_sd = np.std(ts_reward_per_experiment, axis=0)
@@ -69,7 +69,7 @@ plt.show()
 plt.figure(1, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Cumulative Expected Reward")
-plt.hlines(config_6.OPT * 365, 0, 365, linestyles="dashed", color = 'darkred')
+plt.hlines(config_6.OPT * 365, 0, 365, linestyles="dashed")
 xx = range(365)
 cum_rew_mean = np.cumsum(exp_rew_mean)
 cum_rew_sd = np.cumsum(exp_rew_sd, axis=0)
@@ -83,7 +83,7 @@ plt.show()
 plt.figure(2, figsize=(12, 7), dpi=200.0)
 plt.xlabel("t")
 plt.ylabel("Daily Regret")
-plt.hlines(0, 0, 365, linestyles="dashed", color = 'k')
+plt.hlines(0, 0, 365, linestyles="dashed")
 xx = range(365)
 exp_reg_mean = np.mean(config_6.OPT - ts_reward_per_experiment, axis=0)
 exp_reg_sd = np.std(config_6.OPT - ts_reward_per_experiment, axis=0)

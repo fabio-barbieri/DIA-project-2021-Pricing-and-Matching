@@ -201,12 +201,12 @@ def compute_opt_matching():
     for a1 in range(N_ARMS_1):
         for a2 in range(N_ARMS_2):
             matrix = build_matrix(a1, a2)
-            matching, mask = opt_matching(matrix) ##############################
+            matching, _ = opt_matching(matrix) ##############################
             value = np.sum(matching)
             if value > opt_value:
                 opt_value = value
-                idx1 = a1 ##############################
-                idx2 = a2 ##############################
+                # idx1 = a1 ##############################
+                # idx2 = a2 ##############################
 
     return opt_value  #, (idx1, idx2) ##############################
 

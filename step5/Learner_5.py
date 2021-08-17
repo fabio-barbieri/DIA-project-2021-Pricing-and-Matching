@@ -17,8 +17,8 @@ class Learner_5:
         clip_a = np.zeros(4)
         clip_b = self.m * 5 / 2
         a, b = (clip_a - self.m) / np.sqrt(self.s_2), (clip_b - self.m) / np.sqrt(self.s_2) 
-        self.expected_customers = truncnorm.rvs(a, b, self.m, np.sqrt(self.s_2)).astype(int) # initial number of expected customers
-                                                                                             # per class, according to our prior                                                               
+        self.expected_customers = truncnorm.rvs(a, b, self.m, np.sqrt(self.s_2)).astype(int) # initial number of expected customers per class, according to our prior
+                                                                     
         self.beta_cr1 = np.ones((4, 2))
         self.beta_cr2 = np.ones((4, 4, 2))
 

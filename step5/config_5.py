@@ -10,13 +10,11 @@ while (SETTING != 0) and (SETTING != 1):
 
 T = 365  # Time horizon
 
-N_EXPS = 5  # Number of experiments
-
-N_ARMS = 5  # Number of different candidate prices
+N_EXPS = 15  # Number of experiments
 
 NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily customers per class
 
-MARGIN_1 = 200
+MARGIN_1 = 160
 
 def compute_cr1(price, cl):
     # MAXIMUM and minimun prices for item 1
@@ -193,7 +191,7 @@ def opt_matching(matrix):
     row, col = linear_sum_assignment(matrix, maximize=True)
     matching_mask = np.zeros(matrix.shape, dtype=int)
     matching_mask[row, col] = 1
-    return matching_mask * matrix, matching_mask
+    return matching_mask * matrix
 
 def compute_opt():
     matrix = build_matrix()
