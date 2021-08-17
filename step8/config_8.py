@@ -3,10 +3,10 @@ from scipy.stats import truncnorm
 import sys
 from scipy.optimize import linear_sum_assignment
 
-setting = int(input('Specify the setting for the current experiment (0 or 1): '))
-while (setting != 0) and (setting != 1):
+SETTING = int(input('Specify the setting for the current experiment (0 or 1): '))
+while (SETTING != 0) and (SETTING != 1):
     print('Wrong setting, try again!')
-    setting = int(input('Specify the setting for the current experiment (0 or 1): '))
+    SETTING = int(input('Specify the setting for the current experiment (0 or 1): '))
 
 T = 365  # Time horizon
 
@@ -308,7 +308,7 @@ CR2 = np.array([np.array([np.array([compute_cr2(season, discounted_m2, c) for c,
 
 SD_CUSTOMERS = np.array([2, 4, 1, 3])  # standard deviation on the number of customers per each class
 
-if setting == 0:
+if SETTING == 0:
     PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18]) # Promo-assignments for each class, fixed by the Business Unit of the shop
 else:
     PROMO_PROB = np.array([0.2, 0.3, 0.1, 0.4]) # Promo-assignments for each class, fixed by the Business Unit of the shop
