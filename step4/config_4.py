@@ -179,7 +179,7 @@ else:
     PROMO_PROB = np.array([0.2, 0.3, 0.1, 0.4]) # Promo-assignments for each class, fixed by the Business Unit of the shop
     
     # MATCHING_PROB[i,j] = Probability that a customer is of class i and gets promo j
-    MATCHING = np.array([[0.05, 0.07, 0.02, 0.06], # Class 1 -> tot = NUM_CUSTOMERS[0]
+    MATCHING_PROB = np.array([[0.05, 0.07, 0.02, 0.06], # Class 1 -> tot = NUM_CUSTOMERS[0]
                          [0.05, 0.08, 0.01, 0.26], # Class 2 -> tot = NUM_CUSTOMERS[1]
                          [0.03, 0.03, 0.02, 0.02], # Class 3 -> tot = NUM_CUSTOMERS[2]
                          [0.07, 0.12, 0.05, 0.06]]) # Class 4 -> tot = NUM_CUSTOMERS[3]
