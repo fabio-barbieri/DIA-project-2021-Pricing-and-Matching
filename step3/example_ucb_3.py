@@ -7,11 +7,6 @@ from tqdm import tqdm
 
 np.random.seed(1234)
 
-ucb_reward_per_experiment = []  # Collected reward
-
-tot_customers = sum(config_3.NUM_CUSTOMERS)
-class_probabilities = [i / tot_customers for i in config_3.NUM_CUSTOMERS]
-
 tmp0 = np.zeros(shape=config_3.NUM_CUSTOMERS[0], dtype=int)
 tmp1 = np.ones(shape=config_3.NUM_CUSTOMERS[1], dtype=int)
 tmp2 = np.zeros(shape=config_3.NUM_CUSTOMERS[2], dtype=int) + 2
@@ -20,6 +15,7 @@ customer_arrivals = np.concatenate((tmp0, tmp1, tmp2, tmp3), axis=None)
 
 np.random.shuffle(customer_arrivals)
 
+ucb_reward_per_experiment = []  # Collected reward
 for e in tqdm(range(config_3.N_EXPS)):
     env = Environment_3(n_arms=config_3.N_ARMS,
                         matching=config_3.MATCHING,
