@@ -1,5 +1,4 @@
 import numpy as np
-import config_6
 from scipy.stats import truncnorm
 
 
@@ -8,8 +7,8 @@ class Environment_6():
         self.num_customers = num_customers
         self.sd_customers = sd_customers
 
-        self.n_arms_1 = n_arms_1
-        self.n_arms_2 = n_arms_2
+        # self.n_arms_1 = n_arms_1
+        # self.n_arms_2 = n_arms_2
 
         self.cr1 = cr1
         self.cr2 = cr2
