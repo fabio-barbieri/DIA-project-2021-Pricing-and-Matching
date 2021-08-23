@@ -170,9 +170,9 @@ CR2 = np.array([np.array([compute_cr2(discounted_m2, c) for c, _ in enumerate(NU
 SD_CUSTOMERS = np.array([2, 4, 1, 3])  # standard deviation on the number of customers per each class
 
 if SETTING == 0:
-    PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18]) # Promo-assignments for each class, fixed by the Business Unit of the shop
+    PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18]) # Promo-allocation, fixed by the Business Unit of the shop
 else:
-    PROMO_PROB = np.array([0.2, 0.3, 0.1, 0.4]) # Promo-assignments for each class, fixed by the Business Unit of the shop
+    PROMO_PROB = np.array([0.2, 0.3, 0.1, 0.4]) # Promo-allocation, fixed by the Business Unit of the shop
 
 def build_matrix(idx1, idx2): 
     tot_customers = np.sum(NUM_CUSTOMERS)
