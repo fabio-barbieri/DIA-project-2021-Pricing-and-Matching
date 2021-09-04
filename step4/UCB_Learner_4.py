@@ -8,7 +8,6 @@ class UCB_Learner_4(Learner_4):
         super().__init__(n_arms, tot_customers, sd_customers, margins_1, matching_prob, margins_2)
         self.empirical_means = np.zeros(n_arms)
         self.confidence = np.zeros(n_arms)
-        self.beta_cr2 = np.ones((4, 4, 2))
         self.t = 0
         self.n_pulled_arm = np.zeros(n_arms, dtype=int)
 
@@ -21,7 +20,7 @@ class UCB_Learner_4(Learner_4):
         
         return idx
 
-    def update(self, pulled_arm, reward1, reward2, c_class, promo):
+    def update(self, pulled_arm, reward1, reward2, promo):
         self.t += 1  # Increment the counter of entered customers
 
         profit = reward1 * (self.margins_1[pulled_arm] + reward2 * self.margins_2[promo])

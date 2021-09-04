@@ -39,7 +39,6 @@ for e in tqdm(range(config_4.N_EXPS)):
             daily_profits += customer_profit
 
         daily_rewards.append(daily_profits)
-        ucb_learner.compute_posterior(x_bar=current_daily_customers)
 
     ucb_reward_per_experiment.append(daily_rewards)
 
