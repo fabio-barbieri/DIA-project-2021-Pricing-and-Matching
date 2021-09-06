@@ -32,7 +32,7 @@ for e in tqdm(range(config_4.N_EXPS)):
             # UCB
             pulled_arm = ucb_learner.pull_arm()
             reward1, reward2, promo = env.round(pulled_arm, c_class)
-            ucb_learner.update(pulled_arm, reward1, reward2, c_class, promo)
+            ucb_learner.update(pulled_arm, reward1, reward2, promo)
 
             # reward * (margin1 + promo * margin2 * conv2[pulled_arm])
             customer_profit = reward1 * (config_4.MARGINS_1[pulled_arm] + reward2 * config_4.MARGINS_2[promo])
