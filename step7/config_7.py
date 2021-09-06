@@ -20,12 +20,12 @@ NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily 
 
 SEASONS = ('Winter', 'Spring', 'Summer', 'Autumn') # Seasons of the year
 
-MARGINS_1 = np.linspace(150, 250, N_ARMS_1)
+MARGINS_1 = np.linspace(100, 150, N_ARMS_1)
 
 def compute_cr1(season, price, cl):
     # MAXIMUM and minimun prices for item 1
-    M = 250
-    m = 150
+    M = 150
+    m = 100
   
     if price < m or price > M: 
         sys.exit('Price not in range')
@@ -34,20 +34,20 @@ def compute_cr1(season, price, cl):
     if cl == 0:
         def f(y): 
             # Parameters for the first truncated normal
-            loc1 = 200
-            scale1 = 50
+            loc1 = 125
+            scale1 = 25
             a1 = (m - loc1) / scale1
             b1 = (M - loc1) / scale1
 
             # Parameters for the second truncated normal
-            loc2 = 220
-            scale2 = 80
+            loc2 = 140
+            scale2 = 40
             a2 = (m - loc2) / scale2
             b2 = (M - loc2) / scale2 
 
             return truncnorm.pdf(y, a1, b1, loc1, scale1) * truncnorm.pdf(y, a2, b2, loc2, scale2)
 
-        xx = np.linspace(150, 250, 2000)
+        xx = np.linspace(100, 150, 1000)
         ff = f(xx)
         mm = np.argmin(ff)
         MM = np.argmax(ff)
@@ -56,20 +56,20 @@ def compute_cr1(season, price, cl):
 
         def f1(y):
             # Parameters for the first truncated normal
-            loc1 = 165
-            scale1 = 50
+            loc1 = 110
+            scale1 = 25
             a1 = (m - loc1) / scale1
             b1 = (M - loc1) / scale1
 
             # Parameters for the second truncated normal
-            loc2 = 200
-            scale2 = 80
+            loc2 = 125
+            scale2 = 40
             a2 = (m - loc2) / scale2
             b2 = (M - loc2) / scale2 
 
             return truncnorm.pdf(y, a1, b1, loc1, scale1) * truncnorm.pdf(y, a2, b2, loc2, scale2)
 
-        xx = np.linspace(150, 250, 2000)
+        xx = np.linspace(100, 150, 1000)
         ff = f1(xx)
         mm = np.argmin(ff)
         MM = np.argmax(ff)
@@ -86,30 +86,30 @@ def compute_cr1(season, price, cl):
     # Junior Amateur (Best seasons: SPRING and SUMMER)###########################################################################################
     if cl == 1:
         if season == 'Winter':
-            return np.exp(0.06*(M-price))/np.exp(0.06*(M-m+2)) * 0.8
+            return np.exp(0.1*(M-price))/np.exp(0.1*(M-m+2)) * 0.85
         elif (season == 'Spring') or (season == 'Summer'): 
-            return np.exp(0.04*(M-price))/np.exp(0.04*(M-m+2))
+            return np.exp(0.06*(M-price))/np.exp(0.06*(M-m+2))
         else: 
-            return np.exp(0.04*(M-price))/np.exp(0.04*(M-m+2)) * 0.75
+            return np.exp(0.06*(M-price))/np.exp(0.06*(M-m+2)) * 0.75
 
     # Senior Professional (Best seasons: SPRING and AUTUMN) ###########################################################################################
     if cl == 2:
         def g(y):
             # Parameters for the first truncated normal
-            loc1 = 200
-            scale1 = 60
+            loc1 = 125
+            scale1 = 30
             a1 = (m - loc1) / scale1
             b1 = (M - loc1) / scale1
 
             # Parameters for the second truncated normal
-            loc2 = 230
-            scale2 = 60
+            loc2 = 140
+            scale2 = 30
             a2 = (m - loc2) / scale2
             b2 = (M - loc2) / scale2 
 
             return truncnorm.pdf(y, a1, b1, loc1, scale1) * truncnorm.pdf(y, a2, b2, loc2, scale2)
 
-        xx = np.linspace(150, 250, 2000)
+        xx = np.linspace(100, 150, 1000)
         gg = g(xx)
         mm = np.argmin(gg)
         MM = np.argmax(gg)
@@ -118,20 +118,20 @@ def compute_cr1(season, price, cl):
 
         def g1(y):
             # Parameters for the first truncated normal
-            loc1 = 165
-            scale1 = 60
+            loc1 = 110
+            scale1 = 30
             a1 = (m - loc1) / scale1
             b1 = (M - loc1) / scale1
             
             # Parameters for the second truncated normal
-            loc2 = 200
-            scale2 = 60
+            loc2 = 125
+            scale2 = 30
             a2 = (m - loc2) / scale2
             b2 = (M - loc2) / scale2 
 
             return truncnorm.pdf(y, a1, b1, loc1, scale1) * truncnorm.pdf(y, a2, b2, loc2, scale2)
 
-        xx = np.linspace(150, 250, 2000)
+        xx = np.linspace(100, 150, 1000)
         gg = g1(xx)
         mm = np.argmin(gg)
         MM = np.argmax(gg)
@@ -148,11 +148,11 @@ def compute_cr1(season, price, cl):
     # Senior Amateur (Best seasons: SPRING and SUMMER) ########################################################################################### 
     if cl == 3:
         if season == 'Winter':
-            return np.exp(0.05 * (M - price)) / np.exp(0.05 * (M - m + 2)) * 0.8
+            return np.exp(0.09 * (M - price)) / np.exp(0.09 * (M - m + 2)) * 0.85
         elif season == 'Spring' or season == 'Summer': 
-            return np.exp(0.02 * (M - price)) / np.exp(0.02 * (M - m + 2))
+            return np.exp(0.05 * (M - price)) / np.exp(0.05 * (M - m + 2))
         else: 
-            return np.exp(0.02 * (M - price)) / np.exp(0.02 *(M - m + 2)) * 0.75
+            return np.exp(0.05 * (M - price)) / np.exp(0.05 *(M - m + 2)) * 0.75
 
 CR1 = np.array([np.array([compute_cr1(season, m1, c) for m1 in MARGINS_1 for c, _ in enumerate(NUM_CUSTOMERS)]).reshape((len(MARGINS_1), len(NUM_CUSTOMERS))) for season in SEASONS])
 
