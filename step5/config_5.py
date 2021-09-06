@@ -10,7 +10,7 @@ while (SETTING != 0) and (SETTING != 1):
 
 T = 365  # Time horizon
 
-N_EXPS = 15  # Number of experiments
+N_EXPS = 200  # Number of experiments
 
 NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily customers per class
 

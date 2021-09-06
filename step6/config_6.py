@@ -10,9 +10,9 @@ while (SETTING != 0) and (SETTING != 1):
 
 T = 365  # Time horizon
 
-N_EXPS = 1  # Number of experiments
+N_EXPS = 15  # Number of experiments
 
-N_ARMS_1 = 5  # Number of different candidate prices for item 1
+N_ARMS_1 = 10  # Number of different candidate prices for item 1
 
 N_ARMS_2 = 5  # Number of different candidate prices for item 2
 
