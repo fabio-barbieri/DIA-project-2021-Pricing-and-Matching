@@ -1,6 +1,7 @@
 from Learner_4 import *
 import numpy as np
 
+np.random.seed(1234)
 
 class UCB_Learner_4(Learner_4):
 

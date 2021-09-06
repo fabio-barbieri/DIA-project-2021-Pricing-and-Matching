@@ -1,6 +1,7 @@
 import numpy as np
 from Learner_4 import *
 
+np.random.seed(1234)
 
 class TS_Learner_4(Learner_4):
 

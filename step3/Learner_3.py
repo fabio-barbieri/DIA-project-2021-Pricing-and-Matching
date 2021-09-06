@@ -1,5 +1,3 @@
-# THIS IS GOING TO BE THE SUPERCLASS OF THE THOMPSON SAMPLING AND GREEDY ALGORITHMS LEARNERS
-
 class Learner_3:
     def __init__(self, n_arms, num_customers, margins_1, matching, margins_2, cr2):
         self.n_arms = n_arms

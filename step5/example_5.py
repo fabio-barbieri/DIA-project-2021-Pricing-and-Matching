@@ -5,6 +5,8 @@ from tqdm import tqdm
 from Learner_5 import *
 import matplotlib.pyplot as plt
 
+np.random.seed(1234)
+
 values_per_exp = []
 rewards_per_exp = []
 for e in tqdm(range(config_5.N_EXPS)):

@@ -1,4 +1,3 @@
-# THIS IS GOING TO BE THE SUPERCLASS OF THE THOMPSON SAMPLING AND GREEDY ALGORITHMS LEARNERS
 import numpy as np
 from scipy.stats import truncnorm
 
