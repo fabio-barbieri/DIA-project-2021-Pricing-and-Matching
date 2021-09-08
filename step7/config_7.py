@@ -77,16 +77,16 @@ def compute_cr1(season, price, cl):
         fmax1 = f1(xx[MM])
 
         if season == 'Winter':
-            return 0.75 * (f(price) - fmin) / (fmax - fmin)
+            return 0.05 + 0.75 * (f(price) - fmin) / (fmax - fmin)
         elif (season == 'Spring') or (season == 'Autumn'):
-            return 0.95 * (f(price) - fmin) / (fmax - fmin)
+            return 0.25 + 0.7 * (f(price) - fmin) / (fmax - fmin)
         else:
-            return 0.95 * (f1(price) - fmin1) / (fmax1 - fmin1)
+            return 0.15 + 0.8 * (f1(price) - fmin1) / (fmax1 - fmin1)
 
     # Junior Amateur (Best seasons: SPRING and SUMMER)###########################################################################################
     if cl == 1:
         if season == 'Winter':
-            return np.exp(0.06*(M-price))/np.exp(0.06*(M-m+2)) * 0.8
+            return (np.exp(0.06*(M-price))/np.exp(0.06*(M-m+2)) + 0.1) * 0.8
         elif (season == 'Spring') or (season == 'Summer'): 
             return np.exp(0.04*(M-price))/np.exp(0.04*(M-m+2))
         else: 
@@ -139,16 +139,16 @@ def compute_cr1(season, price, cl):
         gmax1 = g1(xx[MM])
 
         if season == 'Winter':
-            return 0.95 * (g1(price) - gmin1) / (gmax1 - gmin1)
+            return 0.15 + 0.8 * (g1(price) - gmin1) / (gmax1 - gmin1)
         elif season == 'Spring' or season == 'Autumn':
-            return 0.95 * (g(price) - gmin) / (gmax - gmin)
+            return 0.25 + 0.7 * (g(price) - gmin) / (gmax - gmin)
         else:
-            return 0.75 * (g(price) - gmin) / (gmax - gmin)
+            return 0.05 + 0.75 * (g(price) - gmin) / (gmax - gmin)
 
     # Senior Amateur (Best seasons: SPRING and SUMMER) ########################################################################################### 
     if cl == 3:
         if season == 'Winter':
-            return np.exp(0.05 * (M - price)) / np.exp(0.05 * (M - m + 2)) * 0.8
+            return (np.exp(0.05 * (M - price)) / np.exp(0.05 * (M - m + 2)) + 0.14) * 0.8
         elif season == 'Spring' or season == 'Summer': 
             return np.exp(0.02 * (M - price)) / np.exp(0.02 * (M - m + 2))
         else: 
