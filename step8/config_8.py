@@ -313,7 +313,7 @@ if SETTING == 0:
 else:
     PROMO_PROB = np.array([0.2, 0.3, 0.1, 0.4]) # Promo-allocation, fixed by the Business Unit of the shop
 
-DETECTION_PARAMS = (25, 0.1, np.log(T) * 2) # M, epsilon, h
+DETECTION_PARAMS = (25, 0.1, np.log(T * np.sum(NUM_CUSTOMERS)) * 2) # M, epsilon, h
 
 def build_matrix(season, idx1, idx2): 
     tot_customers = np.sum(NUM_CUSTOMERS)
