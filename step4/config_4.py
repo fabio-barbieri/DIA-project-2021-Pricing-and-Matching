@@ -11,7 +11,7 @@ T = 365  # Time horizon
 
 N_EXPS = 50  # Number of experiments
 
-N_ARMS = 50  # Number of different candidate prices
+N_ARMS = 65  # Number of different candidate prices
 
 NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily customers per class
 
@@ -49,7 +49,7 @@ def compute_cr1(price, cl):
         fmin = f(xx[mm])
         fmax = f(xx[MM])
 
-        return 0.95 * (f(price) - fmin) / (fmax - fmin)
+        return 0.25 + 0.7 * (f(price) - fmin) / (fmax - fmin)
 
     # Junior Amateur ###########################################################################################
     if cl == 1:
@@ -79,7 +79,7 @@ def compute_cr1(price, cl):
         gmin = g(xx[mm])
         gmax = g(xx[MM])
 
-        return 0.95 * (g(price) - gmin) / (gmax - gmin)
+        return 0.25 + 0.7 * (g(price) - gmin) / (gmax - gmin)
 
     # Senior Amateur ########################################################################################### 
     if cl == 3:
