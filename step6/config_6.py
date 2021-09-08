@@ -52,7 +52,7 @@ def compute_cr1(price, cl):
         fmin = f(xx[mm])
         fmax = f(xx[MM])
 
-        return 0.95 * (f(price) - fmin) / (fmax - fmin)
+        return 0.25 + 0.7 * (f(price) - fmin) / (fmax - fmin)
 
     # Junior Amateur ###########################################################################################
     if cl == 1:
@@ -82,7 +82,7 @@ def compute_cr1(price, cl):
         gmin = g(xx[mm])
         gmax = g(xx[MM])
 
-        return 0.95 * (g(price) - gmin) / (gmax - gmin)
+        return 0.25 + 0.7 * (g(price) - gmin) / (gmax - gmin)
 
     # Senior Amateur ########################################################################################### 
     if cl == 3:
@@ -201,13 +201,11 @@ def compute_opt_matching():
     for a1 in range(N_ARMS_1):
         for a2 in range(N_ARMS_2):
             matrix = build_matrix(a1, a2)
-            matching, _ = opt_matching(matrix) ##############################
+            matching, _ = opt_matching(matrix)
             value = np.sum(matching)
             if value > opt_value:
                 opt_value = value
-                # idx1 = a1 ##############################
-                # idx2 = a2 ##############################
-
-    return opt_value  #, (idx1, idx2) ##############################
+                
+    return opt_value
 
 OPT = compute_opt_matching()
