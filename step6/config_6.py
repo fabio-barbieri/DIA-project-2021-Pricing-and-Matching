@@ -18,12 +18,12 @@ N_ARMS_2 = 5  # Number of different candidate prices for item 2
 
 NUM_CUSTOMERS = np.array([20, 40, 10, 30])  # Mean of the number of total daily customers per class
 
-MARGINS_1 = np.linspace(100, 150, N_ARMS_1)
+MARGINS_1 = np.linspace(150, 250, N_ARMS_1)
 
 def compute_cr1(price, cl):
     # MAXIMUM and minimun prices for item 1
-    M = 150
-    m = 100
+    M = 250
+    m = 150
 
     if (price < m) or (price > M): 
         sys.exit('Price not in range')
@@ -32,20 +32,20 @@ def compute_cr1(price, cl):
     if cl == 0:
         def f(y):
             # Parameters for the first truncated normal
-            loc1 = 125
-            scale1 = 25
+            loc1 = 200
+            scale1 = 50
             a1 = (m - loc1) / scale1
             b1 = (M - loc1) / scale1
 
             # Parameters for the second truncated normal
-            loc2 = 140
-            scale2 = 40
+            loc2 = 220
+            scale2 = 80
             a2 = (m - loc2) / scale2
             b2 = (M - loc2) / scale2 
 
             return truncnorm.pdf(y, a1, b1, loc1, scale1) * truncnorm.pdf(y, a2, b2, loc2, scale2)
 
-        xx = np.linspace(100, 150, 1000)
+        xx = np.linspace(150, 250, 2000)
         ff = f(xx)
         mm = np.argmin(ff)
         MM = np.argmax(ff)
@@ -62,20 +62,20 @@ def compute_cr1(price, cl):
     if cl == 2:
         def g(y):
             # Parameters for the first truncated normal
-            loc1 = 125
-            scale1 = 30
+            loc1 = 200
+            scale1 = 60
             a1 = (m - loc1) / scale1
             b1 = (M - loc1) / scale1
 
             # Parameters for the second truncated normal
-            loc2 = 140
-            scale2 = 20
+            loc2 = 230
+            scale2 = 40
             a2 = (m - loc2) / scale2
             b2 = (M - loc2) / scale2 
 
             return truncnorm.pdf(y, a1, b1, loc1, scale1) * truncnorm.pdf(y, a2, b2, loc2, scale2)
 
-        xx = np.linspace(100, 150, 1000)
+        xx = np.linspace(150,250,2000)
         gg = g(xx)
         mm = np.argmin(gg)
         MM = np.argmax(gg)
