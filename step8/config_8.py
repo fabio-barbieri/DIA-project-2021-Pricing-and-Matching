@@ -12,7 +12,7 @@ T = 365  # Time horizon
 
 N_EXPS = 15  # Number of experiments
 
-N_ARMS_1 = 10  # Number of different candidate prices
+N_ARMS_1 = 9  # Number of different candidate prices
 
 N_ARMS_2 = 5  # Number of candidates for second item price
 
