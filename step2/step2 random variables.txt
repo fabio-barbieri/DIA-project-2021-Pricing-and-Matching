@@ -1,5 +1,0 @@
-- number of customers that arive every day --> Truncated Gaussian
-- conv rates --> NO
-- promos --> NO
-- reward / regret --> Binomial with mean "conv rate"
-- prices --> NO
