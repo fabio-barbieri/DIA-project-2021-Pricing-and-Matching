@@ -24,3 +24,4 @@ class CUSUM: # cumulative sum is the mechanism with which we implement change de
         self.t = 0
         self.g_minus = 0
         self.g_plus = 0
+        self.reference = 0
