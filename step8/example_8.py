@@ -9,11 +9,11 @@ np.random.seed(1234)
 
 ucb_reward_per_experiment = []  # Collected reward
 
+normalizaiton_term = np.max(config_8.MARGINS_1) + np.max(config_8.MARGINS_2) # Normalization term for normalizing the profits
+
 for e in tqdm(range(config_8.N_EXPS)):
     env = Non_Stationary_Environment_8(num_customers=config_8.NUM_CUSTOMERS, 
                                       sd_customers=config_8.SD_CUSTOMERS, 
-                                      n_arms_1=config_8.N_ARMS_1, 
-                                      n_arms_2=config_8.N_ARMS_2, 
                                       cr1=config_8.CR1, 
                                       cr2=config_8.CR2,
                                       n_phases=len(config_8.SEASONS),
@@ -35,12 +35,11 @@ for e in tqdm(range(config_8.N_EXPS)):
         for c_class in customer_arrivals:
 
             matching_prob, pulled_arm = learner.pull_arm()
-            # print(matching_prob)
             reward1, reward2, promo = env.round(pulled_arm, c_class, matching_prob, learner.expected_customers)
 
             # reward1 * (margin1 + reward2 * margin2)
             curr_customer_profit = reward1 * (config_8.MARGINS_1[pulled_arm[0]] + reward2 * (config_8.MARGINS_2[pulled_arm[1]][promo]))
-            normalizaiton_term = np.max(config_8.MARGINS_1) + np.max(config_8.MARGINS_2)
+
             normalized_curr_profit = curr_customer_profit / normalizaiton_term
 
             learner.update(pulled_arm, c_class, promo, normalized_curr_profit)

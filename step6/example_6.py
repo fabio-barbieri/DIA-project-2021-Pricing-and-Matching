@@ -13,9 +13,7 @@ opt = []
 
 for e in tqdm(range(config_6.N_EXPS)):
     env = Environment_6(num_customers=config_6.NUM_CUSTOMERS, 
-                        sd_customers=config_6.SD_CUSTOMERS, 
-                        n_arms_1=config_6.N_ARMS_1, 
-                        n_arms_2=config_6.N_ARMS_2, 
+                        sd_customers=config_6.SD_CUSTOMERS,
                         cr1=config_6.CR1, 
                         cr2=config_6.CR2)
 

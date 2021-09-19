@@ -14,9 +14,7 @@ opt = []
 
 for e in tqdm(range(config_7.N_EXPS)):
     env = Environment_7(num_customers=config_7.NUM_CUSTOMERS, 
-                        sd_customers=config_7.SD_CUSTOMERS, 
-                        n_arms_1=config_7.N_ARMS_1, 
-                        n_arms_2=config_7.N_ARMS_2, 
+                        sd_customers=config_7.SD_CUSTOMERS,
                         cr1=config_7.CR1, 
                         cr2=config_7.CR2,
                         n_phases=len(config_7.SEASONS),
@@ -41,7 +39,6 @@ for e in tqdm(range(config_7.N_EXPS)):
         for c_class in customer_arrivals:
 
             matching_prob, pulled_arm = learner.pull_arm()
-            # print(matching_prob)
             reward1, reward2, promo = env.round(pulled_arm, c_class, matching_prob, learner.expected_customers)
             learner.update(pulled_arm, reward1, reward2, c_class, promo)
 

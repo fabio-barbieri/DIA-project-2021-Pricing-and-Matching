@@ -170,20 +170,20 @@ if SETTING == 0:
     PROMO_PROB = np.array([0.4, 0.2, 0.22, 0.18]) # Promo-allocation, fixed by the Business Unit of the shop
     
     # MATCHING_PROB[i,j] = Probability that a customer is of class i and gets promo j
-    MATCHING_PROB = np.array([[0.08, 0.05, 0.04, 0.03], # Class 1
-                              [0.16, 0.06, 0.10, 0.08], # Class 2
-                              [0.02, 0.03, 0.03, 0.02], # Class 3
+    MATCHING_PROB = np.array([[0.08, 0.05, 0.04, 0.03],  # Class 1
+                              [0.16, 0.06, 0.10, 0.08],  # Class 2
+                              [0.02, 0.03, 0.03, 0.02],  # Class 3
                               [0.14, 0.06, 0.05, 0.05]]) # Class 4
 #                               p0    p1    p2    p3
 else:
     PROMO_PROB = np.array([0.2, 0.3, 0.1, 0.4]) # Promo-allocation, fixed by the Business Unit of the shop
     
     # MATCHING_PROB[i,j] = Probability that a customer is of class i and gets promo j
-    MATCHING_PROB = np.array([[0.05, 0.07, 0.02, 0.06], # Class 1 -> tot = NUM_CUSTOMERS[0]
-                         [0.05, 0.08, 0.01, 0.26], # Class 2 -> tot = NUM_CUSTOMERS[1]
-                         [0.03, 0.03, 0.02, 0.02], # Class 3 -> tot = NUM_CUSTOMERS[2]
-                         [0.07, 0.12, 0.05, 0.06]]) # Class 4 -> tot = NUM_CUSTOMERS[3]
-#                         p0     p1    p2    p3
+    MATCHING_PROB = np.array([[0.05, 0.07, 0.02, 0.06],  # Class 1 -> tot = NUM_CUSTOMERS[0]
+                              [0.05, 0.08, 0.01, 0.26],  # Class 2 -> tot = NUM_CUSTOMERS[1]
+                              [0.03, 0.03, 0.02, 0.02],  # Class 3 -> tot = NUM_CUSTOMERS[2]
+                              [0.07, 0.12, 0.05, 0.06]]) # Class 4 -> tot = NUM_CUSTOMERS[3]
+#                               p0     p1    p2    p3
 
 def compute_profit(i, margin1):
     tot_customers = np.sum(NUM_CUSTOMERS)

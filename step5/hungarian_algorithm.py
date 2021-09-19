@@ -1,5 +1,4 @@
 import numpy as np
-import copy
 from scipy.optimize import linear_sum_assignment
 
 def hungarian_algorithm(matrix):

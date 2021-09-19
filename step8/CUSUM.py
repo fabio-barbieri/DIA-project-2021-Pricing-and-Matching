@@ -10,7 +10,7 @@ class CUSUM: # cumulative sum is the mechanism with which we implement change de
 
     def update(self, sample):
         self.t += 1
-        if self.t < self.M:  # the first M samples are used to 
+        if self.t < self.M:  # the first M samples are used to produce a reference value for the detection
             self.reference += sample / self.M
             return 0
         else:

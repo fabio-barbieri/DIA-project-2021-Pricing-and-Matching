@@ -27,8 +27,8 @@ class Learner_7:
         self.n_promos = (self.promo_prob[1 :] * np.sum(self.expected_customers)).astype(int)
         self.n_promos = np.insert(self.n_promos, 0, np.sum(self.expected_customers) - np.sum(self.n_promos))
 
-        self.beta1 = np.ones(shape=(n_arms_1, 4, 2))  # n_arms x class x beta_parameters
-        self.beta2 = np.ones(shape=(n_arms_2, 4, 4, 2))  # n_arms x class x promo x beta_parameters
+        self.beta1 = np.ones(shape=(n_arms_1, 4, 2))  # n_arms_1 x class x beta_parameters
+        self.beta2 = np.ones(shape=(n_arms_2, 4, 4, 2))  # n_arms_2 x class x promo x beta_parameters
 
         self.pulled_arms_1 = []
         self.pulled_arms_2 = []
@@ -102,7 +102,7 @@ class Learner_7:
 
     def pull_arm(self):
         opt_value = -1
-        for arm_1 in range(self.n_arms1):  # For every price_1
+        for arm_1 in range(self.n_arms1):
             for arm_2 in range(self.n_arms2):
                 matching, mask = hungarian_algorithm(self.build_matrix(arm_1, arm_2))
                 value = np.sum(matching)

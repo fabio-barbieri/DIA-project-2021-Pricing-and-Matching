@@ -38,6 +38,7 @@ for e in tqdm(range(config_3.N_EXPS)):
             pulled_arm = ucb_learner.pull_arm()
             reward1, reward2, promo = env.round(pulled_arm, c_class)
             ucb_learner.update(pulled_arm, reward1, reward2, promo)
+            
             customer_profit = reward1 * (config_3.MARGINS_1[pulled_arm] + reward2 * config_3.MARGINS_2[promo])
             daily_profits += customer_profit
 

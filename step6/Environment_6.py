@@ -4,13 +4,9 @@ from scipy.stats import truncnorm
 np.random.seed(1234)
 
 class Environment_6():
-    def __init__(self, num_customers, sd_customers, n_arms_1, n_arms_2, cr1, cr2):
+    def __init__(self, num_customers, sd_customers, cr1, cr2):
         self.num_customers = num_customers
         self.sd_customers = sd_customers
-
-        # self.n_arms_1 = n_arms_1
-        # self.n_arms_2 = n_arms_2
-
         self.cr1 = cr1
         self.cr2 = cr2
 

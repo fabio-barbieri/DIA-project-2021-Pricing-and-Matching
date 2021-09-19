@@ -61,7 +61,6 @@ class CUSUM_UCB_Matching():
             self.detections[flat_cell_index].append(self.t)
             self.valid_rewards_per_cell[flat_cell_index] = []
             self.change_detection[flat_cell_index].reset()
-        # self.update_observations(flat_cell_index, normalized_profit)
         self.valid_rewards_per_cell[flat_cell_index].append(normalized_profit)
         self.empirical_means[flat_cell_index] = np.mean(self.valid_rewards_per_cell[flat_cell_index])  # also we need to compute the right empirical mean, over only the valid samples
 
