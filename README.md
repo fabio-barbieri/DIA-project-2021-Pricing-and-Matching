@@ -3,12 +3,10 @@
 ## Overview
 This is our project for the "Data Intelligence Application" course @ Politecnico di Milano, A.Y. 2020-2021.
 
-The goal of the project is the implementation of an Endless Flying-Ring-Chaser Game using JavaScript, including different light styles and reflection effects.
-
-With this project, we obtained the full earnable amount of points, that was added to the mark of the written theory exam.
+The goal of the project is the solution of a revenue-maximization problem in diffent scenarios. Multi-armed Bandit algorithms are implemented to solve the problem.
 
 ## Project Specifications
-Specifications can be found [here](https://github.com/fabio-barbieri/DIA-project-2021-Pricing-and-Matching/blob/main/Project_Specs.pdf)
+Complete specifications can be found [here](https://github.com/fabio-barbieri/DIA-project-2021-Pricing-and-Matching/blob/main/Project_Specs.pdf)
 
 ## Contributors
 * [Fabio Barbieri](https://github.com/fabio-barbieri)
